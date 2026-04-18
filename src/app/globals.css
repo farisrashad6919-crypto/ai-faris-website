@@ -1,0 +1,240 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  --surface: #fbf9f5;
+  --surface-container-low: #f5f3ef;
+  --surface-container-lowest: #ffffff;
+  --primary: #151515;
+  --primary-container: #2a2a2a;
+  --on-surface: #1b1c1a;
+  --secondary: #4f6073;
+  --tertiary: #211200;
+  --on-tertiary-container: #a98c69;
+  --tertiary-fixed: #ffddb6;
+  --outline-variant: #c4c6cd;
+  --error: #ba1a1a;
+  --ghost-border: rgba(27, 28, 26, 0.08);
+  --glow-shadow: 0 32px 80px rgba(79, 96, 115, 0.1);
+  --paper-shadow: 0 28px 80px rgba(169, 140, 105, 0.14);
+  --float-shadow: 0 22px 60px rgba(44, 35, 22, 0.08);
+  --font-display-active: var(--font-display-latin);
+  --font-body-active: var(--font-body-latin);
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-primary: var(--primary);
+  --color-primary-container: var(--primary-container);
+  --color-on-surface: var(--on-surface);
+  --color-secondary: var(--secondary);
+  --color-tertiary: var(--tertiary);
+  --color-on-tertiary-container: var(--on-tertiary-container);
+  --color-tertiary-fixed: var(--tertiary-fixed);
+  --color-outline-variant: var(--outline-variant);
+  --color-error: var(--error);
+  --font-sans: var(--font-body-active);
+  --font-display: var(--font-display-active);
+  --radius-xs: 0.45rem;
+  --radius-sm: 0.65rem;
+  --radius-md: 0.9rem;
+  --radius-lg: 1.15rem;
+  --shadow-paper: var(--paper-shadow);
+  --shadow-float: var(--float-shadow);
+  --shadow-glow: var(--glow-shadow);
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(255, 221, 182, 0.48), transparent 32%),
+    radial-gradient(circle at top right, rgba(79, 96, 115, 0.1), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(245, 243, 239, 0.96)),
+    var(--surface);
+  color: var(--on-surface);
+  font-family: var(--font-body-active), sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+html[lang="ar"] {
+  --font-display-active: var(--font-display-arabic);
+  --font-body-active: var(--font-body-arabic);
+}
+
+@layer base {
+  * {
+    border-color: var(--ghost-border);
+  }
+
+  html {
+    background: var(--surface);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen antialiased;
+  }
+
+  main {
+    @apply flex-1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--primary);
+    font-family: var(--font-display-active), serif;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  summary {
+    transition:
+      color 180ms ease,
+      background-color 180ms ease,
+      border-color 180ms ease,
+      opacity 180ms ease,
+      transform 220ms ease;
+  }
+
+  button,
+  summary {
+    cursor: pointer;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--secondary) 68%, white 32%);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--tertiary-fixed) 54%, transparent);
+    color: var(--primary);
+  }
+
+  input,
+  textarea,
+  select {
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--on-surface);
+  }
+}
+
+@utility container-shell {
+  margin-inline: auto;
+  width: min(100% - 2rem, 76rem);
+}
+
+@utility section-space {
+  padding-block: clamp(4.5rem, 8vw, 7.5rem);
+}
+
+@utility section-space-sm {
+  padding-block: clamp(3rem, 6vw, 4.75rem);
+}
+
+@utility texture-panel {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(245, 243, 239, 0.94)),
+    var(--surface-container-lowest);
+  box-shadow: var(--paper-shadow);
+}
+
+@layer components {
+  .skip-link {
+    @apply absolute start-4 top-4 z-[100] -translate-y-24 rounded-sm bg-primary px-4 py-2 text-sm font-semibold text-surface-container-lowest focus:translate-y-0;
+  }
+
+  .glass-panel {
+    background: color-mix(in srgb, var(--surface-container-lowest) 74%, transparent);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: var(--float-shadow);
+    backdrop-filter: blur(18px);
+  }
+
+  .paper-panel {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(245, 243, 239, 0.96)),
+      var(--surface-container-lowest);
+    box-shadow: var(--paper-shadow);
+  }
+
+  .ghost-divider {
+    border-color: color-mix(in srgb, var(--outline-variant) 45%, transparent);
+  }
+
+  .eyebrow {
+    color: var(--on-tertiary-container);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .button-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm px-5 py-3 text-sm font-semibold text-surface-container-lowest shadow-paper;
+    background: linear-gradient(135deg, #151515 0%, #2a2a2a 100%);
+  }
+
+  .button-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 24px 64px rgba(27, 28, 26, 0.2);
+  }
+
+  .button-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm px-5 py-3 text-sm font-semibold text-primary;
+    background: color-mix(in srgb, var(--surface-container-lowest) 74%, transparent);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: var(--float-shadow);
+    backdrop-filter: blur(18px);
+  }
+
+  .button-secondary:hover {
+    transform: translateY(-1px);
+  }
+
+  .button-tertiary {
+    @apply inline-flex items-center gap-2 text-sm font-semibold text-primary;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.35em;
+  }
+
+  .button-tertiary:hover {
+    text-decoration: underline;
+  }
+
+  .premium-input {
+    @apply w-full rounded-sm border px-4 py-3 text-sm leading-6 shadow-none;
+    border-color: color-mix(in srgb, var(--outline-variant) 48%, transparent);
+  }
+
+  .premium-input:focus {
+    border-color: color-mix(in srgb, var(--secondary) 72%, white 28%);
+    box-shadow: 0 0 0 5px rgba(79, 96, 115, 0.12);
+  }
+
+  .section-title {
+    @apply max-w-3xl text-4xl leading-tight md:text-5xl;
+  }
+
+  .muted-copy {
+    color: color-mix(in srgb, var(--on-surface) 78%, white 22%);
+  }
+}
