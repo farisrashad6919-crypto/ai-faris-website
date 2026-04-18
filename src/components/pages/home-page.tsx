@@ -13,6 +13,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { StructuredData } from "@/components/ui/structured-data";
 import { ExecutiveQuote } from "@/components/sections/executive-quote";
 import { FaqList } from "@/components/sections/faq-list";
+import { PortraitMosaic } from "@/components/sections/portrait-mosaic";
 import { SectionShell } from "@/components/sections/section-shell";
 import { ServiceCard } from "@/components/sections/service-card";
 import { TestimonialCard } from "@/components/sections/testimonial-card";
@@ -179,7 +180,7 @@ export async function HomePage({ locale }: { locale: Locale }) {
                   alt={siteConfig.brandName}
                   className="object-cover"
                   fill
-                  priority
+                  preload
                   sizes="(max-width: 1024px) 100vw, 42vw"
                   src={siteConfig.portraitPath}
                   style={{ objectPosition: "78% center" }}
@@ -227,22 +228,27 @@ export async function HomePage({ locale }: { locale: Locale }) {
         id="about-preview"
         title={home.about.title}
       >
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
-          {home.about.pillars.map((pillar, index) => (
-            <Reveal
-              className={cn(
-                "paper-panel rounded-lg p-6",
-                index === 0 && "lg:translate-y-6",
-              )}
-              delay={index * 0.06}
-              key={pillar.title}
-            >
-              <h3 className="text-2xl">{pillar.title}</h3>
-              <p className="muted-copy mt-3 text-base leading-7">
-                {pillar.description}
-              </p>
-            </Reveal>
-          ))}
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(20rem,0.95fr)] lg:items-center">
+          <div className="grid gap-5">
+            {home.about.pillars.map((pillar, index) => (
+              <Reveal
+                className={cn(
+                  "paper-panel rounded-lg p-6",
+                  index === 0 && "lg:translate-y-6",
+                )}
+                delay={index * 0.06}
+                key={pillar.title}
+              >
+                <h3 className="text-2xl">{pillar.title}</h3>
+                <p className="muted-copy mt-3 text-base leading-7">
+                  {pillar.description}
+                </p>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal delay={0.08}>
+            <PortraitMosaic />
+          </Reveal>
         </div>
       </SectionShell>
 

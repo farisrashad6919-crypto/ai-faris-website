@@ -1,13 +1,13 @@
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { getMessages } from "next-intl/server";
 
 import { ButtonLink } from "@/components/ui/button-link";
 import { PageHero } from "@/components/sections/page-hero";
+import { PortraitMosaic } from "@/components/sections/portrait-mosaic";
 import { Reveal } from "@/components/ui/reveal";
 import { StructuredData } from "@/components/ui/structured-data";
 import { SectionShell } from "@/components/sections/section-shell";
-import { getBookingHref, siteConfig } from "@/config/site";
+import { getBookingHref } from "@/config/site";
 import type { Locale } from "@/i18n/routing";
 import { getMessageValue } from "@/lib/messages";
 import { getPersonSchema } from "@/lib/schema";
@@ -100,17 +100,8 @@ export async function AboutPage({ locale }: { locale: Locale }) {
             </Reveal>
           ))}
         </div>
-        <Reveal className="paper-panel overflow-hidden rounded-[1.5rem] p-4">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[1.2rem]">
-            <Image
-              alt={siteConfig.brandName}
-              className="object-cover"
-              fill
-              sizes="(max-width: 1024px) 100vw, 40vw"
-              src={siteConfig.portraitPath}
-              style={{ objectPosition: "78% center" }}
-            />
-          </div>
+        <Reveal>
+          <PortraitMosaic />
         </Reveal>
       </SectionShell>
 
