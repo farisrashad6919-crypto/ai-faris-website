@@ -5,10 +5,10 @@ import { getLanguageAlternates, getPageMetadata } from "@/lib/metadata";
 describe("metadata helpers", () => {
   it("generates hreflang alternates for all locales", () => {
     expect(getLanguageAlternates("/services")).toEqual({
-      en: "https://example.com/en/services",
-      ar: "https://example.com/ar/services",
-      tr: "https://example.com/tr/services",
-      "x-default": "https://example.com/en/services",
+      en: "https://farisrashad.com/en/services",
+      ar: "https://farisrashad.com/ar/services",
+      tr: "https://farisrashad.com/tr/services",
+      "x-default": "https://farisrashad.com/en/services",
     });
   });
 
@@ -19,7 +19,7 @@ describe("metadata helpers", () => {
       "تواصل | احجز جلسة مع فارس رشاد",
     );
     expect(metadata.alternates?.languages?.ar).toBe(
-      "https://example.com/ar/contact",
+      "https://farisrashad.com/ar/contact",
     );
     expect(metadata.openGraph?.locale).toBe("ar");
   });

@@ -4,7 +4,7 @@ const PREPLY_URL = "https://preply.com/en/tutor/1740346";
 
 export const siteConfig = {
   brandName: "Faris Rashad English Trainer",
-  siteUrl: "https://example.com",
+  siteUrl: "https://farisrashad.com",
   defaultLocale: "en" as Locale,
   portraitPath: "/images/faris-portrait.jpg",
   preplyUrl: PREPLY_URL,

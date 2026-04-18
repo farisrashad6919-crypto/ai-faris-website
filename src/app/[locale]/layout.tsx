@@ -72,12 +72,17 @@ export default async function LocaleLayout({
 }) {
   const locale = await resolveLocale(params);
   const direction = getDirection(locale);
+  const fontVariables =
+    locale === "ar"
+      ? `${displayArabic.variable} ${bodyArabic.variable}`
+      : `${displayLatin.variable} ${bodyLatin.variable}`;
+
   setRequestLocale(locale);
   const messages = await getMessages();
 
   return (
     <html
-      className={`${displayLatin.variable} ${bodyLatin.variable} ${displayArabic.variable} ${bodyArabic.variable}`}
+      className={fontVariables}
       dir={direction}
       lang={locale}
       suppressHydrationWarning
