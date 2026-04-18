@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
-import { cn } from "@/lib/utils";
+import { cn, isExternalHref } from "@/lib/utils";
 
 const variants = {
   primary: "button-primary",
@@ -27,13 +27,14 @@ export function ButtonLink({
   external = false,
 }: ButtonLinkProps) {
   const classes = cn(variants[variant], className);
+  const isExternal = external || isExternalHref(href);
 
-  if (external) {
+  if (isExternal) {
     return (
       <a
         className={classes}
         href={href}
-        rel="noreferrer"
+        rel="noopener noreferrer"
         target="_blank"
       >
         <span>{children}</span>

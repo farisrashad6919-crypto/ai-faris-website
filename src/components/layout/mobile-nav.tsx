@@ -7,7 +7,7 @@ import { useLocale } from "next-intl";
 
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { locales, type Locale } from "@/i18n/routing";
-import { cn } from "@/lib/utils";
+import { cn, isExternalHref } from "@/lib/utils";
 
 import { LocaleSwitcher } from "./locale-switcher";
 
@@ -30,6 +30,7 @@ export function MobileNav({
   const pathname = usePathname();
   const router = useRouter();
   const locale = useLocale() as Locale;
+  const bookingIsExternal = isExternalHref(ctaHref);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
 
@@ -128,13 +129,25 @@ export function MobileNav({
 
             <div className="mt-8 flex flex-col gap-4 border-t ghost-divider pt-6">
               <LocaleSwitcher compact />
-              <Link
-                className="button-primary"
-                href={ctaHref}
-                onClick={() => setOpen(false)}
-              >
-                {ctaLabel}
-              </Link>
+              {bookingIsExternal ? (
+                <a
+                  className="button-primary"
+                  href={ctaHref}
+                  onClick={() => setOpen(false)}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  {ctaLabel}
+                </a>
+              ) : (
+                <Link
+                  className="button-primary"
+                  href={ctaHref}
+                  onClick={() => setOpen(false)}
+                >
+                  {ctaLabel}
+                </Link>
+              )}
               <div className="flex flex-wrap gap-2">
                 {locales.map((option) => {
                   const isActive = option === locale;

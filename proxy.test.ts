@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { describe, expect, it } from "vitest";
 
-import proxy from "./proxy";
+import proxy from "./src/proxy";
 
 describe("proxy locale negotiation", () => {
   it("redirects unsupported languages to the English default", () => {

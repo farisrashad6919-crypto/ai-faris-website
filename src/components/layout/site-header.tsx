@@ -1,4 +1,4 @@
-import { ArrowUpRight, Globe } from "lucide-react";
+import { Globe } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { siteConfig, getBookingHref } from "@/config/site";
@@ -51,7 +51,6 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
             <LocaleSwitcher />
             <ButtonLink href={getBookingHref(locale)} variant="primary">
               <span>{t("bookSession")}</span>
-              <ArrowUpRight className="size-4" aria-hidden="true" />
             </ButtonLink>
           </div>
 

@@ -69,4 +69,26 @@ describe("MobileNav", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     await waitFor(() => expect(trigger).toHaveFocus());
   });
+
+  it("renders the booking CTA as an external link when given a full URL", async () => {
+    render(
+      <MobileNav
+        closeLabel="Close"
+        ctaHref="https://preply.com/en/tutor/1740346"
+        ctaLabel="Book"
+        items={[{ href: "/", label: "Home" }]}
+        switcherLabel="Open"
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Open" }));
+
+    const bookingLink = await screen.findByRole("link", { name: "Book" });
+    expect(bookingLink).toHaveAttribute(
+      "href",
+      "https://preply.com/en/tutor/1740346",
+    );
+    expect(bookingLink).toHaveAttribute("target", "_blank");
+    expect(bookingLink).toHaveAttribute("rel", "noopener noreferrer");
+  });
 });

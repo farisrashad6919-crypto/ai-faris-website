@@ -1,13 +1,15 @@
 import type { Locale } from "@/i18n/routing";
 
+const PREPLY_URL = "https://preply.com/en/tutor/1740346";
+
 export const siteConfig = {
   brandName: "Faris Rashad English Trainer",
   siteUrl: "https://example.com",
   defaultLocale: "en" as Locale,
   portraitPath: "/images/faris-portrait.jpg",
-  preplyUrl: "https://preply.com/en/tutor/1740346",
+  preplyUrl: PREPLY_URL,
   linkedinUrl: "https://www.linkedin.com/in/faris-rashad-4792b1201/",
-  bookingUrl: null as string | null,
+  bookingUrl: PREPLY_URL,
   whatsappUrl: null as string | null,
   email: null as string | null,
   instagramUrl: null as string | null,
@@ -16,7 +18,7 @@ export const siteConfig = {
     {
       id: "preply",
       label: "Preply",
-      href: "https://preply.com/en/tutor/1740346",
+      href: PREPLY_URL,
     },
     {
       id: "linkedin",
@@ -53,7 +55,7 @@ export const siteConfig = {
 } as const;
 
 export function getBookingHref(locale: Locale) {
-  return siteConfig.bookingUrl ?? `/${locale}/contact#inquiry-form`;
+  return siteConfig.bookingUrl ?? siteConfig.preplyUrl ?? `/${locale}/contact#inquiry-form`;
 }
 
 export function getPrimaryEmail() {
