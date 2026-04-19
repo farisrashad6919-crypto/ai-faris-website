@@ -12,21 +12,21 @@ type EditorialPhoto = {
 
 const editorialPhotos: EditorialPhoto[] = [
   {
-    alt: "Faris Rashad in a direct portrait pose",
+    alt: "Faris Rashad in a formal suit portrait",
     className: "sm:row-span-2",
-    objectPosition: "72% center",
+    objectPosition: "50% 18%",
     sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 26vw",
     src: "/images/editorial/faris-editorial-direct.jpg",
   },
   {
-    alt: "Faris Rashad smiling in an editorial portrait",
-    objectPosition: "72% 32%",
+    alt: "Faris Rashad at an anniversary event in an outdoor portrait",
+    objectPosition: "50% 24%",
     sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 18vw",
     src: "/images/editorial/faris-editorial-smile.jpg",
   },
   {
-    alt: "Faris Rashad in a pointing pose for a supporting brand image",
-    objectPosition: "76% center",
+    alt: "Faris Rashad in a casual studio portrait with a denim jacket",
+    objectPosition: "50% 22%",
     sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 18vw",
     src: "/images/editorial/faris-editorial-pointing.jpg",
   },
