@@ -53,6 +53,11 @@ export function HomePage({ locale }: { locale: Locale }) {
       description: "Strong academic foundation in English and teaching.",
       Icon: GraduationCap,
     },
+    {
+      title: "IELTS Academic",
+      description: "Overall band score: 8.5 / 9 = C2 English Proficiency.",
+      Icon: Globe2,
+    },
   ];
 
   return (
@@ -86,7 +91,7 @@ export function HomePage({ locale }: { locale: Locale }) {
                 <ArrowRight className="size-4" />
               </ButtonLink>
             </div>
-            <div className="grid gap-3 sm:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2">
               <div className="paper-panel rounded-md p-4">
                 <p className="text-2xl font-semibold text-primary">2018</p>
                   <p className="mt-2 text-sm leading-6 text-secondary">
