@@ -1,73 +1,133 @@
 "use server";
 
-import { inquirySchema, type InquiryFormState } from "@/lib/contact";
+import { leadSchema, type InquiryFormState } from "@/lib/contact";
 import { getMessageValue, loadMessages } from "@/lib/messages";
+import { isValidLocale, type Locale } from "@/i18n/routing";
 
-type ContactFormMessages = {
+type LeadFormMessages = {
+  success: string;
+  error: string;
   validation: {
-    summary: string;
-    name: string;
-    email: string;
-    learnerType: string;
-    focusArea: string;
-    goals: string;
+    fullName: string;
+    age: string;
+    nationality: string;
+    contact: string;
+    track: string;
+    offerType: string;
+    preferredLanguage: string;
+    consent: string;
   };
-  successMessage: string;
 };
 
-async function deliverInquiry(values: Record<string, string>) {
-  console.info("Inquiry received", values);
+function stringValue(formData: FormData, key: string) {
+  return String(formData.get(key) ?? "");
+}
+
+async function deliverLead(values: Record<string, unknown>) {
+  const endpoint = process.env.GOOGLE_APPS_SCRIPT_LEADS_ENDPOINT;
+
+  if (!endpoint) {
+    console.info("Lead received without live Apps Script endpoint", values);
+    return;
+  }
+
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      secret: process.env.LEAD_FORM_SHARED_SECRET ?? "",
+      ...values,
+    }),
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Lead delivery failed with ${response.status}`);
+  }
 }
 
 export async function submitInquiry(
   _previousState: InquiryFormState,
   formData: FormData,
 ): Promise<InquiryFormState> {
-  const locale = String(formData.get("locale") ?? "en");
-  const safeLocale = locale === "ar" || locale === "tr" ? locale : "en";
-  const messages = await loadMessages(safeLocale);
-  const formMessages = getMessageValue<ContactFormMessages>(
-    messages,
-    "Contact.form",
-  );
+  const localeCandidate = stringValue(formData, "locale");
+  const locale: Locale = isValidLocale(localeCandidate) ? localeCandidate : "en";
+  const messages = await loadMessages(locale);
+  const formMessages = getMessageValue<LeadFormMessages>(messages, "LeadForm");
 
-  const parsed = inquirySchema.safeParse({
-    locale: safeLocale,
-    name: String(formData.get("name") ?? ""),
-    email: String(formData.get("email") ?? ""),
-    learnerType: String(formData.get("learnerType") ?? ""),
-    focusArea: String(formData.get("focusArea") ?? ""),
-    goals: String(formData.get("goals") ?? ""),
+  const parsed = leadSchema.safeParse({
+    locale,
+    sourcePage: stringValue(formData, "sourcePage"),
+    fullName: stringValue(formData, "fullName"),
+    age: stringValue(formData, "age"),
+    nationality: stringValue(formData, "nationality"),
+    whatsapp: stringValue(formData, "whatsapp"),
+    telegram: stringValue(formData, "telegram"),
+    email: stringValue(formData, "email"),
+    track: stringValue(formData, "track"),
+    offerType: stringValue(formData, "offerType"),
+    preferredLanguage: stringValue(formData, "preferredLanguage"),
+    currentLevel: stringValue(formData, "currentLevel"),
+    goal: stringValue(formData, "goal"),
+    consent: stringValue(formData, "consent"),
+    utmSource: stringValue(formData, "utmSource"),
+    utmMedium: stringValue(formData, "utmMedium"),
+    utmCampaign: stringValue(formData, "utmCampaign"),
+    referrer: stringValue(formData, "referrer"),
+    website: stringValue(formData, "website"),
   });
 
   if (!parsed.success) {
+    const flattened = parsed.error.flatten().fieldErrors;
+    const missingContact =
+      stringValue(formData, "whatsapp").trim().length === 0 &&
+      stringValue(formData, "telegram").trim().length === 0;
+
     return {
       status: "error",
-      message: formMessages.validation.summary,
+      message: formMessages.error,
       fieldErrors: {
-        name: parsed.error.flatten().fieldErrors.name?.[0]
-          ? formMessages.validation.name
+        fullName: flattened.fullName?.[0] ? formMessages.validation.fullName : undefined,
+        age: flattened.age?.[0] ? formMessages.validation.age : undefined,
+        nationality: flattened.nationality?.[0] ? formMessages.validation.nationality : undefined,
+        whatsapp:
+          missingContact || flattened.whatsapp?.[0] || flattened.telegram?.[0]
+            ? formMessages.validation.contact
+            : undefined,
+        telegram:
+          missingContact || flattened.whatsapp?.[0] || flattened.telegram?.[0]
+            ? formMessages.validation.contact
+            : undefined,
+        email: flattened.email?.[0] ? "Please enter a valid email address." : undefined,
+        track: flattened.track?.[0] ? formMessages.validation.track : undefined,
+        offerType: flattened.offerType?.[0]
+          ? formMessages.validation.offerType
           : undefined,
-        email: parsed.error.flatten().fieldErrors.email?.[0]
-          ? formMessages.validation.email
+        preferredLanguage: flattened.preferredLanguage?.[0]
+          ? formMessages.validation.preferredLanguage
           : undefined,
-        learnerType: parsed.error.flatten().fieldErrors.learnerType?.[0]
-          ? formMessages.validation.learnerType
-          : undefined,
-        focusArea: parsed.error.flatten().fieldErrors.focusArea?.[0]
-          ? formMessages.validation.focusArea
-          : undefined,
-        goals: parsed.error.flatten().fieldErrors.goals?.[0]
-          ? formMessages.validation.goals
-          : undefined,
+        consent: flattened.consent?.[0] ? formMessages.validation.consent : undefined,
       },
     };
   }
 
-  await deliverInquiry(parsed.data);
+  try {
+    await deliverLead({
+      timestamp: new Date().toISOString(),
+      ...parsed.data,
+    });
+  } catch (error) {
+    console.error(error);
+    return {
+      status: "error",
+      message: formMessages.error,
+    };
+  }
 
   return {
     status: "success",
-    message: formMessages.successMessage,
+    message: formMessages.success,
   };
 }

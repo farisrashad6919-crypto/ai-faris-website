@@ -2,6 +2,7 @@ import { Globe } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { siteConfig, getBookingHref } from "@/config/site";
+import { copy } from "@/content/locale-copy";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 
@@ -14,8 +15,10 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
   const items = [
     { href: "/", label: t("home") },
     { href: "/about", label: t("about") },
-    { href: "/services", label: t("services") },
-    { href: "/results", label: t("results") },
+    { href: "/programs", label: t("programs") },
+    { href: "/reviews", label: t("reviews") },
+    { href: "/resources", label: t("resources") },
+    { href: "/webinars", label: t("webinars") },
     { href: "/contact", label: t("contact") },
   ];
 
@@ -28,14 +31,11 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
               {siteConfig.brandName}
             </span>
             <span className="mt-1 block text-xs uppercase tracking-[0.18em] text-secondary">
-              English Trainer • Communication Mentor
+              {copy(locale, "English Trainer / Communication Mentor")}
             </span>
           </Link>
 
-          <nav
-            aria-label="Primary"
-            className="hidden items-center gap-7 lg:flex"
-          >
+          <nav aria-label="Primary" className="hidden items-center gap-5 xl:flex">
             {items.map((item) => (
               <Link
                 className="text-sm font-medium text-primary/82 hover:text-primary"
@@ -47,14 +47,14 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
             ))}
           </nav>
 
-          <div className="hidden items-center gap-3 lg:flex">
+          <div className="hidden items-center gap-3 xl:flex">
             <LocaleSwitcher />
             <ButtonLink href={getBookingHref(locale)} variant="primary">
               <span>{t("bookSession")}</span>
             </ButtonLink>
           </div>
 
-          <div className="flex items-center gap-2 lg:hidden">
+          <div className="flex items-center gap-2 xl:hidden">
             <div className="hidden sm:block">
               <LocaleSwitcher compact />
             </div>
@@ -67,9 +67,11 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
             />
           </div>
         </div>
-        <div className="mt-3 hidden items-center gap-3 text-xs uppercase tracking-[0.16em] text-secondary md:flex lg:hidden">
+        <div className="mt-3 hidden items-center gap-3 text-xs uppercase tracking-[0.16em] text-secondary md:flex xl:hidden">
           <Globe className="size-3.5" />
-          <span>English • العربية • Türkçe</span>
+          <span>
+            {copy(locale, "English / Arabic / Turkish / Spanish / Italian / German / French / Ukrainian")}
+          </span>
         </div>
       </div>
     </header>

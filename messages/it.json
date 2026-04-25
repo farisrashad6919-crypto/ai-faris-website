@@ -1,0 +1,24 @@
+{
+  "LocaleSwitcher": {
+    "label": "Selettore lingua",
+    "localeNames": { "en": "inglese", "ar": "arabo", "tr": "turco", "es": "spagnolo", "it": "italiano", "de": "tedesco", "fr": "francese", "uk": "ucraino" }
+  },
+  "Navigation": {
+    "home": "Home", "about": "Chi sono", "programs": "Programmi", "reviews": "Recensioni", "resources": "Risorse", "webinars": "Webinar", "faq": "FAQ", "contact": "Contatti", "bookSession": "Prenota su Preply", "openMenu": "Apri navigazione", "closeMenu": "Chiudi navigazione"
+  },
+  "Footer": {
+    "eyebrow": "Formazione premium di inglese",
+    "summary": "Faris Rashad English Trainer aiuta studenti seri a costruire inglese strutturato, sicuro e misurabile per IELTS, lavoro, fluency generale e sviluppo docenti.",
+    "connect": "Connetti", "note": "Preply e il principale canale di prenotazione. I moduli raccolgono interesse per corsi, webinar, training, test di livello e aggiornamenti.", "copyright": "© {year} Faris Rashad English Trainer.", "source": "Prenota su Preply"
+  },
+  "NotFound": { "eyebrow": "Non trovato", "title": "Questa pagina non e disponibile.", "description": "Il percorso potrebbe essere cambiato. Torna alla home e scegli il percorso giusto.", "cta": "Torna alla home" },
+  "LeadForm": {
+    "title": "Registra il tuo interesse", "description": "Spiega a Faris di cosa hai bisogno. Puoi anche prenotare direttamente su Preply se sei pronto.",
+    "fields": { "fullName": "Nome completo", "age": "Eta", "nationality": "Nazionalita", "whatsapp": "Telefono WhatsApp", "telegram": "Telegram o telefono", "email": "Email", "track": "Programma di interesse", "offerType": "Tipo di offerta", "preferredLanguage": "Lingua preferita", "currentLevel": "Livello attuale", "goal": "Messaggio breve o obiettivo", "consent": "Acconsento a essere contattato per questa richiesta." },
+    "placeholders": { "fullName": "Il tuo nome completo", "age": "La tua eta", "nationality": "Paese o nazionalita", "whatsapp": "+39...", "telegram": "@username o telefono", "email": "you@example.com", "select": "Seleziona", "goal": "Descrivi brevemente obiettivo, tempistiche o difficolta." },
+    "helper": { "contact": "Aggiungi WhatsApp o Telegram. Serve almeno un metodo di contatto.", "email": "Opzionale per corsi e consigliato per webinar.", "privacy": "I dati vengono usati solo per rispondere alla richiesta." },
+    "submit": "Invia richiesta", "submitting": "Invio...", "success": "Richiesta ricevuta. Puoi anche prenotare su Preply per il passo piu rapido.", "error": "Completa i campi evidenziati.",
+    "validation": { "fullName": "Inserisci il nome completo.", "age": "Inserisci un'eta valida.", "nationality": "Inserisci la nazionalita.", "contact": "Aggiungi WhatsApp o Telegram.", "track": "Scegli un programma.", "offerType": "Scegli un tipo di offerta.", "preferredLanguage": "Scegli una lingua preferita.", "consent": "Il consenso e obbligatorio." }
+  },
+  "Filters": { "track": "Programma", "type": "Tipo", "all": "Tutti", "planned": "In programma" }
+}

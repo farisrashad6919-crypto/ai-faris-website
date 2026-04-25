@@ -88,7 +88,7 @@ html[lang="ar"] {
   h6 {
     color: var(--primary);
     font-family: var(--font-display-active), serif;
-    letter-spacing: -0.035em;
+    letter-spacing: 0;
     text-wrap: balance;
   }
 

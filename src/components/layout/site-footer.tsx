@@ -1,10 +1,12 @@
 import { getTranslations } from "next-intl/server";
 
 import { siteConfig } from "@/config/site";
+import { copy } from "@/content/locale-copy";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 
 import { ButtonLink } from "../ui/button-link";
+import { LocaleSwitcher } from "./locale-switcher";
 
 export async function SiteFooter({ locale }: { locale: Locale }) {
   const t = await getTranslations("Footer");
@@ -29,6 +31,14 @@ export async function SiteFooter({ locale }: { locale: Locale }) {
           </div>
 
           <div className="grid gap-5">
+            <div className="space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-tertiary-fixed">
+                {copy(locale, "Languages")}
+              </p>
+              <div className="rounded-md bg-white/8 p-3">
+                <LocaleSwitcher compact />
+              </div>
+            </div>
             <div className="space-y-3">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-tertiary-fixed">
                 {t("connect")}

@@ -1,81 +1,66 @@
 import type { Metadata } from "next";
 
 import { siteConfig } from "@/config/site";
-import type { Locale } from "@/i18n/routing";
+import { copy } from "@/content/locale-copy";
+import { getRouteByKey, localizeRoute } from "@/content/routes";
+import { getTrackById } from "@/content/tracks";
+import type { RouteKey, TrackId } from "@/content/types";
+import { locales, type Locale } from "@/i18n/routing";
 
-import { getMessageValue, loadMessages, type AppMessages } from "./messages";
+function isTrackKey(page: RouteKey): page is TrackId {
+  return page === "ielts" || page === "business" || page === "general" || page === "teacher-training";
+}
 
-const routeMap = {
-  home: "/",
-  about: "/about",
-  services: "/services",
-  results: "/results",
-  contact: "/contact",
-} as const;
-
-type MetadataPage = keyof typeof routeMap;
-
-type PageMetaContent = {
-  title: string;
-  description: string;
-  keywords: string[];
-};
-
-export function getLanguageAlternates(pathname: string) {
+export function getLanguageAlternates(pathname: string): Record<Locale | "x-default", string> {
   return {
-    en: new URL(`/en${pathname}`, siteConfig.siteUrl).toString(),
-    ar: new URL(`/ar${pathname}`, siteConfig.siteUrl).toString(),
-    tr: new URL(`/tr${pathname}`, siteConfig.siteUrl).toString(),
-    "x-default": new URL(`/en${pathname}`, siteConfig.siteUrl).toString(),
-  };
+    ...Object.fromEntries(
+      locales.map((locale) => [locale, localizeRoute(locale, pathname)]),
+    ),
+    "x-default": localizeRoute("en", pathname),
+  } as Record<Locale | "x-default", string>;
 }
 
 export async function getPageMetadata(
   locale: Locale,
-  page: MetadataPage,
+  page: RouteKey,
 ): Promise<Metadata> {
-  const messages = await loadMessages(locale);
-  const meta = getMessageValue<PageMetaContent>(messages, `Metadata.${page}`);
-  const pathname = routeMap[page];
-  const canonical = new URL(`/${locale}${pathname}`, siteConfig.siteUrl);
+  const route = getRouteByKey(page);
+  const track = isTrackKey(page) ? getTrackById(page) : undefined;
+  const title = copy(locale, track?.seo.title ?? route.title);
+  const description = copy(locale, track?.seo.description ?? route.description);
+  const canonical = localizeRoute(locale, route.path);
+  const image = route.ogImage ?? "/opengraph-image";
 
   return {
     metadataBase: new URL(siteConfig.siteUrl),
-    title: meta.title,
-    description: meta.description,
-    keywords: meta.keywords,
+    title,
+    description,
+    keywords: route.keywords,
     alternates: {
-      canonical: canonical.toString(),
-      languages: getLanguageAlternates(pathname),
+      canonical,
+      languages: getLanguageAlternates(route.path),
     },
     openGraph: {
       type: "website",
       siteName: siteConfig.brandName,
-      title: meta.title,
-      description: meta.description,
+      title,
+      description,
       locale,
-      url: canonical.toString(),
+      url: canonical,
       images: [
         {
-          url: new URL("/opengraph-image", siteConfig.siteUrl).toString(),
+          url: new URL(image, siteConfig.siteUrl).toString(),
           width: 1200,
           height: 630,
-          alt: siteConfig.brandName,
+          alt: title,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: meta.title,
-      description: meta.description,
-      images: [new URL("/twitter-image", siteConfig.siteUrl).toString()],
+      title,
+      description,
+      images: [new URL(image, siteConfig.siteUrl).toString()],
     },
   };
-}
-
-export function getMetadataContent(
-  messages: AppMessages,
-  page: MetadataPage,
-): PageMetaContent {
-  return getMessageValue<PageMetaContent>(messages, `Metadata.${page}`);
 }

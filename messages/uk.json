@@ -1,0 +1,24 @@
+{
+  "LocaleSwitcher": {
+    "label": "Language selector",
+    "localeNames": { "en": "англійська", "ar": "арабська", "tr": "турецька", "es": "іспанська", "it": "італійська", "de": "німецька", "fr": "французька", "uk": "українська" }
+  },
+  "Navigation": {
+    "home": "Home", "about": "About", "programs": "Programs", "reviews": "Reviews", "resources": "Resources", "webinars": "Webinars", "faq": "FAQ", "contact": "Contact", "bookSession": "Book on Preply", "openMenu": "Open navigation", "closeMenu": "Close navigation"
+  },
+  "Footer": {
+    "eyebrow": "Premium English Training",
+    "summary": "Faris Rashad English Trainer helps serious learners build structured, confident, measurable English across IELTS, business, general fluency, and teacher development.",
+    "connect": "Connect", "note": "Preply is the main booking destination. Lead forms collect interest for courses, webinars, training, placement tests, and updates.", "copyright": "© {year} Faris Rashad English Trainer.", "source": "Book on Preply"
+  },
+  "NotFound": { "eyebrow": "Not found", "title": "That page is not available.", "description": "The route may have changed. Return home and choose the right path from there.", "cta": "Return home" },
+  "LeadForm": {
+    "title": "Register your interest", "description": "Tell Faris what you need. You can also book directly on Preply if you are ready now.",
+    "fields": { "fullName": "Full name", "age": "Age", "nationality": "Nationality", "whatsapp": "WhatsApp phone", "telegram": "Telegram username or phone", "email": "Email", "track": "Interested track", "offerType": "Interested offer type", "preferredLanguage": "Preferred language", "currentLevel": "Current English level", "goal": "Short message or goal", "consent": "I consent to being contacted about my inquiry." },
+    "placeholders": { "fullName": "Your full name", "age": "Your age", "nationality": "Country or nationality", "whatsapp": "+380...", "telegram": "@username or phone", "email": "you@example.com", "select": "Select an option", "goal": "Briefly describe your goal, timeline, or challenge." },
+    "helper": { "contact": "Add WhatsApp or Telegram. At least one contact method is required.", "email": "Optional for course leads and recommended for webinar registrations.", "privacy": "Your submission is used only to respond to this inquiry." },
+    "submit": "Send inquiry", "submitting": "Sending...", "success": "Your inquiry was received. You can also book on Preply for the fastest next step.", "error": "Please complete the highlighted fields.",
+    "validation": { "fullName": "Please enter your full name.", "age": "Please enter a valid age.", "nationality": "Please enter your nationality.", "contact": "Please add WhatsApp or Telegram.", "track": "Please choose a track.", "offerType": "Please choose an offer type.", "preferredLanguage": "Please choose a preferred language.", "consent": "Consent is required before submitting." }
+  },
+  "Filters": { "track": "Track", "type": "Type", "all": "All", "planned": "Planned" }
+}

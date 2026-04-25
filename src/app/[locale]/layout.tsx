@@ -13,8 +13,9 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { siteConfig } from "@/config/site";
-import { getDirection, resolveLocale } from "@/lib/locale";
+import { copy } from "@/content/locale-copy";
 import { locales } from "@/i18n/routing";
+import { getDirection, resolveLocale } from "@/lib/locale";
 
 import "../globals.css";
 
@@ -90,7 +91,7 @@ export default async function LocaleLayout({
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <a className="skip-link" href="#content">
-            Skip to content
+            {copy(locale, "Skip to content")}
           </a>
           <div className="relative isolate overflow-x-clip">
             <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[34rem] bg-[radial-gradient(circle_at_top,rgba(255,221,182,0.38),transparent_46%)]" />

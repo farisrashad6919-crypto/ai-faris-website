@@ -13,7 +13,7 @@ export function getPersonSchema(locale: Locale, description: string) {
     description,
     image: new URL(siteConfig.portraitPath, siteConfig.siteUrl).toString(),
     url: new URL(`/${locale}`, siteConfig.siteUrl).toString(),
-    knowsLanguage: ["English", "Arabic", "Turkish"],
+    knowsLanguage: ["English", "Arabic", "Turkish", "Spanish", "Italian", "German", "French", "Ukrainian"],
     nationality: siteConfig.profileSnapshot.originCountry,
     alumniOf: siteConfig.verifiedFacts.degreeInstitution,
     sameAs,
@@ -35,15 +35,16 @@ export function getProfessionalServiceSchema(
       name: siteConfig.brandName,
     },
     areaServed: "Worldwide",
-    availableLanguage: ["English", "Arabic", "Turkish"],
+    availableLanguage: ["English", "Arabic", "Turkish", "Spanish", "Italian", "German", "French", "Ukrainian"],
     serviceType: [
       "Spoken English training",
       "Business English",
       "IELTS preparation",
+      "ESL teacher training",
       "Interview preparation",
       "Pronunciation coaching",
       "Communication mentoring",
     ],
-    url: new URL(`/${locale}/services`, siteConfig.siteUrl).toString(),
+    url: new URL(`/${locale}/programs`, siteConfig.siteUrl).toString(),
   };
 }

@@ -1,843 +1,95 @@
 {
-  "Metadata": {
-    "home": {
-      "title": "Faris Rashad English Trainer | Premium İngilizce ve İletişim Eğitimi",
-      "description": "Faris Rashad için hazırlanmış premium çok dilli kişisel marka sitesi: konuşma İngilizcesi, IELTS, iş İngilizcesi, telaffuz ve iletişim gelişimi için rafine bir deneyim.",
-      "keywords": [
-        "Faris Rashad",
-        "İngilizce eğitmeni",
-        "iş İngilizcesi koçu",
-        "IELTS hazırlık",
-        "iletişim mentoru",
-        "telaffuz koçu"
-      ]
-    },
-    "about": {
-      "title": "Faris Rashad Hakkında | Eğitim Felsefesi, Standartlar ve Hikâye",
-      "description": "Faris Rashad’ın yapılandırılmış yaklaşımını, iletişim koçluğunu ve premium öğrenci desteğini keşfedin. Amaç: daha net, daha güvenli ve daha etkili İngilizce.",
-      "keywords": [
-        "Faris Rashad hakkında",
-        "İngilizce eğitim felsefesi",
-        "premium İngilizce eğitmeni",
-        "iletişim koçluğu"
-      ]
-    },
-    "services": {
-      "title": "Hizmetler | Konuşma İngilizcesi, İş İngilizcesi, IELTS ve Güven Koçluğu",
-      "description": "Faris Rashad’ın konuşma İngilizcesi, IELTS hazırlığı, iş İngilizcesi, mülakat hazırlığı, telaffuz ve iletişim koçluğunu kapsayan premium hizmetlerini keşfedin.",
-      "keywords": [
-        "İngilizce eğitim hizmetleri",
-        "konuşma İngilizcesi",
-        "iş İngilizcesi",
-        "IELTS koçu",
-        "mülakat hazırlığı"
-      ]
-    },
-    "results": {
-      "title": "Sonuçlar | Gerçek Öğrenci Dönüşümleri ve Açık Yorumlar",
-      "description": "Öğrencilerin Faris Rashad ile yaşadığı gelişimi görün: güven artışı, daha güçlü yapı, daha iyi konuşma performansı ve kamuya açık yorumlardan doğan güven.",
-      "keywords": [
-        "İngilizce öğrenme sonuçları",
-        "öğrenci yorumları",
-        "açık değerlendirmeler",
-        "IELTS başarısı",
-        "İngilizce konuşma özgüveni"
-      ]
-    },
-    "contact": {
-      "title": "İletişim | Faris Rashad ile Seans Planlayın",
-      "description": "Premium bir başvuru gönderin, seans talebinde bulunun ve konuşma İngilizcesi, IELTS, iş İngilizcesi ve iletişim koçluğu için Faris Rashad ile bağlantı kurun.",
-      "keywords": [
-        "Faris Rashad iletişim",
-        "İngilizce seans rezervasyonu",
-        "iletişim formu",
-        "iletişim mentoru"
-      ]
-    }
-  },
   "LocaleSwitcher": {
-    "label": "Dil seçici",
+    "label": "Dil secici",
     "localeNames": {
-      "en": "English",
-      "ar": "العربية",
-      "tr": "Türkçe"
+      "en": "İngilizce",
+      "ar": "Arapça",
+      "tr": "Türkçe",
+      "es": "İspanyolca",
+      "it": "İtalyanca",
+      "de": "Almanca",
+      "fr": "Fransızca",
+      "uk": "Ukraynaca"
     }
   },
   "Navigation": {
-    "home": "Ana Sayfa",
-    "about": "Hakkında",
-    "services": "Hizmetler",
-    "results": "Sonuçlar",
-    "contact": "İletişim",
-    "bookSession": "Seans Planla",
-    "openMenu": "Menüyü aç",
-    "closeMenu": "Menüyü kapat"
+    "home": "Ana sayfa",
+    "about": "Hakkinda",
+    "programs": "Programlar",
+    "reviews": "Yorumlar",
+    "resources": "Kaynaklar",
+    "webinars": "Webinarlar",
+    "faq": "SSS",
+    "contact": "Iletisim",
+    "bookSession": "Preply'de rezervasyon",
+    "openMenu": "Menuyu ac",
+    "closeMenu": "Menuyu kapat"
   },
   "Footer": {
-    "eyebrow": "Premium İngilizce Mentorluğu",
-    "summary": "Daha güçlü konuşma İngilizcesi, daha etkili profesyonel iletişim ve daha rafine bir öğrenme ilişkisi isteyen ciddi öğrenciler için çok dilli editoryal bir platform.",
-    "connect": "Bağlantılar",
-    "note": "Nihai rezervasyon, WhatsApp, e-posta ve sosyal bağlantıları hazır olduğunda src/config/site.ts içinden güncelleyebilirsiniz.",
+    "eyebrow": "Premium Ingilizce Egitimi",
+    "summary": "Faris Rashad English Trainer; IELTS, Business English, General English ve ogretmen gelisimi icin yapili, guvenli ve olculebilir ilerleme sunar.",
+    "connect": "Baglantilar",
+    "note": "Ana rezervasyon noktasi Preply'dir. Formlar kurs, webinar, egitim, seviye testi ve duyuru ilgisini toplar.",
     "copyright": "© {year} Faris Rashad English Trainer.",
-    "source": "Açık profil kaynağı"
+    "source": "Preply'de rezervasyon"
   },
   "NotFound": {
-    "eyebrow": "Bulunamadı",
-    "title": "Bu sayfa şu anda mevcut değil.",
-    "description": "Rota değişmiş olabilir ya da bu sayfa henüz bu dil için hazırlanmadı. Ana sayfaya dönüp oradan devam edebilirsiniz.",
-    "cta": "Ana Sayfaya Dön"
+    "eyebrow": "Bulunamadi",
+    "title": "Bu sayfa mevcut degil.",
+    "description": "Rota degismis olabilir. Ana sayfaya donup uygun yolu secin.",
+    "cta": "Ana sayfaya don"
   },
-  "Home": {
-    "hero": {
-      "eyebrow": "Akademik ve Yönetsel Duruş",
-      "title": "Sıradan dersler değil, gerçek hakimiyet isteyenler için rafine İngilizce eğitimi.",
-      "description": "Faris Rashad; yetişkinlere, profesyonellere, öğrencilere, gençlere ve hedefi yüksek öğrenicilere daha güçlü konuşma İngilizcesi, daha net telaffuz, daha etkili iletişim ve baskı altında daha yüksek özgüven kazandırır.",
-      "primaryCta": "Seans Planla",
-      "secondaryCta": "Hizmetleri İncele",
-      "trustIndicators": [
-        {
-          "label": "Standartları yüksek, profesyonel eğitim yaklaşımı",
-          "value": "Premium"
-        },
-        {
-          "label": "Preply üzerinde kamuya açık öğrenci güveni",
-          "value": "4.9"
-        },
-        {
-          "label": "Farklı hedeflere göre uyarlanmış destek",
-          "value": "Özel"
-        }
-      ],
-      "floatingCard": {
-        "eyebrow": "Odak Noktası",
-        "title": "Konuşma, netlik ve güven",
-        "description": "Gerçek hayatta dengeli, güvenilir ve ikna edici bir İngilizce isteyen öğrenciler için tasarlandı."
-      }
+  "LeadForm": {
+    "title": "Ilginizi kaydedin",
+    "description": "Neye ihtiyaciniz oldugunu Faris'e anlatin. Hazirsaniz dogrudan Preply'den de rezervasyon yapabilirsiniz.",
+    "fields": {
+      "fullName": "Ad soyad",
+      "age": "Yas",
+      "nationality": "Uyruk",
+      "whatsapp": "WhatsApp telefonu",
+      "telegram": "Telegram kullanici adi veya telefon",
+      "email": "E-posta",
+      "track": "Ilgilendiginiz program",
+      "offerType": "Ilgilendiginiz teklif",
+      "preferredLanguage": "Tercih edilen dil",
+      "currentLevel": "Mevcut Ingilizce seviyesi",
+      "goal": "Kisa mesaj veya hedef",
+      "consent": "Bu talep hakkinda benimle iletisime gecilmesine izin veriyorum."
     },
-    "authority": {
-      "eyebrow": "Güven Şeridi",
-      "title": "Kamuya açık verilerle desteklenen güçlü öğretici sinyaller.",
-      "description": "Aşağıdaki veriler Preply profilinden alınmış düzenlenebilir anlık görüntülerdir ve yapı, geri bildirim ve ölçülebilir gelişim odağını yansıtır.",
-      "items": [
-        {
-          "id": "rating",
-          "label": "Genel puan",
-          "note": "Kamuya açık öğrenci yorumlarıyla desteklenen güçlü bir güven göstergesi."
-        },
-        {
-          "id": "reviews",
-          "label": "Açık yorum sayısı",
-          "note": "Farklı hedeflere sahip ciddi öğrencilerden gelen görünür sosyal kanıt."
-        },
-        {
-          "id": "lessons",
-          "label": "Verilen dersler",
-          "note": "Konuşma, IELTS ve profesyonel İngilizce alanlarında süreklilik gösteren deneyim."
-        },
-        {
-          "id": "reach",
-          "label": "Uluslararası erişim",
-          "note": "Farklı ülkelerden ve ihtiyaçlardan gelen öğrencilerle çalışma tecrübesi."
-        }
-      ]
+    "placeholders": {
+      "fullName": "Adiniz soyadiniz",
+      "age": "Yasiniz",
+      "nationality": "Ulke veya uyruk",
+      "whatsapp": "+90...",
+      "telegram": "@username veya telefon",
+      "email": "you@example.com",
+      "select": "Seciniz",
+      "goal": "Hedefinizi, zamaninizi veya zorlandiginiz noktayi kisaca yazin."
     },
-    "about": {
-      "eyebrow": "Faris Hakkında",
-      "title": "Premium bir mentor yaklaşımı: net, pratik ve kişisel olarak sorumluluk alan.",
-      "description": "Faris; akademik formasyonu, öğretim tekrarını ve açık performans geri bildirimini bir araya getirerek sakin, akıllı ve gerçekten geliştirici bir öğrenme deneyimi sunar.",
-      "pillars": [
-        {
-          "title": "Yapılandırılmış rehberlik",
-          "description": "Her öğrencinin bir yol haritasına ihtiyacı vardır. Bu yüzden oturumlar net hedefler, görünür düzeltmeler ve sonraki gelişim adımı etrafında tasarlanır."
-        },
-        {
-          "title": "İnsani güven inşası",
-          "description": "İngilizcedeki gelişim sadece teknik değildir. Öğrencinin kritik anlarda daha dengeli ve hazır hissetmesi de gerekir."
-        },
-        {
-          "title": "Pratikte rafinelik",
-          "description": "Telaffuzdan gramer kullanımına, konuşma ritminden sunum diline kadar her şey gerçek kullanıma bağlı kalır."
-        }
-      ]
+    "helper": {
+      "contact": "WhatsApp veya Telegram ekleyin. En az bir iletisim yontemi gereklidir.",
+      "email": "Kurs talepleri icin opsiyonel, webinarlar icin onerilir.",
+      "privacy": "Bilgileriniz yalnizca bu talebe cevap vermek icin kullanilir."
     },
-    "services": {
-      "eyebrow": "Öne Çıkan Hizmetler",
-      "title": "Gerçek iletişim hedefleri için premium eğitim yolları.",
-      "description": "Her hizmet, öğrenciyi tereddütten dengeli performansa taşımak için tasarlanır; ister IELTS, ister iş İngilizcesi, ister özgüven odaklı konuşma gelişimi olsun.",
-      "ctaLabel": "Daha fazlasını gör",
-      "items": [
-        {
-          "title": "Konuşma İngilizcesi Eğitimi",
-          "description": "Akıcılığı, dinleme-tepki hızını, cümle kontrolünü ve günlük ifadeyi geliştiren konuşma merkezli bir yol.",
-          "audience": "Yetişkinler ve ciddi öğreniciler",
-          "outcomes": [
-            "Daha doğal konuşma ritmi",
-            "Konuşurken daha temiz gramer kullanımı",
-            "Baskı altında daha rahat ifade"
-          ]
-        },
-        {
-          "title": "Business English",
-          "description": "Toplantılar, sunumlar, iş görüşmeleri ve profesyonel ortamlarda güven veren bir İngilizce için tasarlanmış destek.",
-          "audience": "Profesyoneller ve kurumsal öğreniciler",
-          "outcomes": [
-            "Daha keskin profesyonel kelime dağarcığı",
-            "Daha güçlü sözlü duruş",
-            "E-posta ve sunum dilinde netlik"
-          ]
-        },
-        {
-          "title": "IELTS Preparation",
-          "description": "Speaking, writing, reading ve listening alanlarında hedefe odaklı, yapılandırılmış bir hazırlık süreci.",
-          "audience": "Sınav odaklı öğrenciler",
-          "outcomes": [
-            "Fikirleri daha iyi organize etme",
-            "Daha doğal speaking cevapları",
-            "Band hedefiyle uyumlu geri bildirim"
-          ]
-        },
-        {
-          "title": "Interview Preparation",
-          "description": "İş, burs veya akademik görüşmelerde İngilizce cevapların daha düşünülmüş ve ikna edici görünmesi için hazırlık.",
-          "audience": "Başvuru yapan adaylar",
-          "outcomes": [
-            "Daha iyi cevap yapısı",
-            "Daha güçlü örnek kullanımı",
-            "Mülakat sırasında daha sakin duruş"
-          ]
-        },
-        {
-          "title": "Communication Skills",
-          "description": "Açıklama, ikna ve fikir sunumu becerilerini güçlendiren daha geniş kapsamlı bir iletişim hizmeti.",
-          "audience": "Sunum yapanlar ve liderler",
-          "outcomes": [
-            "Daha tutarlı sözlü yapı",
-            "Dinleyiciye daha yüksek farkındalık",
-            "Daha güçlü anlatım"
-          ]
-        },
-        {
-          "title": "Pronunciation Coaching",
-          "description": "Anlaşılırlığı ve güveni etkileyen ses netliği, bağlama, ritim ve konuşma alışkanlıkları üzerine odaklı çalışma.",
-          "audience": "Telaffuz hassasiyeti isteyenler",
-          "outcomes": [
-            "Daha temiz ses üretimi",
-            "Daha anlaşılır konuşma",
-            "Telaffuz farkındalığında artış"
-          ]
-        },
-        {
-          "title": "English for Professionals",
-          "description": "Kariyerinde İngilizceyi görünür ve güvenilir kullanması gereken kişiler için pratik bir gelişim hattı.",
-          "audience": "Kariyer odaklı öğreniciler",
-          "outcomes": [
-            "İş hayatına uygun güçlü dil kullanımı",
-            "Daha yüksek profesyonel güven",
-            "Toplantı ve mülakatlarda daha iyi performans"
-          ]
-        },
-        {
-          "title": "Confidence Coaching",
-          "description": "Bilgisi olmasına rağmen konuşurken çekinen, hata korkusu yaşayan ya da akışını kaybeden öğrenciler için destekleyici ama ciddi bir yol.",
-          "audience": "Özgüvenini yeniden kurmak isteyenler",
-          "outcomes": [
-            "Konuşma korkusunda azalma",
-            "Hatalardan daha hızlı toparlanma",
-            "Daha istikrarlı sözlü özgüven"
-          ]
-        }
-      ]
-    },
-    "why": {
-      "eyebrow": "Neden Faris ile Çalışılır",
-      "title": "Standart, rafinelik ve sakin baskı üzerine kurulu bir öğrenme ilişkisi.",
-      "description": "Bu, seri üretim ders mantığı değildir. Deneyim; rehberlik, kişiselleştirme ve ölçülebilir fayda hissi etrafında tasarlanır.",
-      "items": [
-        {
-          "title": "Performansı gerçekten değiştiren geri bildirim",
-          "description": "Düzeltmeler belirsiz değil, uygulanabilir ve bir sonraki gelişim adımına bağlıdır."
-        },
-        {
-          "title": "Hedefe saygı duyan planlama",
-          "description": "Hedef IELTS, iş İngilizcesi ya da akıcılık olsa da eğitim rotası o ihtiyaca sadık kalır."
-        },
-        {
-          "title": "Ciddi destek, soğuk olmayan ton",
-          "description": "Yaklaşım sıcak kalır ama standart düşmez. Öğrenci desteklenir ama gevşetilmez."
-        },
-        {
-          "title": "Teoriden çok pratik sonuç",
-          "description": "Her oturum, öğrencinin gerçek hayatta ne söyleyebildiğini ve nasıl performans gösterdiğini iyileştirmeyi hedefler."
-        },
-        {
-          "title": "Tekrar ve netlikle kurulan güven",
-          "description": "İlerleme tesadüfe bırakılmaz; bilinçli tekrar ve iyi açıklanmış çalışma ile inşa edilir."
-        }
-      ]
-    },
-    "credentials": {
-      "eyebrow": "Yetkinlik ve Standart",
-      "title": "Öğrenim, tekrar ve profesyonel disiplinle desteklenen eğitim güvenilirliği.",
-      "description": "Açık profil detayları, resmi gelişime yatırım yapmış ve gerçek sınıf tekrarını ciddiye almış bir eğitmeni işaret eder.",
-      "items": [
-        {
-          "title": "Cambridge ve TESOL temelli altyapı",
-          "description": "Yöntem, Cambridge öğretmen gelişimi ve TESOL çalışmalarıyla desteklenen güçlü bir profesyonel tabana sahiptir."
-        },
-        {
-          "title": "Farklı seviyelerde yıllara yayılan öğretim",
-          "description": "Başlangıç, orta ve ileri seviyeler; yetişkinler, gençler ve farklı iletişim hedefleriyle aktif çalışma deneyimi."
-        },
-        {
-          "title": "Öğrencinin gözünden gelişimi anlayan yaklaşım",
-          "description": "Faris kendi İngilizcesini ileri seviyeye taşıdığı için, yöntem hem gerçekçi hem de öğrenci psikolojisine yakın kalır."
-        }
-      ]
-    },
-    "testimonials": {
-      "eyebrow": "Dönüşümler",
-      "title": "Açık yorumların işaret ettiği şey: yapı, destek ve görünür ilerleme.",
-      "description": "Bu özetler Preply’deki açık yorumlardan uyarlanmış ve sitenin editoryal tonu için kısaltılmıştır.",
-      "items": [
-        {
-          "quote": "IELTS’te overall 7 aldım ve sürecin her aşamasında destek gördüğümü hissettim.",
-          "name": "Alia",
-          "date": "Mart 2026",
-          "highlight": "IELTS ilerlemesi"
-        },
-        {
-          "quote": "Dersler profesyonel ve planlıydı; ayrıntılı düzeltmeler haftalık gelişimi görünür hâle getirdi.",
-          "name": "Tamer",
-          "date": "Ocak 2026",
-          "highlight": "Ölçülebilir gelişim"
-        },
-        {
-          "quote": "Ana dili İngilizce olmayan bir öğrenicinin nerede zorlandığını iyi anlıyor ve gerçekten işe yarayan geri bildirim veriyor.",
-          "name": "Rath",
-          "date": "Mart 2026",
-          "highlight": "Pratik rehberlik"
-        }
-      ],
-      "cta": "Daha Fazla Sonuç Gör"
-    },
-    "philosophy": {
-      "eyebrow": "Yönetici İçgörüsü",
-      "quote": "Güçlü İngilizce yalnızca daha fazla kelime bilmek değildir. Sesiniz önemli olduğunda daha net, daha sakin ve daha ikna edici olabilmektir.",
-      "attribution": "Faris Rashad",
-      "supporting": "Buradaki eğitim felsefesi nettir: hakimiyeti disiplinli pratik, dürüst düzeltme ve çabayı görünür iletişim olgunluğuna dönüştüren mentorluk ile inşa etmek."
-    },
-    "audiences": {
-      "eyebrow": "Kimler İçin",
-      "title": "Ciddi hedefleri ve yüksek standartları olan öğreniciler için tasarlandı.",
-      "description": "Site birden fazla kitleye hitap eder, ancak her yol gerçek ilerlemeyi önemseyen kişiler için yapılandırılmıştır.",
-      "items": [
-        {
-          "title": "Konuşmasını geliştirmek isteyen yetişkinler",
-          "description": "Günlük ve profesyonel iletişimde daha dengeli, daha doğal ve daha etkili görünmek isteyenler için."
-        },
-        {
-          "title": "İş iletişimi güçlendirmek isteyen profesyoneller",
-          "description": "Toplantılarda, mülakatlarda ve iş ortamında daha güvenilir bir İngilizceye ihtiyaç duyanlar için."
-        },
-        {
-          "title": "IELTS öğrencileri",
-          "description": "Dört becerinin tamamında yapı, netlik ve güçlü geri bildirim isteyenler için."
-        },
-        {
-          "title": "Üniversite öğrencileri",
-          "description": "Akademik iletişimini, konuşma netliğini ve İngilizce ortamlardaki performansını güçlendirmek isteyenler için."
-        },
-        {
-          "title": "Potansiyeli yüksek gençler",
-          "description": "Premium destek, düzenli takip ve konuşma temelli güven inşasından yararlanan genç öğreniciler için."
-        },
-        {
-          "title": "Çocuğu için ciddi destek arayan aileler",
-          "description": "Gerçek potansiyele sahip bir çocuk ya da genç için disiplinli ve kaliteli İngilizce desteği isteyen aileler için."
-        }
-      ]
-    },
-    "faq": {
-      "eyebrow": "Sık Sorulanlar",
-      "title": "Ciddi öğrencilerden ve ailelerden gelen yaygın sorular.",
-      "description": "Eğitim ilişkisinin nasıl işlediğine dair kısa bir rehber.",
-      "items": [
-        {
-          "question": "Bu oturumlar en çok kimler için uygundur?",
-          "answer": "Yetişkinler, profesyoneller, IELTS öğrencileri, üniversite öğrencileri, gençler ve premium düzeyde destek arayan aileler için idealdir."
-        },
-        {
-          "question": "Çalışma daha çok konuşma özgüvenine odaklanabilir mi?",
-          "answer": "Evet. Konuşma özgüveni, telaffuz, akıcılık ve cümle kontrolü bu yaklaşımın temel güçlerindendir."
-        },
-        {
-          "question": "Yaklaşım profesyoneller için uygun mu?",
-          "answer": "Evet. İş İngilizcesi, mülakat, sunum ve profesyonel iletişim hizmetlerin merkezinde yer alır."
-        },
-        {
-          "question": "Ayrıntılı geri bildirim alır mıyım?",
-          "answer": "Bu deneyimin ayırt edici yönlerinden biridir. Öğrenci; yapı, telaffuz, gramer, kelime seçimi ve gerçek konuşma performansı üzerine açık geri bildirim bekleyebilir."
-        },
-        {
-          "question": "Motiveyim ama yine de konuşurken çekiniyorum. Bu uygun mu?",
-          "answer": "Evet. Bu çok yaygın bir başlangıç noktasıdır. Süreç, yönlendirilmiş tekrar ve sakin düzeltmelerle tereddüdü daha güçlü konuşma alışkanlıklarına dönüştürmek için tasarlanmıştır."
-        }
-      ]
-    },
-    "finalCta": {
-      "eyebrow": "Sıradaki Adım",
-      "title": "İngilizcenize ciddiyet ve özenle yaklaşan bir eğitim ilişkisi seçin.",
-      "description": "Daha rafine konuşma İngilizcesi, daha güçlü iş iletişimi ya da kritik anlarda daha güvenli bir ses istiyorsanız, odaklı bir başvuruyla başlayın.",
-      "primaryCta": "Seans Planla",
-      "secondaryCta": "Faris ile İletişime Geç"
+    "submit": "Talebi gonder",
+    "submitting": "Gonderiliyor...",
+    "success": "Talebiniz alindi. En hizli sonraki adim icin Preply'den de rezervasyon yapabilirsiniz.",
+    "error": "Lutfen isaretli alanlari tamamlayin.",
+    "validation": {
+      "fullName": "Lutfen ad soyad girin.",
+      "age": "Lutfen gecerli bir yas girin.",
+      "nationality": "Lutfen uyrugunuzu girin.",
+      "contact": "Lutfen WhatsApp veya Telegram ekleyin.",
+      "track": "Lutfen bir program secin.",
+      "offerType": "Lutfen teklif turu secin.",
+      "preferredLanguage": "Lutfen tercih edilen dili secin.",
+      "consent": "Gondermeden once izin gereklidir."
     }
   },
-  "About": {
-    "hero": {
-      "eyebrow": "Hakkında",
-      "title": "Disiplin, öğrenim ve pratiğin gerçek dil gücü inşa ettiğine inanan bir eğitmenin hikâyesi.",
-      "description": "Faris Rashad’ın çalışması; dil eğitimi, iletişim rafineliği ve güven inşasının kesişiminde yer alır. Sonuç, hem düşünsel olarak güçlü hem de insani olarak sıcak bir deneyimdir.",
-      "asideTitle": "Yaklaşımı tanımlayan şeyler",
-      "asideItems": [
-        "Net standartlar ve hesap verebilir geri bildirim",
-        "Sıcak ama talepkâr öğrenci desteği",
-        "Genel ders akışından çok pratik iletişim sonucu"
-      ]
-    },
-    "story": {
-      "eyebrow": "Kişisel Hikâye",
-      "title": "Dil öğrencisinden iletişim mentoruna.",
-      "paragraphs": [
-        "Faris, kendi İngilizcesini sıfırdan ileri seviyeye taşıma sürecinden açıkça söz eder. Bu kişisel yolculuk, tereddütü, dağınıklığı ve dil öğreniminin duygusal yönünü de anlayan bir öğretim yaklaşımı üretir.",
-        "Akademik ve profesyonel gelişim çizgisi, yönteme değer veren bir eğitmene işaret eder. İngilizce eğitimi altyapısı, TESOL çalışmaları ve Cambridge öğretmen eğitimi; farklı öğrenci profilleriyle geçen aktif yıllarla birleşir.",
-        "Bu nedenle marka dili kendine özgüdür: akademik ama uzak olmayan, pratik ama mekanik olmayan, premium ama yapay olmayan."
-      ]
-    },
-    "philosophy": {
-      "eyebrow": "Eğitim Felsefesi",
-      "title": "Çalışmanın arkasındaki üç temel ilke.",
-      "description": "Her ciddi mentorun bir felsefesi vardır. Bu ilkeler öğrenme ortamını ve oturumların doğasını belirler.",
-      "items": [
-        {
-          "title": "Performanstan önce pratik",
-          "description": "Özgüven pasif maruziyetle değil; düzenli, bilinçli ve tekrar eden kullanımla gelir."
-        },
-        {
-          "title": "Netlik üreten düzeltme",
-          "description": "Geri bildirim kafa karışıklığı yaratmamalı; neyin değiştiği ve neden önemli olduğu anlaşılmalıdır."
-        },
-        {
-          "title": "İnsana saygı duyan gelişim",
-          "description": "Premium bir deneyim öğrencinin psikolojisini ciddiye alır. Standart yüksek kalır ama ilişki yıpratıcı olmaz."
-        }
-      ]
-    },
-    "standards": {
-      "eyebrow": "Profesyonel Standartlar",
-      "title": "Deneyim; hazırlıklı, kasıtlı ve sakin hissedilecek şekilde tasarlanır.",
-      "description": "Profesyonel standartlar bir aksesuar değil, öğrencinin sürece duyduğu güvenin temelidir.",
-      "items": [
-        {
-          "title": "Oturum hazırlığı",
-          "description": "Her dersin bir amacı olmalı; zaman doldurmak için yapılmamalıdır."
-        },
-        {
-          "title": "Görünür gelişim",
-          "description": "İlerleme; netlikte, özgüvende ve iletişim çıktılarında hissedilmelidir."
-        },
-        {
-          "title": "Yüksek kaliteli düzeltme",
-          "description": "Hatalar, iyi açıklandığında ve sonraki performansa bağlandığında değer kazanır."
-        },
-        {
-          "title": "Öğrenci hedeflerine saygı",
-          "description": "Ciddi hedefleri olan öğreniciler, odaklı ve disiplinli bir eğitmeni hak eder."
-        }
-      ]
-    },
-    "whyItWorks": {
-      "eyebrow": "Neden İşe Yarıyor",
-      "title": "Premium bir yöntem hem yapıya hem tona dayanır.",
-      "description": "Bu unsurlar öğrencinin gerçek dönüşüm için yeterince uzun süre odakta kalmasına yardımcı olur.",
-      "points": [
-        "Öğrenci ne üzerinde çalıştığını ve bunun neden önemli olduğunu bilir.",
-        "Geri bildirim sonraki adımı gösterecek kadar nettir.",
-        "Konuşma, eğitilebilir bir beceri olarak ele alınır.",
-        "Özgüven, boş teselliyle değil tekrar ile kurulur.",
-        "Deneyim disiplinli kalır ama soğuk ya da sıradan olmaz."
-      ]
-    },
-    "cta": {
-      "eyebrow": "Faris ile Çalışın",
-      "title": "Gerçek rafinelik ile samimi desteği birleştiren bir eğitmen arıyorsanız, sohbeti burada başlatın.",
-      "description": "Bir sonraki adım hedefinize göre seans talebi, hizmet incelemesi ya da doğrudan bir iletişim olabilir.",
-      "primaryCta": "Seans Planla",
-      "secondaryCta": "Hizmetleri İncele"
-    }
-  },
-  "Services": {
-    "hero": {
-      "eyebrow": "Hizmetler",
-      "title": "Gerçek performans etrafında kurulan premium İngilizce ve iletişim hizmetleri paketi.",
-      "description": "Bu hizmetler; daha güçlü konuşma, daha temiz iletişim ve istikrarlı gelişimi hedefleyen öğrenciler için tasarlanmıştır.",
-      "asideTitle": "Tipik çıktılar",
-      "asideItems": [
-        "Daha net telaffuz ve daha güçlü cümle kontrolü",
-        "Profesyonel ortamlarda daha dengeli konuşma",
-        "Sınavlar, mülakatlar ve sunumlar için daha akıllı hazırlık"
-      ]
-    },
-    "catalog": {
-      "eyebrow": "Hizmet Kataloğu",
-      "title": "Sekiz odaklı yol, her biri farklı bir iletişim ihtiyacına göre kurgulandı.",
-      "description": "Tüm hizmetler aynı premium öğretim duruşunu paylaşır; ancak her biri başka bir iletişim sorununu hedefler.",
-      "ctaLabel": "Bu hizmeti talep et",
-      "items": [
-        {
-          "title": "Konuşma İngilizcesi Eğitimi",
-          "description": "Akıcılığı, tepki verme becerisini, günlük ifade gücünü ve sözlü özgüveni geliştiren yoğun konuşma hattı.",
-          "audience": "Yetişkinler ve dile geri dönenler",
-          "outcomes": [
-            "Daha akıcı konuşma akışı",
-            "Daha güçlü cümle kontrolü",
-            "Daha doğal spontane konuşma"
-          ]
-        },
-        {
-          "title": "Business English",
-          "description": "İş hayatında, toplantılarda, sunumlarda ve mülakatlarda güven veren İngilizce için özel destek.",
-          "audience": "Profesyoneller ve ekipler",
-          "outcomes": [
-            "Daha hassas profesyonel kelime kullanımı",
-            "Daha güçlü iş İngilizcesi tonu",
-            "Sunumlarda daha iyi hazırlık"
-          ]
-        },
-        {
-          "title": "IELTS Preparation",
-          "description": "Dört beceriyi kapsayan, yapılandırılmış strateji ve performans odaklı geri bildirim içeren hazırlık süreci.",
-          "audience": "IELTS adayları",
-          "outcomes": [
-            "Fikirleri daha iyi bağlama",
-            "Daha doğal speaking cevapları",
-            "Daha disiplinli sınav performansı"
-          ]
-        },
-        {
-          "title": "Interview Preparation",
-          "description": "İş, burs ya da akademik görüşmelerde daha düşünülmüş ve etkileyici İngilizce cevaplar için destek.",
-          "audience": "Başvuru sahipleri",
-          "outcomes": [
-            "Daha ikna edici cevaplar",
-            "Örnekleri daha iyi sunma",
-            "Daha sağlam bir sözlü duruş"
-          ]
-        },
-        {
-          "title": "Communication Skills",
-          "description": "Açıklama, ikna ve fikir sunumunu güçlendiren; öğrencinin daha düzenli ve daha rafine görünmesini sağlayan iletişim çalışması.",
-          "audience": "Liderler ve anlatıcılar",
-          "outcomes": [
-            "Daha net sözlü yapı",
-            "Dinleyiciye daha yüksek hassasiyet",
-            "Daha güçlü açıklama becerisi"
-          ]
-        },
-        {
-          "title": "Pronunciation Coaching",
-          "description": "Anlaşılırlığı etkileyen ses netliği, bağlama, ritim ve konuşma alışkanlıkları üzerine hassas çalışma.",
-          "audience": "Daha temiz telaffuz isteyenler",
-          "outcomes": [
-            "Daha iyi telaffuz alışkanlıkları",
-            "Daha yüksek anlaşılırlık",
-            "Daha kontrollü konuşma ritmi"
-          ]
-        },
-        {
-          "title": "English for Professionals",
-          "description": "Kariyer gelişimi İngilizce performansına bağlı olan kişiler için pratik, sonuç odaklı bir ilerleme hattı.",
-          "audience": "Kariyer odaklı öğrenciler",
-          "outcomes": [
-            "İş ortamında daha yüksek akıcılık",
-            "Daha güçlü profesyonel güven",
-            "Toplantı ve mülakatlarda daha etkili dil"
-          ]
-        },
-        {
-          "title": "Confidence Coaching",
-          "description": "Bilgisi olduğu halde konuşurken geri çekilen, donan ya da kendine güvenini kaybeden öğrenciler için rehberli destek.",
-          "audience": "İstekli ama çekingen öğrenciler",
-          "outcomes": [
-            "Konuşma kaygısında azalma",
-            "Hatalardan daha hızlı toparlanma",
-            "Daha istikrarlı sözlü güven"
-          ]
-        }
-      ]
-    },
-    "process": {
-      "eyebrow": "Süreç",
-      "title": "Eğitim deneyimi genellikle nasıl ilerler?",
-      "description": "Süreç burada sade, premium ve amaç odaklı tutulur.",
-      "steps": [
-        {
-          "title": "Mevcut seviye ve hedefin belirlenmesi",
-          "description": "Başlangıç her zaman netlikle olur: öğrenci ne istiyor, şu anda ne engel oluşturuyor ve başarı neye benzeyecek?"
-        },
-        {
-          "title": "Eğitim yapısının kurulması",
-          "description": "Oturumlar; konuşma, düzeltme, beceri inşası ve bağlamsal uygulama arasında doğru dengeyi kuracak şekilde tasarlanır."
-        },
-        {
-          "title": "Geri bildirim ve tekrar ile rafine etme",
-          "description": "İlerleme; hedefli geri bildirim, tekrarlanan kullanım ve gerçek performansa göre yapılan ayarlamalarla sağlamlaşır."
-        }
-      ]
-    },
-    "fit": {
-      "eyebrow": "Hangi Hizmet Kime Uygun",
-      "title": "Farklı hedefler, farklı türde dil baskısı gerektirir.",
-      "description": "Hizmet seçimi, öğrencinin şu anda en önemli iletişim ortamına göre yapılmalıdır.",
-      "groups": [
-        {
-          "title": "Profesyoneller ve kurumsal öğreniciler",
-          "description": "Genellikle Business English, English for Professionals, Communication Skills ve Interview Preparation en uygun seçeneklerdir."
-        },
-        {
-          "title": "Sınav odaklı öğrenciler",
-          "description": "Genellikle IELTS Preparation; dört beceride yapı ve geri bildirim isteyen öğrenciler için en doğru yoldur."
-        },
-        {
-          "title": "Akıcılık ve güven isteyen öğreniciler",
-          "description": "Konuşma İngilizcesi, telaffuz çalışmaları ve güven odaklı destek bu grup için en uygunudur."
-        },
-        {
-          "title": "Aileler ve hedefi yüksek öğrenciler",
-          "description": "Takip, teşvik ve istikrarlı konuşma gelişimini dengeleyen özel karışımlar en iyi sonucu verir."
-        }
-      ]
-    },
-    "cta": {
-      "eyebrow": "Bir Hizmet Seçin",
-      "title": "Hangi yolun doğru olduğundan emin değilseniz, odaklı bir başvuruyla hizmeti hedefe göre eşleştirin.",
-      "description": "İlk görüşme; ihtiyacın akıcılık mı, iş İngilizcesi mi, IELTS mi, telaffuz mu, mülakat mı yoksa daha geniş bir özgüven konusu mu olduğunu netleştirebilir.",
-      "primaryCta": "Seans Planla",
-      "secondaryCta": "Başvuru Gönder"
-    }
-  },
-  "Results": {
-    "hero": {
-      "eyebrow": "Sonuçlar",
-      "title": "Gerçek kanıt yalnızca puan değildir; öğrencilerin açıkça anlattığı gelişim örüntüsüdür.",
-      "description": "Faris Rashad hakkında yapılan yorumlar; yapı, teşvik, pratik düzeltme ve öğrencinin performansında hissedilen sonuçlar etrafında birleşir.",
-      "asideTitle": "Tekrarlanan yorum temaları",
-      "asideItems": [
-        "Gerçekten işe yarayan ayrıntılı düzeltmeler",
-        "Sakin ama yönü belli bir destek",
-        "IELTS, akıcılık ve iş iletişiminde görünür ilerleme"
-      ]
-    },
-    "reviews": {
-      "eyebrow": "Açık Yorumlar",
-      "title": "Kamuya açık öğrenci geri bildirimlerinden uyarlanmış editoryal özetler.",
-      "description": "Bu anlatımlar, açık yorumların ana temasına sadık kalırken sitenin premium editoryal sesine uyarlanmıştır.",
-      "items": [
-        {
-          "quote": "IELTS’te overall 7 aldım; destek ve yönlendirme süreci daha net ve yönetilebilir hale getirdi.",
-          "name": "Alia",
-          "date": "Mart 2026",
-          "highlight": "IELTS sonucu"
-        },
-        {
-          "quote": "Dersler çok profesyonel ve düzenliydi; düzeltmeler haftalık gelişimi net biçimde görünür kıldı.",
-          "name": "Tamer",
-          "date": "Ocak 2026",
-          "highlight": "Profesyonel yapı"
-        },
-        {
-          "quote": "Ana dili İngilizce olmayan öğrencilerin tam nerede zorlandığını görüyor ve doğru yerlere dokunan geri bildirim veriyor.",
-          "name": "Rath",
-          "date": "Mart 2026",
-          "highlight": "Pratik geri bildirim"
-        },
-        {
-          "quote": "Öğrenciyle bağ kurmayı biliyor ve öğrenme atmosferini aynı anda hem destekleyici hem de verimli hale getiriyor.",
-          "name": "Tanya",
-          "date": "Mart 2026",
-          "highlight": "İnsani bağ"
-        },
-        {
-          "quote": "Kısa bir çalışma döneminden sonra bile, ciddiyeti ve emeği uzun süre akılda kalan bir etki bıraktı.",
-          "name": "Mihna",
-          "date": "Aralık 2025",
-          "highlight": "Kalıcı etki"
-        }
-      ]
-    },
-    "themes": {
-      "eyebrow": "Başarı Temaları",
-      "title": "Güçlü öğrenci geri bildirimlerinin ortak tarafı nedir?",
-      "description": "Kitle ve hedef değişse de aynı dönüşüm başlıkları tekrar tekrar ortaya çıkar.",
-      "items": [
-        {
-          "title": "Yapı kafa karışıklığını azaltır",
-          "description": "Süreç düzenli ve bir sonraki adım net olduğunda öğrenci daha sakin ilerler."
-        },
-        {
-          "title": "Geri bildirim gelişimi görünür kılar",
-          "description": "Telaffuz, gramer ve kelime kullanımı üzerine yapılan düzeltmeler haftalık büyümenin haritasına dönüşür."
-        },
-        {
-          "title": "Teşvik performansı destekler",
-          "description": "Öğrenci daha cesur konuşmayı öğrenirken sıcak bir ton büyük fark yaratır."
-        }
-      ]
-    },
-    "philosophy": {
-      "eyebrow": "Sonuçlara Bakış",
-      "quote": "Güçlü bir yorum nihai hedef değildir. Asıl hedef, geleceğini belirleyen anlarda daha yetkin görünen bir öğrencidir.",
-      "attribution": "Faris Rashad",
-      "supporting": "Bu nedenle öncelik, yüzeysel ders tamamlama değil; kalıcı iletişim kazanımlarıdır."
-    },
-    "cta": {
-      "eyebrow": "Kendi İlerlemenizi Başlatın",
-      "title": "Bu sonuçlar sizin aradığınız gelişimi çağrıştırıyorsa, sıradaki adım odaklı bir ilk görüşmedir.",
-      "description": "Hedefinizi anlatmak için iletişim sayfasını kullanabilir ya da yönünüz netse doğrudan seans talebine geçebilirsiniz.",
-      "primaryCta": "Seans Planla",
-      "secondaryCta": "Faris ile İletişime Geç"
-    }
-  },
-  "Contact": {
-    "hero": {
-      "eyebrow": "İletişim",
-      "title": "İngilizce hedefiniz için en doğru yolu net bir başvuruyla başlatın.",
-      "description": "Öncelik konuşma İngilizcesi, IELTS, iş iletişimi, telaffuz ya da özgüven olsun; iletişim süreci premium, doğrudan ve güven veren bir his taşıyacak şekilde tasarlanmıştır.",
-      "primaryCta": "Başvuru formuna git",
-      "secondaryCta": "Hizmetleri incele",
-      "asideTitle": "Bu sayfa en çok şunlar için uygundur",
-      "asideItems": [
-        "Ciddi bir ilk seans talebi oluşturmak",
-        "Öğrenci için doğru hizmeti netleştirmek",
-        "Uzun vadeli premium destek ilişkisini başlatmak"
-      ]
-    },
-    "channels": {
-      "eyebrow": "Başvuru Kanalları",
-      "title": "Size en uygun iletişim yolunu seçin.",
-      "description": "Dış bağlantılı kanallar yapılandırıldığında otomatik olarak görünür. O zamana kadar ana başvuru yolu form olarak kalır.",
-      "openCta": "Bu kanalı aç",
-      "items": [
-        {
-          "title": "Seans planla",
-          "description": "En odaklı bir sonraki adıma doğrudan ilerleyin."
-        },
-        {
-          "title": "WhatsApp üzerinden yazın",
-          "description": "WhatsApp hattı bağlandığında hızlı ve doğrudan iletişim kurun."
-        },
-        {
-          "title": "E-posta gönderin",
-          "description": "Resmi talepler, aile iletişimi ya da detaylı başvurular için e-postayı kullanın."
-        }
-      ]
-    },
-    "expectations": {
-      "eyebrow": "Ne Beklemelisiniz",
-      "title": "Sakin, saygılı ve hedef odaklı bir iletişim deneyimi.",
-      "description": "Amaç sizi yormak değil; doğru bilgiyi toplayıp uygun sonraki adıma yönlendirmektir.",
-      "items": [
-        {
-          "title": "Başlangıçta netlik",
-          "description": "Form yalnızca iletişim bilgisi toplamak için değil, gerçek hedefi ortaya çıkarmak için tasarlandı."
-        },
-        {
-          "title": "Premium ton",
-          "description": "Süreç; yetişkinlere, profesyonellere, ailelere ve iddialı öğrencilere saygılı, özenli bir iletişim sunar."
-        },
-        {
-          "title": "Esnek sonraki adım",
-          "description": "Son kurguya göre bir sonraki adım rezervasyon bağlantısı, doğrudan görüşme veya uygun bir yönlendirme olabilir."
-        }
-      ]
-    },
-    "form": {
-      "fields": {
-        "name": "Ad soyad",
-        "email": "E-posta adresi",
-        "learnerType": "Öğrenci tipi",
-        "focusArea": "Odak alanı",
-        "goals": "Hedefinizi Faris ile paylaşın"
-      },
-      "placeholders": {
-        "name": "Adınız",
-        "email": "you@example.com",
-        "select": "Bir seçenek seçin",
-        "goals": "Seviyenizi, hedefinizi, zamanlamanızı ve en çok hangi desteğin işinize yarayacağını anlatın."
-      },
-      "submit": "Başvuruyu Gönder",
-      "submitting": "Gönderiliyor...",
-      "privacy": "Bu ilk sürüm, verileri doğrular ve site içinde başarıyla işler. Canlı teslimat kanalını daha sonra src/config/site.ts üzerinden bağlayabilirsiniz.",
-      "successMessage": "Başvurunuz başarıyla alındı. Nihai iletişim kanalınız hazır olduğunda bu yapı canlı teslimat entegrasyonu için hazırdır.",
-      "validation": {
-        "summary": "Lütfen işaretli alanları doldurun ve hedefinizi biraz daha net anlatın.",
-        "name": "Lütfen ad soyad girin.",
-        "email": "Lütfen geçerli bir e-posta adresi girin.",
-        "learnerType": "Lütfen size uygun öğrenci tipini seçin.",
-        "focusArea": "Lütfen ana odak alanını seçin.",
-        "goals": "Lütfen hedefinizi biraz daha detaylandırın."
-      },
-      "learnerTypeOptions": [
-        {
-          "value": "adult",
-          "label": "Yetişkin öğrenci"
-        },
-        {
-          "value": "professional",
-          "label": "Profesyonel"
-        },
-        {
-          "value": "ielts",
-          "label": "IELTS öğrencisi"
-        },
-        {
-          "value": "university",
-          "label": "Üniversite öğrencisi"
-        },
-        {
-          "value": "teen",
-          "label": "Genç öğrenci"
-        },
-        {
-          "value": "parent",
-          "label": "Çocuğu için başvuran veli"
-        }
-      ],
-      "focusAreaOptions": [
-        {
-          "value": "spoken-english",
-          "label": "Konuşma İngilizcesi"
-        },
-        {
-          "value": "business-english",
-          "label": "Business English"
-        },
-        {
-          "value": "ielts",
-          "label": "IELTS hazırlığı"
-        },
-        {
-          "value": "interviews",
-          "label": "Mülakat hazırlığı"
-        },
-        {
-          "value": "pronunciation",
-          "label": "Telaffuz koçluğu"
-        },
-        {
-          "value": "confidence",
-          "label": "Özgüven koçluğu"
-        }
-      ]
-    }
+  "Filters": {
+    "track": "Program",
+    "type": "Tur",
+    "all": "Hepsi",
+    "planned": "Planlandi"
   }
 }

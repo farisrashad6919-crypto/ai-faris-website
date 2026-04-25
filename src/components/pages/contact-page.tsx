@@ -1,180 +1,91 @@
-import { Mail, MessageCircle, Send, UserRound } from "lucide-react";
-import { getMessages } from "next-intl/server";
+import { MessageCircle, Send, UserRound } from "lucide-react";
 
 import { ContactForm } from "@/components/contact/contact-form";
-import { ButtonLink } from "@/components/ui/button-link";
 import { PageHero } from "@/components/sections/page-hero";
-import { Reveal } from "@/components/ui/reveal";
 import { SectionShell } from "@/components/sections/section-shell";
+import { ButtonLink } from "@/components/ui/button-link";
+import { Reveal } from "@/components/ui/reveal";
 import { getBookingHref, siteConfig } from "@/config/site";
+import { copy } from "@/content/locale-copy";
 import type { Locale } from "@/i18n/routing";
-import { getMessageValue } from "@/lib/messages";
 
-type ContactContent = {
-  hero: {
-    eyebrow: string;
-    title: string;
-    description: string;
-    primaryCta: string;
-    secondaryCta: string;
-    asideTitle: string;
-    asideItems: string[];
-  };
-  channels: {
-    eyebrow: string;
-    title: string;
-    description: string;
-    openCta: string;
-    items: Array<{ title: string; description: string }>;
-  };
-  expectations: {
-    eyebrow: string;
-    title: string;
-    description: string;
-    items: Array<{ title: string; description: string }>;
-  };
-  form: {
-    learnerTypeOptions: Array<{ value: string; label: string }>;
-    focusAreaOptions: Array<{ value: string; label: string }>;
-  };
-};
-
-export async function ContactPage({ locale }: { locale: Locale }) {
-  const messages = await getMessages();
-  const contact = getMessageValue<ContactContent>(messages, "Contact");
-
-  const directLinks = [
-    {
-      id: "booking",
-      icon: UserRound,
-      label: contact.channels.items[0]?.title,
-      description: contact.channels.items[0]?.description,
-      href: getBookingHref(locale),
-      external: Boolean(siteConfig.bookingUrl),
-    },
-    siteConfig.whatsappUrl
-      ? {
-          id: "whatsapp",
-          icon: MessageCircle,
-          label: contact.channels.items[1]?.title,
-          description: contact.channels.items[1]?.description,
-          href: siteConfig.whatsappUrl,
-          external: true,
-        }
-      : null,
-    siteConfig.email
-      ? {
-          id: "email",
-          icon: Mail,
-          label: contact.channels.items[2]?.title,
-          description: contact.channels.items[2]?.description,
-          href: `mailto:${siteConfig.email}`,
-          external: true,
-        }
-      : null,
-    {
-      id: "preply",
-      icon: Send,
-      label: "Preply",
-      description: siteConfig.preplyUrl,
-      href: siteConfig.preplyUrl,
-      external: true,
-    },
-  ].filter(Boolean) as Array<{
-    id: string;
-    icon: typeof UserRound;
-    label: string;
-    description: string;
-    href: string;
-    external: boolean;
-  }>;
+export function ContactPage({ locale }: { locale: Locale }) {
+  const t = (value: string) => copy(locale, value);
 
   return (
     <>
       <PageHero
         actions={
           <>
-            <ButtonLink href={getBookingHref(locale)}>
-              {contact.hero.primaryCta}
-            </ButtonLink>
-            <ButtonLink href="/services" variant="secondary">
-              {contact.hero.secondaryCta}
+            <ButtonLink href={getBookingHref(locale)}>{t("Book on Preply")}</ButtonLink>
+            <ButtonLink href="#inquiry-form" variant="secondary">
+              {t("Send an inquiry")}
             </ButtonLink>
           </>
         }
         aside={
           <div className="space-y-4">
-            <h2 className="text-2xl">{contact.hero.asideTitle}</h2>
+            <h2 className="text-2xl">{t("Lead form supports")}</h2>
             <ul className="grid gap-3 text-sm leading-6 text-secondary">
-              {contact.hero.asideItems.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
+              <li>{t("Courses and private training")}</li>
+              <li>{t("Free webinars and future events")}</li>
+              <li>{t("Placement tests and updates")}</li>
+              <li>{t("UTM, referrer, and source-page tracking")}</li>
             </ul>
           </div>
         }
-        description={contact.hero.description}
-        eyebrow={contact.hero.eyebrow}
-        title={contact.hero.title}
+        description={t("Book directly on Preply or register your interest for a course, webinar, training session, placement test, or future update.")}
+        eyebrow={t("Contact and booking")}
+        title={t("Start with the cleanest next step")}
       />
 
       <SectionShell
-        description={contact.channels.description}
-        eyebrow={contact.channels.eyebrow}
+        description={t("Full name, age, nationality, track, offer type, preferred language, and consent are required. WhatsApp or Telegram is enough for contact.")}
+        eyebrow={t("Inquiry form")}
         id="inquiry-form"
-        title={contact.channels.title}
+        title={t("Tell me what you want to improve")}
       >
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(18rem,0.95fr)]">
-          <ContactForm
-            focusAreaOptions={contact.form.focusAreaOptions}
-            learnerTypeOptions={contact.form.learnerTypeOptions}
-            locale={locale}
-          />
+          <ContactForm locale={locale} sourcePage="/contact" />
           <div className="grid gap-4">
-            {directLinks.map((item, index) => {
+            {[
+              {
+                icon: UserRound,
+                title: "Book on Preply",
+                description: "The main booking destination and fastest way to start.",
+                href: getBookingHref(locale),
+                external: true,
+              },
+              {
+                icon: MessageCircle,
+                title: "Use the form",
+                description: "Best for webinars, placement tests, training interest, and future updates.",
+                href: "#inquiry-form",
+                external: false,
+              },
+              {
+                icon: Send,
+                title: "Follow the proof",
+                description: "Explore real reviews and clean class media before deciding.",
+                href: "/reviews",
+                external: false,
+              },
+            ].map((item, index) => {
               const Icon = item.icon;
-
               return (
-                <Reveal className="paper-panel rounded-md p-6" delay={index * 0.05} key={item.id}>
-                  <div className="flex items-start gap-4">
-                    <div className="rounded-sm bg-tertiary-fixed/55 p-2 text-tertiary">
-                      <Icon className="size-5" />
-                    </div>
-                    <div className="space-y-3">
-                      <h3 className="text-2xl">{item.label}</h3>
-                      <p className="muted-copy text-sm leading-6">
-                        {item.description}
-                      </p>
-                      <ButtonLink
-                        external={item.external}
-                        href={item.href}
-                        variant="tertiary"
-                      >
-                        {contact.channels.openCta}
-                      </ButtonLink>
-                    </div>
-                  </div>
+                <Reveal className="paper-panel rounded-md p-6" delay={index * 0.05} key={item.title}>
+                  <Icon className="size-6 text-on-tertiary-container" />
+                  <h2 className="mt-4 text-2xl">{t(item.title)}</h2>
+                  <p className="muted-copy mt-3 text-sm leading-6">
+                    {t(item.description)}
+                  </p>
+                  <ButtonLink className="mt-4" external={item.external && item.href === siteConfig.preplyUrl} href={item.href} variant="tertiary">
+                    {t("Open")}
+                  </ButtonLink>
                 </Reveal>
               );
             })}
           </div>
-        </div>
-      </SectionShell>
-
-      <SectionShell
-        className="section-space-sm bg-surface-container-low/65"
-        description={contact.expectations.description}
-        eyebrow={contact.expectations.eyebrow}
-        title={contact.expectations.title}
-      >
-        <div className="grid gap-4 md:grid-cols-3">
-          {contact.expectations.items.map((item, index) => (
-            <Reveal className="paper-panel rounded-md p-6" delay={index * 0.05} key={item.title}>
-              <h3 className="text-2xl">{item.title}</h3>
-              <p className="muted-copy mt-3 text-base leading-7">
-                {item.description}
-              </p>
-            </Reveal>
-          ))}
         </div>
       </SectionShell>
     </>

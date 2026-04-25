@@ -7,6 +7,7 @@ import { useLocale } from "next-intl";
 
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { locales, type Locale } from "@/i18n/routing";
+import { copy } from "@/content/locale-copy";
 import { cn, isExternalHref } from "@/lib/utils";
 
 import { LocaleSwitcher } from "./locale-switcher";
@@ -91,13 +92,9 @@ export function MobileNav({
           >
             <div className="mb-8 flex items-center justify-between gap-4">
               <div>
-                <p className="eyebrow">Menu</p>
+                <p className="eyebrow">{copy(locale, "Menu")}</p>
                 <p className="mt-2 font-display text-2xl text-primary">
-                  {locale === locales[1]
-                    ? "اختَر وجهتك"
-                    : locale === locales[2]
-                      ? "Yolunu seç"
-                      : "Choose your path"}
+                  {copy(locale, "Choose your path")}
                 </p>
               </div>
               <button

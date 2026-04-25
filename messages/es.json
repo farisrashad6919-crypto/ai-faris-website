@@ -1,0 +1,24 @@
+{
+  "LocaleSwitcher": {
+    "label": "Selector de idioma",
+    "localeNames": { "en": "inglés", "ar": "árabe", "tr": "turco", "es": "español", "it": "italiano", "de": "alemán", "fr": "francés", "uk": "ucraniano" }
+  },
+  "Navigation": {
+    "home": "Inicio", "about": "Sobre Faris", "programs": "Programas", "reviews": "Resenas", "resources": "Recursos", "webinars": "Webinars", "faq": "FAQ", "contact": "Contacto", "bookSession": "Reservar en Preply", "openMenu": "Abrir navegacion", "closeMenu": "Cerrar navegacion"
+  },
+  "Footer": {
+    "eyebrow": "Entrenamiento premium de ingles",
+    "summary": "Faris Rashad English Trainer ayuda a estudiantes serios a construir un ingles estructurado, seguro y medible para IELTS, negocios, fluidez general y desarrollo docente.",
+    "connect": "Conectar", "note": "Preply es el destino principal de reserva. Los formularios recogen interes en cursos, webinars, formacion, pruebas de nivel y novedades.", "copyright": "© {year} Faris Rashad English Trainer.", "source": "Reservar en Preply"
+  },
+  "NotFound": { "eyebrow": "No encontrado", "title": "Esta pagina no esta disponible.", "description": "La ruta puede haber cambiado. Vuelve al inicio y elige el camino adecuado.", "cta": "Volver al inicio" },
+  "LeadForm": {
+    "title": "Registra tu interes", "description": "Cuenta a Faris que necesitas. Tambien puedes reservar directamente en Preply si estas listo.",
+    "fields": { "fullName": "Nombre completo", "age": "Edad", "nationality": "Nacionalidad", "whatsapp": "Telefono WhatsApp", "telegram": "Telegram o telefono", "email": "Email", "track": "Programa de interes", "offerType": "Tipo de oferta", "preferredLanguage": "Idioma preferido", "currentLevel": "Nivel actual", "goal": "Mensaje breve u objetivo", "consent": "Acepto que me contacten sobre esta solicitud." },
+    "placeholders": { "fullName": "Tu nombre completo", "age": "Tu edad", "nationality": "Pais o nacionalidad", "whatsapp": "+34...", "telegram": "@usuario o telefono", "email": "you@example.com", "select": "Selecciona una opcion", "goal": "Describe brevemente tu objetivo, plazo o dificultad." },
+    "helper": { "contact": "Anade WhatsApp o Telegram. Se requiere al menos un metodo de contacto.", "email": "Opcional para cursos y recomendado para webinars.", "privacy": "Tus datos se usan solo para responder a esta solicitud." },
+    "submit": "Enviar solicitud", "submitting": "Enviando...", "success": "Tu solicitud fue recibida. Tambien puedes reservar en Preply para el paso mas rapido.", "error": "Completa los campos marcados.",
+    "validation": { "fullName": "Introduce tu nombre completo.", "age": "Introduce una edad valida.", "nationality": "Introduce tu nacionalidad.", "contact": "Anade WhatsApp o Telegram.", "track": "Elige un programa.", "offerType": "Elige un tipo de oferta.", "preferredLanguage": "Elige un idioma preferido.", "consent": "El consentimiento es obligatorio." }
+  },
+  "Filters": { "track": "Programa", "type": "Tipo", "all": "Todo", "planned": "Planificado" }
+}

@@ -1,843 +1,95 @@
 {
-  "Metadata": {
-    "home": {
-      "title": "Faris Rashad English Trainer | Premium English & Communication Training",
-      "description": "A premium multilingual personal-brand website for Faris Rashad, offering elegant spoken English, IELTS, business communication, and confidence coaching for serious learners.",
-      "keywords": [
-        "Faris Rashad",
-        "English trainer",
-        "business English coach",
-        "IELTS preparation",
-        "communication mentor",
-        "pronunciation coach"
-      ]
-    },
-    "about": {
-      "title": "About Faris Rashad | Teaching Philosophy, Standards, and Story",
-      "description": "Learn how Faris Rashad combines structured methodology, refined communication coaching, and premium learner support to help students speak with clarity and confidence.",
-      "keywords": [
-        "about Faris Rashad",
-        "English teaching philosophy",
-        "premium English trainer",
-        "communication coaching"
-      ]
-    },
-    "services": {
-      "title": "Services | Spoken English, Business English, IELTS, and Confidence Coaching",
-      "description": "Explore Faris Rashad’s premium English training services, from spoken English and IELTS preparation to business communication, interview preparation, and pronunciation coaching.",
-      "keywords": [
-        "English training services",
-        "spoken English training",
-        "business English",
-        "IELTS coach",
-        "interview preparation"
-      ]
-    },
-    "results": {
-      "title": "Results | Real Learner Transformations and Public Reviews",
-      "description": "See how learners describe their progress with Faris Rashad through public reviews, confidence breakthroughs, improved structure, and measurable speaking results.",
-      "keywords": [
-        "English learning results",
-        "student testimonials",
-        "public reviews",
-        "IELTS success",
-        "confidence in speaking English"
-      ]
-    },
-    "contact": {
-      "title": "Contact | Book a Session with Faris Rashad",
-      "description": "Send a premium inquiry, request a session, and connect with Faris Rashad for spoken English, business English, IELTS preparation, and communication mentoring.",
-      "keywords": [
-        "contact Faris Rashad",
-        "book English session",
-        "English inquiry form",
-        "communication mentor contact"
-      ]
-    }
-  },
   "LocaleSwitcher": {
     "label": "Language selector",
     "localeNames": {
       "en": "English",
-      "ar": "العربية",
-      "tr": "Türkçe"
+      "ar": "Arabic",
+      "tr": "Turkish",
+      "es": "Spanish",
+      "it": "Italian",
+      "de": "German",
+      "fr": "French",
+      "uk": "Ukrainian"
     }
   },
   "Navigation": {
     "home": "Home",
     "about": "About",
-    "services": "Services",
-    "results": "Results",
+    "programs": "Programs",
+    "reviews": "Reviews",
+    "resources": "Resources",
+    "webinars": "Webinars",
+    "faq": "FAQ",
     "contact": "Contact",
-    "bookSession": "Book a Session",
+    "bookSession": "Book on Preply",
     "openMenu": "Open navigation",
     "closeMenu": "Close navigation"
   },
   "Footer": {
-    "eyebrow": "Premium English Mentorship",
-    "summary": "An editorial, multilingual platform for serious learners who want articulate English, stronger professional communication, and a calm, accountable training relationship.",
+    "eyebrow": "Premium English Training",
+    "summary": "Faris Rashad English Trainer helps serious learners build structured, confident, measurable English across IELTS, business, general fluency, and teacher development.",
     "connect": "Connect",
-    "note": "Update direct booking, WhatsApp, email, and socials in src/config/site.ts when the final contact channels are ready.",
+    "note": "Preply is the main booking destination. Lead forms collect interest for courses, webinars, training, placement tests, and updates.",
     "copyright": "© {year} Faris Rashad English Trainer.",
-    "source": "Public profile source"
+    "source": "Book on Preply"
   },
   "NotFound": {
-    "eyebrow": "Not Found",
+    "eyebrow": "Not found",
     "title": "That page is not available.",
-    "description": "The route may have changed, or the page may not exist in this locale yet. Return to the homepage and continue from there.",
-    "cta": "Return Home"
+    "description": "The route may have changed. Return home and choose the right path from there.",
+    "cta": "Return home"
   },
-  "Home": {
-    "hero": {
-      "eyebrow": "The Academic Executive",
-      "title": "Refined English training for learners who want real command, not generic lessons.",
-      "description": "Faris Rashad helps adults, professionals, students, teens, and ambitious learners build articulate spoken English, stronger pronunciation, clearer communication, and the confidence to perform well under pressure.",
-      "primaryCta": "Book a Session",
-      "secondaryCta": "Explore Services",
-      "trustIndicators": [
-        {
-          "label": "Cambridge-trained, learner-centered coaching",
-          "value": "Premium"
-        },
-        {
-          "label": "Public learner trust on Preply",
-          "value": "4.9"
-        },
-        {
-          "label": "Support across serious goals and age groups",
-          "value": "Tailored"
-        }
-      ],
-      "floatingCard": {
-        "eyebrow": "Executive Focus",
-        "title": "Conversation, clarity, and confidence",
-        "description": "Designed for learners who want English that sounds composed, credible, and ready for real life."
-      }
+  "LeadForm": {
+    "title": "Register your interest",
+    "description": "Tell Faris what you need. You can also book directly on Preply if you are ready now.",
+    "fields": {
+      "fullName": "Full name",
+      "age": "Age",
+      "nationality": "Nationality",
+      "whatsapp": "WhatsApp phone",
+      "telegram": "Telegram username or phone",
+      "email": "Email",
+      "track": "Interested track",
+      "offerType": "Interested offer type",
+      "preferredLanguage": "Preferred language",
+      "currentLevel": "Current English level",
+      "goal": "Short message or goal",
+      "consent": "I consent to being contacted about my inquiry."
     },
-    "authority": {
-      "eyebrow": "Authority Strip",
-      "title": "Trusted teaching signals grounded in public profile data.",
-      "description": "The numbers below are editable snapshots from the public Preply profile and are paired with an approach built around structure, feedback, and measurable speaking growth.",
-      "items": [
-        {
-          "id": "rating",
-          "label": "Public rating",
-          "note": "A strong trust signal backed by public student reviews."
-        },
-        {
-          "id": "reviews",
-          "label": "Public reviews",
-          "note": "Visible social proof from serious learners across different goals."
-        },
-        {
-          "id": "lessons",
-          "label": "Lessons delivered",
-          "note": "Sustained teaching volume across speaking, IELTS, and business goals."
-        },
-        {
-          "id": "reach",
-          "label": "Countries reached",
-          "note": "A broad international learner base with varied communication needs."
-        }
-      ]
+    "placeholders": {
+      "fullName": "Your full name",
+      "age": "Your age",
+      "nationality": "Country or nationality",
+      "whatsapp": "+20...",
+      "telegram": "@username or phone",
+      "email": "you@example.com",
+      "select": "Select an option",
+      "goal": "Briefly describe your goal, timeline, or challenge."
     },
-    "about": {
-      "eyebrow": "About Faris",
-      "title": "A premium mentor’s approach to English: precise, practical, and personally accountable.",
-      "description": "Faris combines formal training, real teaching repetition, and clear performance feedback to create an experience that feels calm, intelligent, and genuinely developmental.",
-      "pillars": [
-        {
-          "title": "Structured guidance",
-          "description": "Every learner needs a roadmap. Sessions are designed around clear goals, visible correction, and a better sense of what to improve next."
-        },
-        {
-          "title": "Human confidence-building",
-          "description": "Progress in English is not only technical. Learners also need a trainer who helps them feel steady, prepared, and capable when it matters."
-        },
-        {
-          "title": "Practical refinement",
-          "description": "From pronunciation and grammar to speaking rhythm and presentation delivery, the work stays rooted in real use rather than abstract theory."
-        }
-      ]
+    "helper": {
+      "contact": "Add WhatsApp or Telegram. At least one contact method is required.",
+      "email": "Optional for course leads and recommended for webinar registrations.",
+      "privacy": "Your submission is used only to respond to this inquiry."
     },
-    "services": {
-      "eyebrow": "Signature Services",
-      "title": "Premium training paths for real-world communication goals.",
-      "description": "Each service is built to move learners from hesitation to composed performance, whether the goal is IELTS, business communication, interview success, or stronger spoken fluency.",
-      "ctaLabel": "Learn more",
-      "items": [
-        {
-          "title": "Spoken English Training",
-          "description": "A speaking-centered path for learners who want smoother daily conversation, better sentence control, and stronger listening response.",
-          "audience": "Adults and serious learners",
-          "outcomes": [
-            "More natural speaking rhythm",
-            "Clearer grammar while talking",
-            "Greater fluency under pressure"
-          ]
-        },
-        {
-          "title": "Business English",
-          "description": "Professional communication support for meetings, presentations, workplace conversations, and high-stakes interactions.",
-          "audience": "Professionals and corporate learners",
-          "outcomes": [
-            "Sharper professional vocabulary",
-            "More confident spoken presence",
-            "Clearer email and presentation language"
-          ]
-        },
-        {
-          "title": "IELTS Preparation",
-          "description": "Targeted preparation for learners who want a structured route to stronger speaking, writing, reading, and listening performance.",
-          "audience": "Exam-focused learners",
-          "outcomes": [
-            "Better idea organization",
-            "More natural speaking answers",
-            "Focused band-oriented feedback"
-          ]
-        },
-        {
-          "title": "Interview Preparation",
-          "description": "Practice and refinement for learners preparing for English-based interviews, admissions, and competitive opportunities.",
-          "audience": "Applicants and job seekers",
-          "outcomes": [
-            "Stronger answer structure",
-            "More persuasive examples",
-            "Better composure in interviews"
-          ]
-        },
-        {
-          "title": "Communication Skills",
-          "description": "A broader communication offering for learners who need stronger articulation, explanation, and professional expression.",
-          "audience": "Presenters and leaders",
-          "outcomes": [
-            "More coherent speaking",
-            "Better audience awareness",
-            "Cleaner verbal structure"
-          ]
-        },
-        {
-          "title": "Pronunciation Coaching",
-          "description": "Focused work on clarity, mouth placement, connected speech, and speaking habits that affect credibility and ease.",
-          "audience": "Learners seeking precision",
-          "outcomes": [
-            "Cleaner sound production",
-            "More intelligible speech",
-            "Greater pronunciation awareness"
-          ]
-        },
-        {
-          "title": "English for Professionals",
-          "description": "A tailored route for people whose careers require consistent, credible English across meetings, interviews, and written communication.",
-          "audience": "Career-driven learners",
-          "outcomes": [
-            "Practical workplace phrases",
-            "More executive confidence",
-            "Higher communication reliability"
-          ]
-        },
-        {
-          "title": "Confidence Coaching",
-          "description": "A supportive but demanding track for learners who know the issue is not only knowledge, but hesitation, self-doubt, and fear of mistakes.",
-          "audience": "Learners rebuilding confidence",
-          "outcomes": [
-            "Less fear of speaking",
-            "Faster recovery from mistakes",
-            "More consistent speaking momentum"
-          ]
-        }
-      ]
-    },
-    "why": {
-      "eyebrow": "Why Work With Faris",
-      "title": "A learning relationship built on standards, refinement, and calm pressure.",
-      "description": "This is not mass-market tutoring. The experience is designed to feel guided, personalized, and measurably useful from the first session onward.",
-      "items": [
-        {
-          "title": "Feedback that actually changes performance",
-          "description": "Corrections are precise, actionable, and connected to what the learner needs next rather than vague encouragement alone."
-        },
-        {
-          "title": "A plan that respects your goal",
-          "description": "Whether the target is IELTS, business communication, or stronger spoken fluency, the training path stays aligned with that objective."
-        },
-        {
-          "title": "Serious support without coldness",
-          "description": "The tone is warm, but the standard remains high. Learners feel supported without being under-challenged."
-        },
-        {
-          "title": "Practical outcomes over decorative theory",
-          "description": "Every session aims to improve what the learner can actually say, understand, present, or express in the real world."
-        },
-        {
-          "title": "Confidence built through repetition and clarity",
-          "description": "Improvement is not left to inspiration. It is developed through deliberate, well-explained practice."
-        }
-      ]
-    },
-    "credentials": {
-      "eyebrow": "Credentials & Standards",
-      "title": "Training credibility supported by study, repetition, and professional discipline.",
-      "description": "Public profile details point to a coach who has invested in formal development as well as real classroom repetition.",
-      "items": [
-        {
-          "title": "Cambridge and TESOL-backed foundation",
-          "description": "The training background reflects both Cambridge teacher development and TESOL study, giving the methodology a solid professional base."
-        },
-        {
-          "title": "Years of active teaching across levels",
-          "description": "Experience spans beginners, intermediate learners, advanced learners, adults, teens, and practical communication goals."
-        },
-        {
-          "title": "A learner’s perspective on growth",
-          "description": "Because Faris built his own English to a high level, the coaching style stays empathetic, realistic, and tuned to learner obstacles."
-        }
-      ]
-    },
-    "testimonials": {
-      "eyebrow": "Transformations",
-      "title": "Public reviews that point to calm structure, real support, and visible progress.",
-      "description": "These review themes are adapted from public feedback on Preply and presented here in a concise editorial format.",
-      "items": [
-        {
-          "quote": "I reached an overall IELTS band 7 and felt supported at every stage of the process.",
-          "name": "Alia",
-          "date": "March 2026",
-          "highlight": "IELTS progress"
-        },
-        {
-          "quote": "Lessons felt structured and professional, with detailed corrections that made weekly improvement easy to notice.",
-          "name": "Tamer",
-          "date": "January 2026",
-          "highlight": "Measurable improvement"
-        },
-        {
-          "quote": "He understands the struggle of learning English as a non-native speaker and gives practical feedback that really helps.",
-          "name": "Rath",
-          "date": "March 2026",
-          "highlight": "Practical guidance"
-        }
-      ],
-      "cta": "See More Results"
-    },
-    "philosophy": {
-      "eyebrow": "Executive Insight",
-      "quote": "Fluent English is not only about knowing more words. It is about becoming clearer, calmer, and more persuasive when your voice matters.",
-      "attribution": "Faris Rashad",
-      "supporting": "The training philosophy is simple: build command through disciplined practice, honest correction, and the kind of mentorship that turns effort into visible communication maturity."
-    },
-    "audiences": {
-      "eyebrow": "Who This Is For",
-      "title": "Built for learners with serious goals and high standards.",
-      "description": "The site speaks to more than one audience, but every path is designed for people who care about meaningful progress rather than casual exposure alone.",
-      "items": [
-        {
-          "title": "Adults improving spoken English",
-          "description": "For learners who want to sound more composed, capable, and natural in daily and professional conversation."
-        },
-        {
-          "title": "Professionals needing business communication",
-          "description": "For ambitious professionals who need English that feels credible in meetings, interviews, and workplace communication."
-        },
-        {
-          "title": "IELTS learners",
-          "description": "For test-takers who want structure, clarity, and strong feedback across all four IELTS skills."
-        },
-        {
-          "title": "University students",
-          "description": "For students who need stronger academic communication, clearer speaking, and better performance in English-medium environments."
-        },
-        {
-          "title": "Teens with high potential",
-          "description": "For younger learners who benefit from premium support, accountability, and confidence-building speaking work."
-        },
-        {
-          "title": "Parents seeking serious support",
-          "description": "For families who want disciplined, high-quality English guidance for a child or teenager with real potential."
-        }
-      ]
-    },
-    "faq": {
-      "eyebrow": "FAQ",
-      "title": "Common questions from serious learners and families.",
-      "description": "A concise guide to how the training relationship usually works.",
-      "items": [
-        {
-          "question": "Who are these sessions best suited for?",
-          "answer": "They are ideal for adults, professionals, IELTS learners, university students, teens, and families looking for a premium standard of English support."
-        },
-        {
-          "question": "Can the sessions focus mainly on speaking confidence?",
-          "answer": "Yes. Speaking confidence, pronunciation, fluency, and sentence control are core strengths of the training approach."
-        },
-        {
-          "question": "Is the approach suitable for professionals?",
-          "answer": "Yes. Business communication, interviews, presentation delivery, and English for workplace credibility are central service areas."
-        },
-        {
-          "question": "Will I receive detailed feedback?",
-          "answer": "That is one of the defining strengths of the experience. Learners can expect direct feedback on structure, pronunciation, grammar, and practical speaking performance."
-        },
-        {
-          "question": "What if I am motivated but still hesitant to speak?",
-          "answer": "That is a common starting point. The process is designed to convert hesitation into clearer speaking habits through guided repetition and calm correction."
-        }
-      ]
-    },
-    "finalCta": {
-      "eyebrow": "Next Step",
-      "title": "Choose a training relationship that treats your English with seriousness and care.",
-      "description": "If you want articulate spoken English, stronger professional communication, or a more confident voice in important situations, begin with a focused inquiry.",
-      "primaryCta": "Book a Session",
-      "secondaryCta": "Contact Faris"
+    "submit": "Send inquiry",
+    "submitting": "Sending...",
+    "success": "Your inquiry was received. You can also book on Preply for the fastest next step.",
+    "error": "Please complete the highlighted fields.",
+    "validation": {
+      "fullName": "Please enter your full name.",
+      "age": "Please enter a valid age.",
+      "nationality": "Please enter your nationality.",
+      "contact": "Please add WhatsApp or Telegram.",
+      "track": "Please choose a track.",
+      "offerType": "Please choose an offer type.",
+      "preferredLanguage": "Please choose a preferred language.",
+      "consent": "Consent is required before submitting."
     }
   },
-  "About": {
-    "hero": {
-      "eyebrow": "About",
-      "title": "A trainer’s story shaped by study, discipline, and the belief that practice builds real language power.",
-      "description": "Faris Rashad’s work sits at the intersection of language teaching, communication refinement, and personal confidence-building. The result is an experience that feels both intellectually serious and deeply human.",
-      "asideTitle": "What defines the approach",
-      "asideItems": [
-        "Clear standards and accountable feedback",
-        "Warm but demanding learner support",
-        "Practical communication gains over generic lesson flow"
-      ]
-    },
-    "story": {
-      "eyebrow": "Personal Story",
-      "title": "From language learner to communication mentor.",
-      "paragraphs": [
-        "Faris openly speaks about building his own English from zero to a high level. That personal journey informs a teaching style that understands hesitation, inconsistency, and the emotional side of language learning as well as the technical one.",
-        "His academic and professional development point to a trainer who values method. Study in English education, TESOL exposure, and Cambridge teacher training combine with years of active teaching across multiple learner profiles.",
-        "This gives the brand a distinctive tone: scholarly without being distant, practical without becoming mechanical, and premium without ever feeling performative."
-      ]
-    },
-    "philosophy": {
-      "eyebrow": "Teaching Philosophy",
-      "title": "Three principles behind the work.",
-      "description": "Every serious mentor needs a philosophy. These principles shape the learning environment and the way each session is delivered.",
-      "items": [
-        {
-          "title": "Practice before performance",
-          "description": "Confidence comes from repeated, well-structured use of language, not from passive exposure alone."
-        },
-        {
-          "title": "Correction with clarity",
-          "description": "Feedback should reduce confusion, not create it. Learners need to understand what changed and why it matters."
-        },
-        {
-          "title": "Growth that respects the person",
-          "description": "A premium learning experience takes the learner’s psychology seriously. Standards remain high, but the relationship never becomes punitive."
-        }
-      ]
-    },
-    "standards": {
-      "eyebrow": "Professional Standards",
-      "title": "The experience is designed to feel prepared, intentional, and calm.",
-      "description": "Professional standards are not an accessory. They shape the learner’s trust in the process.",
-      "items": [
-        {
-          "title": "Session preparation",
-          "description": "Each lesson is expected to carry a purpose, not simply consume time."
-        },
-        {
-          "title": "Visible learner progress",
-          "description": "Progress should be felt in clarity, confidence, and communication outcomes, not only in textbook completion."
-        },
-        {
-          "title": "High-quality correction",
-          "description": "Mistakes become useful when they are explained well and linked to future performance."
-        },
-        {
-          "title": "Respect for learner ambition",
-          "description": "Serious learners deserve a trainer who treats their goals with focus and rigor."
-        }
-      ]
-    },
-    "whyItWorks": {
-      "eyebrow": "Why The Approach Works",
-      "title": "A premium methodology depends on both structure and tone.",
-      "description": "These factors help learners stay engaged long enough to produce real transformation.",
-      "points": [
-        "Learners know what they are working on and why it matters.",
-        "Feedback is specific enough to guide the next improvement step.",
-        "Speaking work is treated as a trainable skill, not a mystery.",
-        "Confidence is built through rehearsal, not empty reassurance.",
-        "The experience feels disciplined without becoming cold or generic."
-      ]
-    },
-    "cta": {
-      "eyebrow": "Work With Faris",
-      "title": "If you want a trainer who balances refinement with real support, start the conversation here.",
-      "description": "The next step can be a booking inquiry, a service review, or a direct contact message depending on what fits your goal best.",
-      "primaryCta": "Book a Session",
-      "secondaryCta": "Explore Services"
-    }
-  },
-  "Services": {
-    "hero": {
-      "eyebrow": "Services",
-      "title": "A premium suite of English and communication services built around real performance.",
-      "description": "These services are designed for learners who want stronger speech, cleaner communication, and a trainer who can translate ambition into steady progress.",
-      "asideTitle": "Typical outcomes",
-      "asideItems": [
-        "Clearer pronunciation and sentence control",
-        "More composed speaking in professional settings",
-        "Smarter preparation for tests, interviews, and presentations"
-      ]
-    },
-    "catalog": {
-      "eyebrow": "Service Catalog",
-      "title": "Eight focused tracks, each built for a distinct learner need.",
-      "description": "All services share the same premium teaching posture, but each one targets a different communication challenge.",
-      "ctaLabel": "Request this service",
-      "items": [
-        {
-          "title": "Spoken English Training",
-          "description": "A speaking-heavy route that improves fluency, listening response, everyday expression, and verbal confidence.",
-          "audience": "Adults and returning learners",
-          "outcomes": [
-            "Smoother conversation flow",
-            "Better sentence control",
-            "More confidence speaking spontaneously"
-          ]
-        },
-        {
-          "title": "Business English",
-          "description": "Workplace-focused coaching for meetings, presentations, interviews, and English that needs to sound credible in professional environments.",
-          "audience": "Professionals and teams",
-          "outcomes": [
-            "More precise professional vocabulary",
-            "Stronger business speaking tone",
-            "Improved presentation readiness"
-          ]
-        },
-        {
-          "title": "IELTS Preparation",
-          "description": "A targeted preparation path covering speaking, writing, reading, and listening with organized feedback and score-aware strategy.",
-          "audience": "IELTS candidates",
-          "outcomes": [
-            "Better idea linking",
-            "More natural spoken answers",
-            "Stronger performance discipline"
-          ]
-        },
-        {
-          "title": "Interview Preparation",
-          "description": "Support for job interviews, scholarship interviews, and opportunities where English answers need to feel thoughtful and confident.",
-          "audience": "Applicants",
-          "outcomes": [
-            "More persuasive answers",
-            "Stronger example delivery",
-            "Greater verbal composure"
-          ]
-        },
-        {
-          "title": "Communication Skills",
-          "description": "Training that sharpens explanation, persuasion, and how ideas are delivered when learners need to sound more organized and articulate.",
-          "audience": "Leaders and communicators",
-          "outcomes": [
-            "Clearer verbal structure",
-            "Better audience awareness",
-            "More confident explanation"
-          ]
-        },
-        {
-          "title": "Pronunciation Coaching",
-          "description": "Precision work on sound clarity, connected speech, rhythm, and speaking habits that influence intelligibility and confidence.",
-          "audience": "Learners who want clarity",
-          "outcomes": [
-            "Cleaner pronunciation habits",
-            "Improved intelligibility",
-            "More controlled speaking rhythm"
-          ]
-        },
-        {
-          "title": "English for Professionals",
-          "description": "A practical track for learners whose growth depends on English performance at work, in applications, and in visible professional moments.",
-          "audience": "Career-focused learners",
-          "outcomes": [
-            "Greater workplace fluency",
-            "Stronger professional credibility",
-            "Sharper meeting and interview language"
-          ]
-        },
-        {
-          "title": "Confidence Coaching",
-          "description": "Guided work for learners who have knowledge but still hesitate, freeze, or lose control when they need English most.",
-          "audience": "Hesitant but motivated learners",
-          "outcomes": [
-            "Reduced speaking anxiety",
-            "Faster recovery from mistakes",
-            "More stable verbal confidence"
-          ]
-        }
-      ]
-    },
-    "process": {
-      "eyebrow": "Process",
-      "title": "What the training experience usually looks like.",
-      "description": "The process stays simple, premium, and purpose-driven.",
-      "steps": [
-        {
-          "title": "Assess the current level and goal",
-          "description": "The work begins with clarity: what the learner needs, what currently blocks progress, and what success should look like."
-        },
-        {
-          "title": "Build the training structure",
-          "description": "Sessions are organized around the right balance of speaking, correction, skill-building, and contextual practice."
-        },
-        {
-          "title": "Refine through feedback and repetition",
-          "description": "Progress is reinforced through targeted feedback, repeated use, and adjustments based on real performance."
-        }
-      ]
-    },
-    "fit": {
-      "eyebrow": "Who Each Service Is For",
-      "title": "Different goals require different language pressure.",
-      "description": "The service selection should match the learner’s most important communication environment.",
-      "groups": [
-        {
-          "title": "Professionals and corporate learners",
-          "description": "Best served by Business English, English for Professionals, communication skills, and interview preparation."
-        },
-        {
-          "title": "Exam-focused learners",
-          "description": "Best served by IELTS preparation with structured strategy and feedback across the tested skills."
-        },
-        {
-          "title": "Fluency and confidence learners",
-          "description": "Best served by spoken English training, pronunciation coaching, and confidence-focused support."
-        },
-        {
-          "title": "Parents and ambitious students",
-          "description": "Best served by a tailored mix that balances accountability, encouragement, and steady speaking development."
-        }
-      ]
-    },
-    "cta": {
-      "eyebrow": "Choose A Service",
-      "title": "Not sure which path fits best? Start with a focused inquiry and match the service to the goal.",
-      "description": "That first conversation can clarify whether the need is fluency, business communication, IELTS, pronunciation, interviews, or a broader confidence problem.",
-      "primaryCta": "Book a Session",
-      "secondaryCta": "Send an Inquiry"
-    }
-  },
-  "Results": {
-    "hero": {
-      "eyebrow": "Results",
-      "title": "Proof of trust is not only a rating. It is the pattern of progress learners describe in public.",
-      "description": "The reviews connected to Faris Rashad consistently point to structure, encouragement, practical correction, and outcomes learners can feel.",
-      "asideTitle": "Repeated review themes",
-      "asideItems": [
-        "Detailed corrections that feel useful",
-        "Calm support with clear direction",
-        "Visible progress in IELTS, fluency, and professional speaking"
-      ]
-    },
-    "reviews": {
-      "eyebrow": "Public Reviews",
-      "title": "Editorial highlights adapted from public learner feedback.",
-      "description": "These summaries stay faithful to the public review themes while fitting the premium editorial voice of the site.",
-      "items": [
-        {
-          "quote": "I achieved an overall IELTS band 7 and felt supported with advice that made the process clearer.",
-          "name": "Alia",
-          "date": "March 2026",
-          "highlight": "IELTS outcome"
-        },
-        {
-          "quote": "The lessons felt highly professional and well prepared, with corrections that made weekly progress noticeable.",
-          "name": "Tamer",
-          "date": "January 2026",
-          "highlight": "Professional structure"
-        },
-        {
-          "quote": "He understands exactly where non-native speakers struggle and gives practical feedback that improves the right things.",
-          "name": "Rath",
-          "date": "March 2026",
-          "highlight": "Practical feedback"
-        },
-        {
-          "quote": "He knows how to connect with students and create a learning atmosphere that feels encouraging and effective.",
-          "name": "Tanya",
-          "date": "March 2026",
-          "highlight": "Learner connection"
-        },
-        {
-          "quote": "Even after only a short period of study, the teaching left a lasting impression of diligence and real commitment.",
-          "name": "Mihna",
-          "date": "December 2025",
-          "highlight": "Lasting impact"
-        }
-      ]
-    },
-    "themes": {
-      "eyebrow": "Success Themes",
-      "title": "What strong learner feedback tends to have in common.",
-      "description": "Across different audiences and goals, the same transformation themes appear again and again.",
-      "items": [
-        {
-          "title": "Structure reduces confusion",
-          "description": "Learners feel calmer when the work is organized and the next improvement step is clear."
-        },
-        {
-          "title": "Feedback makes progress visible",
-          "description": "Corrections on pronunciation, grammar, and vocabulary become a map for real weekly growth."
-        },
-        {
-          "title": "Encouragement supports performance",
-          "description": "Warmth matters when learners are trying to speak more bravely and recover from mistakes faster."
-        }
-      ]
-    },
-    "philosophy": {
-      "eyebrow": "Results Perspective",
-      "quote": "A strong review is not the end goal. The real goal is a learner who sounds more capable in the moments that shape their future.",
-      "attribution": "Faris Rashad",
-      "supporting": "That is why the work prioritizes durable communication gains instead of shallow lesson completion."
-    },
-    "cta": {
-      "eyebrow": "Begin Your Own Progress Story",
-      "title": "If these results sound like the kind of growth you want, the next step is a focused first conversation.",
-      "description": "Use the contact page to describe your goal, or move directly toward a session request if you already know the direction you want.",
-      "primaryCta": "Book a Session",
-      "secondaryCta": "Contact Faris"
-    }
-  },
-  "Contact": {
-    "hero": {
-      "eyebrow": "Contact",
-      "title": "Start with a clear inquiry and shape the right path for your English goal.",
-      "description": "Whether the priority is spoken English, IELTS, business communication, pronunciation, or confidence, the inquiry process is designed to feel premium, direct, and easy to trust.",
-      "primaryCta": "Go to the inquiry form",
-      "secondaryCta": "Review services",
-      "asideTitle": "Best used for",
-      "asideItems": [
-        "Booking a serious first session",
-        "Clarifying the best service for a learner",
-        "Beginning a premium long-term support relationship"
-      ]
-    },
-    "channels": {
-      "eyebrow": "Inquiry Channels",
-      "title": "Choose the most suitable contact path.",
-      "description": "Direct external channels appear automatically when they are configured. Until then, the inquiry form remains the primary path.",
-      "openCta": "Open this channel",
-      "items": [
-        {
-          "title": "Book a session",
-          "description": "Move directly toward the most focused next step."
-        },
-        {
-          "title": "Message on WhatsApp",
-          "description": "Use fast direct messaging when a WhatsApp contact line is connected."
-        },
-        {
-          "title": "Send an email",
-          "description": "Use email for formal inquiries, parent communication, or detailed requests."
-        }
-      ]
-    },
-    "expectations": {
-      "eyebrow": "What To Expect",
-      "title": "A contact experience that stays calm, respectful, and goal-oriented.",
-      "description": "The goal is not to overwhelm. It is to gather the right information and guide the learner toward the best next step.",
-      "items": [
-        {
-          "title": "Clarity from the start",
-          "description": "The inquiry form is built to surface the real goal, not just collect contact details."
-        },
-        {
-          "title": "Premium tone",
-          "description": "The process respects adult learners, professionals, families, and ambitious students who value thoughtful communication."
-        },
-        {
-          "title": "Flexible next step",
-          "description": "Depending on the final setup, the next step can be a booking link, a direct conversation, or a tailored recommendation."
-        }
-      ]
-    },
-    "form": {
-      "fields": {
-        "name": "Full name",
-        "email": "Email address",
-        "learnerType": "Learner type",
-        "focusArea": "Focus area",
-        "goals": "Tell Faris about your goal"
-      },
-      "placeholders": {
-        "name": "Your name",
-        "email": "you@example.com",
-        "select": "Select an option",
-        "goals": "Describe your level, target, timeline, and what kind of support would help most."
-      },
-      "submit": "Send Inquiry",
-      "submitting": "Sending...",
-      "privacy": "This first version validates and submits successfully inside the site. You can connect a live delivery channel later in src/config/site.ts.",
-      "successMessage": "Your inquiry has been received successfully. This implementation is ready for a live delivery integration when your final contact channel is available.",
-      "validation": {
-        "summary": "Please complete the highlighted fields and describe your goal clearly.",
-        "name": "Please enter your full name.",
-        "email": "Please enter a valid email address.",
-        "learnerType": "Please choose the learner type that fits best.",
-        "focusArea": "Please choose the main focus area.",
-        "goals": "Please describe your goal in a little more detail."
-      },
-      "learnerTypeOptions": [
-        {
-          "value": "adult",
-          "label": "Adult learner"
-        },
-        {
-          "value": "professional",
-          "label": "Professional"
-        },
-        {
-          "value": "ielts",
-          "label": "IELTS learner"
-        },
-        {
-          "value": "university",
-          "label": "University student"
-        },
-        {
-          "value": "teen",
-          "label": "Teen learner"
-        },
-        {
-          "value": "parent",
-          "label": "Parent inquiring for a child"
-        }
-      ],
-      "focusAreaOptions": [
-        {
-          "value": "spoken-english",
-          "label": "Spoken English"
-        },
-        {
-          "value": "business-english",
-          "label": "Business English"
-        },
-        {
-          "value": "ielts",
-          "label": "IELTS preparation"
-        },
-        {
-          "value": "interviews",
-          "label": "Interview preparation"
-        },
-        {
-          "value": "pronunciation",
-          "label": "Pronunciation coaching"
-        },
-        {
-          "value": "confidence",
-          "label": "Confidence coaching"
-        }
-      ]
-    }
+  "Filters": {
+    "track": "Track",
+    "type": "Type",
+    "all": "All",
+    "planned": "Planned"
   }
 }

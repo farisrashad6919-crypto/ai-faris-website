@@ -27,6 +27,47 @@ function detectLocale(request: NextRequest): Locale {
 
 export default function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+  const localeMatch = routing.locales.find(
+    (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`),
+  );
+
+  if (localeMatch) {
+    const withoutLocale = pathname.slice(localeMatch.length + 1) || "/";
+
+    if (withoutLocale === "/services" || withoutLocale.startsWith("/services/")) {
+      const redirectUrl = new URL(
+        `/${localeMatch}/programs${withoutLocale.slice("/services".length)}${search}`,
+        request.url,
+      );
+      return NextResponse.redirect(redirectUrl, 301);
+    }
+
+    if (withoutLocale === "/results" || withoutLocale.startsWith("/results/")) {
+      const redirectUrl = new URL(
+        `/${localeMatch}/reviews${withoutLocale.slice("/results".length)}${search}`,
+        request.url,
+      );
+      return NextResponse.redirect(redirectUrl, 301);
+    }
+  }
+
+  if (pathname === "/services" || pathname.startsWith("/services/")) {
+    const locale = detectLocale(request);
+    const redirectUrl = new URL(
+      `/${locale}/programs${pathname.slice("/services".length)}${search}`,
+      request.url,
+    );
+    return NextResponse.redirect(redirectUrl, 301);
+  }
+
+  if (pathname === "/results" || pathname.startsWith("/results/")) {
+    const locale = detectLocale(request);
+    const redirectUrl = new URL(
+      `/${locale}/reviews${pathname.slice("/results".length)}${search}`,
+      request.url,
+    );
+    return NextResponse.redirect(redirectUrl, 301);
+  }
 
   const pathnameHasLocale = routing.locales.some(
     (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`),
