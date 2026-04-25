@@ -76,7 +76,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="container-shell grid gap-10 lg:grid-cols-[minmax(0,1.02fr)_minmax(20rem,0.98fr)] lg:items-center">
           <Reveal className="space-y-7">
             <p className="eyebrow">Faris Rashad English Trainer</p>
-            <h1 className="max-w-4xl text-5xl leading-[1.05] md:text-7xl">
+            <h1 className="max-w-4xl text-4xl leading-[1.08] sm:text-5xl md:text-7xl">
               {t("Structured English training for serious progress.")}
             </h1>
             <p className="muted-copy max-w-2xl text-lg leading-8">
@@ -147,7 +147,7 @@ export function HomePage({ locale }: { locale: Locale }) {
 
       <SectionShell
         className="section-space-sm bg-surface-container-low/65"
-        description={t("Pick the page that matches your real goal. Each path has its own message, proof, lead form, FAQ, and future resource space.")}
+        description={t("Pick the page that matches your real goal. Each path shows who it helps, what we can train, real learner feedback, and the clearest next step.")}
         eyebrow={t("Choose your path")}
         title={t("Four focused ways to work together")}
       >
@@ -191,9 +191,9 @@ export function HomePage({ locale }: { locale: Locale }) {
 
       <SectionShell
         className="bg-surface-container-low/65"
-        description={t("A quick look at uploaded proof. More reviews are grouped by track on the reviews page.")}
-        eyebrow={t("Review highlights")}
-        title={t("Proof that stays visible")}
+        description={t("Public feedback from learners I’ve worked with across different goals and backgrounds.")}
+        eyebrow={t("Real Reviews")}
+        title={t("Real words from real learners")}
       >
         <ReviewProofGrid locale={locale} reviews={featuredReviews} />
         <div className="mt-8">
@@ -204,18 +204,18 @@ export function HomePage({ locale }: { locale: Locale }) {
       </SectionShell>
 
       <SectionShell
-        description={t("Students remain visible with consent, and the public versions are kept clean, professional, and credible.")}
-        eyebrow={t("Class media")}
-        title={t("Real class proof with students visible")}
+        description={t("A closer look at real lessons across IELTS, Business English, General English, and teacher training.")}
+        eyebrow={t("Class Proof")}
+        title={t("Real class moments")}
       >
         <ProofMediaGrid items={proofMedia.slice(0, 4)} locale={locale} />
       </SectionShell>
 
       <SectionShell
         className="bg-surface-container-low/65"
-        description={t("The site is ready for placement tests, quizzes, videos, articles, learning tools, downloadable resources, and webinar registrations.")}
+        description={t("Explore practical resources, webinars, and learning tools connected to each training goal.")}
         eyebrow={t("Resources and webinars")}
-        title={t("A future-ready learning hub")}
+        title={t("Learning support for every goal")}
       >
         <FutureExpansionGrid items={futureItems} locale={locale} />
         <div className="mt-8 flex flex-wrap gap-4">
@@ -237,8 +237,8 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="grid gap-4 md:grid-cols-3">
           {[
             ["Where should I book?", "Preply is the main booking destination and the fastest way to start."],
-            ["Can I register interest instead?", "Yes. Use the lead form for courses, webinars, training, placement tests, or updates."],
-            ["Are students visible in class screenshots?", "Yes. Students can remain visible with consent; the images are presented cleanly for the website."],
+            ["Can I register interest instead?", "Yes. Use the contact form for courses, webinars, training, placement tests, or updates."],
+            ["Can I see real class moments?", "Yes. You can explore selected lesson moments across IELTS, Business English, General English, and teacher training."],
           ].map(([question, answer]) => (
             <details className="paper-panel rounded-md p-5" key={question}>
               <summary className="font-semibold text-primary">{t(question)}</summary>
@@ -258,7 +258,7 @@ export function HomePage({ locale }: { locale: Locale }) {
                   {t("Start with the English path that actually fits.")}
                 </h2>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-surface-container-lowest/78">
-                  {t("Book now on Preply or choose a track page and register your interest for future resources and training.")}
+                  {t("Book now on Preply or choose a track page and register your interest in upcoming resources and training.")}
                 </p>
               </div>
               <div className="flex flex-wrap gap-4">

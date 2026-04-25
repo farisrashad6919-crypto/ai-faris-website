@@ -29,19 +29,19 @@ export function WebinarsPage({ locale }: { locale: Locale }) {
           <div className="space-y-4">
             <h2 className="text-2xl">{t("Webinar categories")}</h2>
             <p className="muted-copy text-sm leading-6">
-              {t("IELTS, Business English, General English, and teacher development sessions are ready to be managed from data.")}
+              {t("IELTS, Business English, General English, and teacher development sessions for focused live learning.")}
             </p>
           </div>
         }
-        description={t("A home for upcoming free webinars, recorded sessions, lead capture, and track-based training categories.")}
+        description={t("A home for upcoming free webinars, recorded sessions, and focused training by goal.")}
         eyebrow={t("Webinars and free training")}
-        title={t("Register interest in future live training")}
+        title={t("Register interest in upcoming live training")}
       />
 
       <SectionShell
         className="bg-surface-container-low/65"
-        description={t("Filterable by track and future content type, with webinar entries surfaced first.")}
-        eyebrow={t("Upcoming and planned")}
+        description={t("Browse webinar pathways by the English goal you want to strengthen next.")}
+        eyebrow={t("Upcoming")}
         title={t("Track-based webinar pathways")}
       >
         <FilterableContentGrid entries={webinarEntries} locale={locale} mode="webinars" />
@@ -49,7 +49,7 @@ export function WebinarsPage({ locale }: { locale: Locale }) {
 
       <SectionShell
         description={t("Email is recommended for webinar registrations, but the form still accepts WhatsApp or Telegram as the required contact channel.")}
-        eyebrow={t("Webinar lead capture")}
+        eyebrow={t("Webinar interest")}
         id="webinar-interest"
         title={t("Tell me which free training you want")}
       >

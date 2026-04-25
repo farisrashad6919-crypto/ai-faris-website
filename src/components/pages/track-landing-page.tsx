@@ -84,7 +84,7 @@ export function TrackLandingPage({ locale, track }: TrackLandingPageProps) {
         <div className="container-shell grid gap-10 lg:grid-cols-[minmax(0,1.04fr)_minmax(20rem,0.96fr)] lg:items-center">
           <Reveal className="space-y-7">
             <p className="eyebrow">{copy(locale, track.eyebrow)}</p>
-            <h1 className="max-w-4xl text-5xl leading-[1.06] md:text-6xl">
+            <h1 className="max-w-4xl text-4xl leading-[1.08] sm:text-5xl md:text-6xl">
               {copy(locale, track.title)}
             </h1>
             <p className="muted-copy max-w-2xl text-lg leading-8">
@@ -157,7 +157,7 @@ export function TrackLandingPage({ locale, track }: TrackLandingPageProps) {
                     {t("Real proof")}
                   </p>
                   <p className="mt-2 text-sm leading-6 text-secondary">
-                    {t("Uploaded reviews and clean class media.")}
+                    {t("Learner feedback and real class moments.")}
                   </p>
                 </div>
               </div>
@@ -260,17 +260,17 @@ export function TrackLandingPage({ locale, track }: TrackLandingPageProps) {
 
       <SectionShell
         className="bg-surface-container-low/65"
-        eyebrow={copy(locale, uiCopy.sectionLabels.reviews)}
+        eyebrow={t("Real Reviews")}
         title={t("Real words from real learners")}
-        description={t("Each card keeps the original screenshot visible, with a clean transcription and localized summary for non-English visitors.")}
+        description={t("Public feedback from learners I’ve worked with across different goals and backgrounds.")}
       >
         <ReviewProofGrid locale={locale} reviews={reviews} />
       </SectionShell>
 
       <SectionShell
-        eyebrow={copy(locale, uiCopy.sectionLabels.media)}
-        title={t("Class proof with students visible")}
-        description={copy(locale, uiCopy.common.proofNote)}
+        eyebrow={t("Class Proof")}
+        title={t("Real class moments")}
+        description={t("A closer look at real lessons across IELTS, Business English, General English, and teacher training.")}
       >
         <ProofMediaGrid items={media} locale={locale} />
       </SectionShell>
@@ -278,7 +278,7 @@ export function TrackLandingPage({ locale, track }: TrackLandingPageProps) {
       <SectionShell
         className="bg-surface-container-low/65"
         description={t("Use this form for courses, webinars, free training, placement tests, or updates. WhatsApp or Telegram is enough; email is optional for course leads.")}
-        eyebrow={t("Lead form")}
+        eyebrow={t("Start a conversation")}
         id="lead-form"
         title={t("Tell me what you want to improve")}
       >
@@ -328,9 +328,9 @@ export function TrackLandingPage({ locale, track }: TrackLandingPageProps) {
       </SectionShell>
 
       <SectionShell
-        eyebrow={copy(locale, uiCopy.sectionLabels.future)}
-        title={t("Built for future tools, quizzes, tests, videos, and webinars")}
-        description={t("These blocks are already data-driven so new resources can be added later without changing the page design.")}
+        eyebrow={t("More support")}
+        title={t("Resources to keep building after class")}
+        description={t("Explore tools, quizzes, tests, videos, and webinars connected to this program.")}
       >
         <FutureExpansionGrid items={track.future} locale={locale} />
       </SectionShell>

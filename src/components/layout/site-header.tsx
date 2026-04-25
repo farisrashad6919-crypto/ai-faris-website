@@ -1,4 +1,3 @@
-import { Globe } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { siteConfig, getBookingHref } from "@/config/site";
@@ -23,22 +22,28 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <header className="sticky top-0 z-50 px-4 pt-4">
-      <div className="glass-panel container-shell rounded-lg px-4 py-3 md:px-6">
-        <div className="flex items-center justify-between gap-4">
-          <Link className="min-w-0 flex-1" href="/">
-            <span className="block font-display text-xl text-primary md:text-2xl">
+    <header className="sticky top-0 z-50 px-3 pt-3 md:px-4 md:pt-4">
+      <div className="glass-panel mx-auto w-full max-w-[76rem] rounded-lg px-3 py-2.5 md:px-5">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 md:gap-4 xl:flex xl:justify-between">
+          <Link
+            className="min-w-0 max-w-[13.5rem] sm:max-w-none xl:w-[20rem] xl:flex-none"
+            href="/"
+          >
+            <span className="block truncate font-display text-base leading-tight text-primary md:text-xl">
               {siteConfig.brandName}
             </span>
-            <span className="mt-1 block text-xs uppercase tracking-[0.18em] text-secondary">
+            <span className="mt-0.5 block truncate text-[0.62rem] uppercase tracking-[0.12em] text-secondary/82 md:text-[0.68rem] md:tracking-[0.14em]">
               {copy(locale, "English Trainer / Communication Mentor")}
             </span>
           </Link>
 
-          <nav aria-label="Primary" className="hidden items-center gap-5 xl:flex">
+          <nav
+            aria-label="Primary"
+            className="hidden flex-1 items-center justify-center gap-4 xl:flex"
+          >
             {items.map((item) => (
               <Link
-                className="text-sm font-medium text-primary/82 hover:text-primary"
+                className="whitespace-nowrap text-sm font-medium text-primary/82 hover:text-primary"
                 href={item.href}
                 key={item.href}
               >
@@ -47,17 +52,19 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
             ))}
           </nav>
 
-          <div className="hidden items-center gap-3 xl:flex">
-            <LocaleSwitcher />
+          <div className="hidden shrink-0 items-center gap-2 xl:flex">
+            <LocaleSwitcher align="end" variant="popover" />
             <ButtonLink href={getBookingHref(locale)} variant="primary">
               <span>{t("bookSession")}</span>
             </ButtonLink>
           </div>
 
-          <div className="flex items-center gap-2 xl:hidden">
-            <div className="hidden sm:block">
-              <LocaleSwitcher compact />
-            </div>
+          <div className="flex shrink-0 items-center gap-2 xl:hidden">
+            <LocaleSwitcher
+              align="end"
+              triggerLabel="code"
+              variant="popover"
+            />
             <MobileNav
               closeLabel={t("closeMenu")}
               ctaHref={getBookingHref(locale)}
@@ -66,12 +73,6 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
               switcherLabel={t("openMenu")}
             />
           </div>
-        </div>
-        <div className="mt-3 hidden items-center gap-3 text-xs uppercase tracking-[0.16em] text-secondary md:flex xl:hidden">
-          <Globe className="size-3.5" />
-          <span>
-            {copy(locale, "English / Arabic / Turkish / Spanish / Italian / German / French / Ukrainian")}
-          </span>
         </div>
       </div>
     </header>

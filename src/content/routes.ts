@@ -53,7 +53,7 @@ export const staticRoutes: SiteRoute[] = [
     footer: true,
     title: "Reviews and Results | Faris Rashad English Trainer",
     description:
-      "Real uploaded review screenshots, clean transcriptions, and track-based proof from learners and teachers.",
+      "Real learner feedback from IELTS, Business English, General English, and teacher training goals.",
     keywords: ["English tutor reviews", "IELTS reviews", "Business English reviews"],
   },
   {
@@ -63,7 +63,7 @@ export const staticRoutes: SiteRoute[] = [
     footer: true,
     title: "Free Resources | English Tests, Quizzes, Videos, Articles, Tools",
     description:
-      "A filterable future content hub for placement tests, quizzes, videos, articles, learning tools, and webinar replays.",
+      "A focused library for placement tests, quizzes, videos, articles, learning tools, and webinar replays.",
     keywords: ["English resources", "IELTS quizzes", "placement tests", "English videos"],
   },
   {
@@ -82,7 +82,7 @@ export const staticRoutes: SiteRoute[] = [
     footer: true,
     title: "FAQ | English Training with Faris Rashad",
     description:
-      "Answers about booking on Preply, lead forms, IELTS, Business English, General English, teacher training, and resources.",
+      "Answers about booking on Preply, contact options, IELTS, Business English, General English, teacher training, and resources.",
     keywords: ["English training FAQ", "Preply booking", "Faris Rashad FAQ"],
   },
   {

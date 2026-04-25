@@ -47,7 +47,6 @@ export type ProofMediaItem = {
   src: string;
   alt: string;
   caption: string;
-  privacyNote?: string;
 };
 
 export type FutureItem = {

@@ -15,7 +15,7 @@ export function FaqPage({ locale }: { locale: Locale }) {
         "Preply remains the main booking destination and the fastest way to book a focused first session.",
     },
     {
-      question: "What can I use the lead form for?",
+      question: "What can I use the contact form for?",
       answer:
         "Use it for courses, webinars, training sessions, placement tests, and updates about a specific track.",
     },
@@ -25,9 +25,9 @@ export function FaqPage({ locale }: { locale: Locale }) {
         "Email is optional for course leads and recommended for webinars. WhatsApp or Telegram is required so there is at least one contact path.",
     },
     {
-      question: "Are class screenshots public-safe?",
+      question: "Can I see real class moments?",
       answer:
-        "Yes. Students can remain visible with consent, and the meeting visuals are kept clean and professional for public use.",
+        "Yes. You can explore selected lesson moments across IELTS, Business English, General English, and teacher training.",
     },
   ];
 
@@ -42,7 +42,7 @@ export function FaqPage({ locale }: { locale: Locale }) {
             </ButtonLink>
           </>
         }
-        description={t("Answers about booking, lead capture, privacy-safe proof media, and the four English training tracks.")}
+        description={t("Answers about booking, inquiries, real class moments, and the four English training tracks.")}
         eyebrow={t("FAQ")}
         title={t("Questions before you choose a track")}
       />
@@ -50,7 +50,7 @@ export function FaqPage({ locale }: { locale: Locale }) {
       <SectionShell
         className="bg-surface-container-low/65"
         eyebrow={t("General")}
-        title={t("Booking, contact, and privacy")}
+        title={t("Booking, contact, and next steps")}
       >
         <div className="grid gap-4">
           {generalFaq.map((item) => (

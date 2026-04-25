@@ -75,7 +75,7 @@ export const tracks: TrackContent[] = [
       { title: "IELTS Mini Quizzes", description: "Fast practice for grammar, vocabulary, and strategy.", type: "quiz" },
       { title: "IELTS Videos", description: "Speaking and writing breakdowns.", type: "video" },
       { title: "IELTS Articles", description: "Practical study guidance and band strategy.", type: "article" },
-      { title: "IELTS Writing Feedback", description: "Future writing review workflow.", type: "tool" },
+      { title: "IELTS Writing Feedback", description: "Focused writing review and improvement support.", type: "tool" },
       { title: "IELTS Speaking Intensive", description: "Focused webinar and training options.", type: "webinar" },
     ],
     faq: [
@@ -157,7 +157,7 @@ export const tracks: TrackContent[] = [
       { title: "Workplace English Videos", description: "Short lessons for real professional situations.", type: "video" },
       { title: "Interview Articles", description: "Guides for answer structure and language.", type: "article" },
       { title: "Meetings and Presentation Tools", description: "Templates and speaking frameworks.", type: "tool" },
-      { title: "Corporate Packages", description: "Future team and company training options.", type: "webinar" },
+      { title: "Corporate Packages", description: "Team and company training options.", type: "webinar" },
     ],
     faq: [
       { question: "Can lessons focus on my job?", answer: "Yes. The track can be adapted to your role, meetings, interviews, presentations, and daily communication needs." },
@@ -238,7 +238,7 @@ export const tracks: TrackContent[] = [
       { title: "Speaking Videos", description: "Confidence and fluency lessons.", type: "video" },
       { title: "Study Articles", description: "Practical learning guidance.", type: "article" },
       { title: "Vocabulary and Pronunciation Tools", description: "Reusable practice aids.", type: "tool" },
-      { title: "Free English Webinar", description: "Future live training sessions.", type: "webinar" },
+      { title: "Free English Webinar", description: "Live training sessions for focused practice.", type: "webinar" },
     ],
     faq: [
       { question: "Is this suitable if I understand English but cannot speak?", answer: "Yes. That is one of the clearest use cases for this track." },
@@ -324,7 +324,7 @@ export const tracks: TrackContent[] = [
     faq: [
       { question: "Is this only for current teachers?", answer: "No. It also fits future teachers, trainers, and advanced learners who want more precise communication." },
       { question: "Does the training include practical classroom techniques?", answer: "Yes. The track is designed around practical methodology, feedback, classroom language, and lesson design." },
-      { question: "Can this focus on advanced English instead of methodology?", answer: "Yes. The form can route you toward advanced English training when that is your main goal." },
+      { question: "Can this focus on advanced English instead of methodology?", answer: "Yes. You can choose advanced English training as your main focus." },
     ],
     ogImage: "/images/landing/og/og-esl-teacher-training.jpg",
     seo: {

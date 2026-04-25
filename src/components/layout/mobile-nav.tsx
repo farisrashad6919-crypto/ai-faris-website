@@ -1,14 +1,14 @@
 "use client";
 
-import { startTransition, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Menu, X } from "lucide-react";
 import { useLocale } from "next-intl";
 
-import { Link, usePathname, useRouter } from "@/i18n/navigation";
-import { locales, type Locale } from "@/i18n/routing";
+import { Link } from "@/i18n/navigation";
+import type { Locale } from "@/i18n/routing";
 import { copy } from "@/content/locale-copy";
-import { cn, isExternalHref } from "@/lib/utils";
+import { isExternalHref } from "@/lib/utils";
 
 import { LocaleSwitcher } from "./locale-switcher";
 
@@ -28,8 +28,6 @@ export function MobileNav({
   switcherLabel,
 }: MobileNavProps) {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-  const router = useRouter();
   const locale = useLocale() as Locale;
   const bookingIsExternal = isExternalHref(ctaHref);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -68,7 +66,7 @@ export function MobileNav({
         aria-controls="mobile-navigation"
         aria-expanded={open}
         aria-label={open ? closeLabel : switcherLabel}
-        className="glass-panel inline-flex size-11 items-center justify-center rounded-sm text-primary lg:hidden"
+        className="glass-panel inline-flex size-10 items-center justify-center rounded-sm text-primary xl:hidden"
         onClick={() => setOpen((current) => !current)}
         ref={triggerRef}
         type="button"
@@ -125,7 +123,11 @@ export function MobileNav({
             </nav>
 
             <div className="mt-8 flex flex-col gap-4 border-t ghost-divider pt-6">
-              <LocaleSwitcher compact />
+              <LocaleSwitcher
+                className="w-full justify-start"
+                onLocaleChange={() => setOpen(false)}
+                variant="inline"
+              />
               {bookingIsExternal ? (
                 <a
                   className="button-primary"
@@ -145,34 +147,6 @@ export function MobileNav({
                   {ctaLabel}
                 </Link>
               )}
-              <div className="flex flex-wrap gap-2">
-                {locales.map((option) => {
-                  const isActive = option === locale;
-
-                  return (
-                    <button
-                      className={cn(
-                        "rounded-sm px-3 py-2 text-sm font-medium",
-                        isActive
-                          ? "bg-primary text-surface-container-lowest"
-                          : "glass-panel text-primary",
-                      )}
-                      key={option}
-                      onClick={() => {
-                        if (isActive) return;
-
-                        startTransition(() => {
-                          router.replace(pathname, { locale: option });
-                        });
-                        setOpen(false);
-                      }}
-                      type="button"
-                    >
-                      {option.toUpperCase()}
-                    </button>
-                  );
-                })}
-              </div>
             </div>
           </div>
         </div>

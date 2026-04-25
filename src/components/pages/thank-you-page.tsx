@@ -31,7 +31,7 @@ export function ThankYouPage({ locale }: { locale: Locale }) {
             </p>
           </div>
         }
-        description={t("Thank you for registering your interest. Your selected track, offer type, and goal help route you toward the right next step.")}
+        description={t("Thank you for registering your interest. Your selected track, offer type, and goal help shape the right next step.")}
         eyebrow={t("Thank you")}
         title={t("Your next step is clearer now")}
       />
@@ -43,9 +43,9 @@ export function ThankYouPage({ locale }: { locale: Locale }) {
       >
         <div className="grid gap-4 md:grid-cols-3">
           {[
-            "Your inquiry is reviewed with the source page, selected track, offer type, and contact details.",
+            "Your inquiry is reviewed with your selected track, offer type, goal, and contact details.",
             "You can be guided toward a Preply trial, free webinar, placement test, training session, or updates.",
-            "You can keep exploring programs, reviews, and resources while future webinar steps are prepared.",
+            "You can keep exploring programs, reviews, and resources while the next training opportunities are prepared.",
           ].map((item, index) => (
             <Reveal className="paper-panel rounded-md p-6" delay={index * 0.05} key={item}>
               <p className="eyebrow">0{index + 1}</p>

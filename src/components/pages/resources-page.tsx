@@ -23,20 +23,20 @@ export function ResourcesPage({ locale }: { locale: Locale }) {
         }
         aside={
           <div className="space-y-4">
-            <h2 className="text-2xl">{t("Future content types")}</h2>
+            <h2 className="text-2xl">{t("Learning formats")}</h2>
             <p className="muted-copy text-sm leading-6">
-              {t("Articles, videos, quizzes, placement tests, tools, webinars, and downloadable resources can be added through the registry.")}
+              {t("Articles, videos, quizzes, placement tests, tools, webinars, and downloadable guides for focused English growth.")}
             </p>
           </div>
         }
-        description={t("A filterable content hub ready for placement tests, quizzes, videos, articles, learning tools, downloads, webinar replays, and study resources by track.")}
+        description={t("A focused place for placement tests, quizzes, videos, articles, learning tools, downloads, webinar replays, and study resources by track.")}
         eyebrow={t("Free resources")}
-        title={t("A future-ready learning library")}
+        title={t("A learning library for your next step")}
       />
 
       <SectionShell
         className="bg-surface-container-low/65"
-        description={t("Filter by track and content type. Current entries are planned placeholders ready to become live resources.")}
+        description={t("Filter by track and content type to find the support that matches your current goal.")}
         eyebrow={t("Resource filters")}
         title={t("Find the resource path that matches your goal")}
       >

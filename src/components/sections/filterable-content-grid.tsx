@@ -2,12 +2,11 @@
 
 import { useMemo, useState } from "react";
 
-import { useTranslations } from "next-intl";
-
 import { contentTypes, type ResourceEntry } from "@/content/resources";
 import { tracks } from "@/content/tracks";
 import type { ResourceType, TrackId } from "@/content/types";
 import { copy } from "@/content/locale-copy";
+import { localeSelfNames } from "@/i18n/locale-labels";
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
@@ -25,12 +24,15 @@ function labelType(type: ResourceType) {
   return label[0].toUpperCase() + label.slice(1);
 }
 
+function labelStatus(status: ResourceEntry["status"]) {
+  return status === "available" ? "Available" : "Upcoming";
+}
+
 export function FilterableContentGrid({
   locale,
   entries,
   mode,
 }: FilterableContentGridProps) {
-  const localeSwitcher = useTranslations("LocaleSwitcher");
   const [track, setTrack] = useState<TrackFilter>("all");
   const [type, setType] = useState<TypeFilter>(
     mode === "webinars" ? "webinar" : "all",
@@ -130,7 +132,7 @@ export function FilterableContentGrid({
         {filtered.map((entry) => (
           <article className="paper-panel rounded-md p-6" key={entry.id}>
             <p className="text-xs font-semibold uppercase text-secondary">
-              {copy(locale, labelType(entry.type))} / {copy(locale, entry.status)}
+              {copy(locale, labelType(entry.type))} / {copy(locale, labelStatus(entry.status))}
             </p>
             <h3 className="mt-3 text-2xl">{copy(locale, entry.title)}</h3>
             <p className="muted-copy mt-3 text-sm leading-6">
@@ -155,9 +157,9 @@ export function FilterableContentGrid({
 
       {filtered.length === 0 ? (
         <div className="paper-panel rounded-md p-6 text-sm text-secondary">
-          {copy(locale, "No matching items yet for {language}. More entries can be added from the content registry.").replace(
+          {copy(locale, "No matching items yet for {language}. Try a different track or content type.").replace(
             "{language}",
-            localeSwitcher(`localeNames.${locale}`),
+            localeSelfNames[locale],
           )}
         </div>
       ) : null}

@@ -24,7 +24,7 @@ export function PageHero({
       <div className="container-shell grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_22rem] lg:items-end">
         <div className="space-y-6">
           <p className="eyebrow">{eyebrow}</p>
-          <h1 className="max-w-4xl text-5xl leading-tight md:text-6xl">
+          <h1 className="max-w-4xl text-4xl leading-tight sm:text-5xl md:text-6xl">
             {title}
           </h1>
           <p className="muted-copy max-w-2xl text-lg leading-8">

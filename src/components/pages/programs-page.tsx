@@ -27,7 +27,7 @@ export function ProgramsPage({ locale }: { locale: Locale }) {
           <div className="space-y-4">
             <h2 className="text-2xl">{t("Choose by outcome")}</h2>
             <p className="muted-copy text-sm leading-6">
-              {t("Each program has its own landing page, proof, lead form, FAQ, and future expansion blocks.")}
+              {t("Each program gives you a focused path with goals, fit, learner feedback, class moments, and a clear next step.")}
             </p>
           </div>
         }
@@ -38,7 +38,7 @@ export function ProgramsPage({ locale }: { locale: Locale }) {
 
       <SectionShell
         className="bg-surface-container-low/65"
-        description={t("Each card points to a dedicated page with its own message, pain points, reviews, media, and CTA stack.")}
+        description={t("Compare the programs by goal, learner fit, and the kind of progress you want to build next.")}
         eyebrow={t("Program catalog")}
         title={t("Choose the path that matches your goal")}
       >

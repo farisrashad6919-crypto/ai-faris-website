@@ -36,7 +36,10 @@ export async function SiteFooter({ locale }: { locale: Locale }) {
                 {copy(locale, "Languages")}
               </p>
               <div className="rounded-md bg-white/8 p-3">
-                <LocaleSwitcher compact />
+                <LocaleSwitcher
+                  className="w-full justify-start"
+                  variant="inline"
+                />
               </div>
             </div>
             <div className="space-y-3">

@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { useFormStatus } from "react-dom";
 
 import { submitInquiry } from "@/features/contact/actions";
+import { localeSelfNames } from "@/i18n/locale-labels";
 import { locales, type Locale } from "@/i18n/routing";
 import {
   initialInquiryState,
@@ -82,7 +83,6 @@ export function ContactForm({
   defaultOfferType = "course",
 }: ContactFormProps) {
   const t = useTranslations("LeadForm");
-  const localeSwitcher = useTranslations("LocaleSwitcher");
   const [state, formAction] = useActionState(submitInquiry, initialInquiryState);
   const formRef = useRef<HTMLFormElement>(null);
   const [tracking] = useState(() => {
@@ -269,7 +269,7 @@ export function ContactForm({
           <select className="premium-input" defaultValue={locale} name="preferredLanguage">
             {locales.map((option) => (
               <option key={option} value={option}>
-                {localeSwitcher(`localeNames.${option}`)}
+                {localeSelfNames[option]}
               </option>
             ))}
           </select>

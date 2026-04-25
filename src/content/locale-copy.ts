@@ -3,28 +3,6 @@ import { locales, type Locale } from "@/i18n/routing";
 import type { LocalizedText } from "./types";
 import { translationMemory } from "./translation-memory";
 
-export const localeNames: Record<Locale, string> = {
-  en: "English",
-  ar: "العربية",
-  tr: "Türkçe",
-  es: "Español",
-  it: "Italiano",
-  de: "Deutsch",
-  fr: "Français",
-  uk: "Українська",
-};
-
-export const localeLanguageLabels: Record<Locale, string> = {
-  en: "English",
-  ar: "Arabic",
-  tr: "Turkish",
-  es: "Spanish",
-  it: "Italian",
-  de: "German",
-  fr: "French",
-  uk: "Ukrainian",
-};
-
 function isReadable(value: string) {
   return !/[ØÙÂÃ]/.test(value);
 }
@@ -68,17 +46,6 @@ export const uiCopy = {
     bookPreply: text("Book on Preply", { ar: "احجز على Preply" }),
     explorePrograms: text("Explore programs", { ar: "استكشف البرامج" }),
     registerInterest: text("Register interest", { ar: "سجل اهتمامك" }),
-    proofNote: text(
-      "Real class media used with student consent. People remain visible, while the public presentation is kept clean and professional.",
-      {
-        ar: "صور حقيقية من الحصص بموافقة الطلاب. يبقى الأشخاص ظاهرين مع الحفاظ على عرض نظيف واحترافي.",
-      },
-    ),
-    originalReview: text("Original review screenshot", {
-      ar: "لقطة المراجعة الأصلية",
-    }),
-    cleanText: text("Clean transcription", { ar: "نص منسق" }),
-    localizedExcerpt: text("Localized summary", { ar: "ملخص مترجم" }),
     filterAll: text("All", { ar: "الكل" }),
   },
   whatNext: {

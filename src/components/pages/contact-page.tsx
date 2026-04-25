@@ -25,22 +25,22 @@ export function ContactPage({ locale }: { locale: Locale }) {
         }
         aside={
           <div className="space-y-4">
-            <h2 className="text-2xl">{t("Lead form supports")}</h2>
+            <h2 className="text-2xl">{t("I can help with")}</h2>
             <ul className="grid gap-3 text-sm leading-6 text-secondary">
               <li>{t("Courses and private training")}</li>
-              <li>{t("Free webinars and future events")}</li>
+              <li>{t("Free webinars and live events")}</li>
               <li>{t("Placement tests and updates")}</li>
-              <li>{t("UTM, referrer, and source-page tracking")}</li>
+              <li>{t("Choosing the right English path")}</li>
             </ul>
           </div>
         }
-        description={t("Book directly on Preply or register your interest for a course, webinar, training session, placement test, or future update.")}
+        description={t("Book directly on Preply or register your interest for a course, webinar, training session, placement test, or update.")}
         eyebrow={t("Contact and booking")}
         title={t("Start with the cleanest next step")}
       />
 
       <SectionShell
-        description={t("Full name, age, nationality, track, offer type, preferred language, and consent are required. WhatsApp or Telegram is enough for contact.")}
+        description={t("Share your goal, preferred program, and best contact method so I can point you toward the right next step.")}
         eyebrow={t("Inquiry form")}
         id="inquiry-form"
         title={t("Tell me what you want to improve")}
@@ -59,14 +59,14 @@ export function ContactPage({ locale }: { locale: Locale }) {
               {
                 icon: MessageCircle,
                 title: "Use the form",
-                description: "Best for webinars, placement tests, training interest, and future updates.",
+                description: "Best for webinars, placement tests, training interest, and updates.",
                 href: "#inquiry-form",
                 external: false,
               },
               {
                 icon: Send,
                 title: "Follow the proof",
-                description: "Explore real reviews and clean class media before deciding.",
+                description: "Explore real reviews and class moments before deciding.",
                 href: "/reviews",
                 external: false,
               },

@@ -1,24 +1,85 @@
 {
   "LocaleSwitcher": {
-    "label": "Selecteur de langue",
-    "localeNames": { "en": "anglais", "ar": "arabe", "tr": "turc", "es": "espagnol", "it": "italien", "de": "allemand", "fr": "français", "uk": "ukrainien" }
+    "label": "Selecteur de langue"
   },
   "Navigation": {
-    "home": "Accueil", "about": "A propos", "programs": "Programmes", "reviews": "Avis", "resources": "Ressources", "webinars": "Webinaires", "faq": "FAQ", "contact": "Contact", "bookSession": "Reserver sur Preply", "openMenu": "Ouvrir la navigation", "closeMenu": "Fermer la navigation"
+    "home": "Accueil",
+    "about": "A propos",
+    "programs": "Programmes",
+    "reviews": "Avis",
+    "resources": "Ressources",
+    "webinars": "Webinaires",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "bookSession": "Reserver sur Preply",
+    "openMenu": "Ouvrir la navigation",
+    "closeMenu": "Fermer la navigation"
   },
   "Footer": {
     "eyebrow": "Formation d'anglais premium",
     "summary": "Faris Rashad English Trainer aide les apprenants serieux a construire un anglais structure, confiant et mesurable pour IELTS, le travail, la fluence generale et le developpement enseignant.",
-    "connect": "Connecter", "note": "Preply reste le principal canal de reservation. Les formulaires recueillent l'interet pour cours, webinaires, formations, tests de niveau et mises a jour.", "copyright": "© {year} Faris Rashad English Trainer.", "source": "Reserver sur Preply"
+    "connect": "Connecter",
+    "note": "Preply est le principal canal de r?servation. Vous pouvez aussi envoyer une demande pour les cours, webinaires, formations, tests de niveau ou nouveaut?s.",
+    "copyright": "© {year} Faris Rashad English Trainer.",
+    "source": "Reserver sur Preply"
   },
-  "NotFound": { "eyebrow": "Introuvable", "title": "Cette page n'est pas disponible.", "description": "La route a peut-etre change. Revenez a l'accueil et choisissez le bon parcours.", "cta": "Retour accueil" },
+  "NotFound": {
+    "eyebrow": "Introuvable",
+    "title": "Cette page n'est pas disponible.",
+    "description": "La route a peut-etre change. Revenez a l'accueil et choisissez le bon parcours.",
+    "cta": "Retour accueil"
+  },
   "LeadForm": {
-    "title": "Enregistrer votre interet", "description": "Dites a Faris ce dont vous avez besoin. Vous pouvez aussi reserver directement sur Preply.",
-    "fields": { "fullName": "Nom complet", "age": "Age", "nationality": "Nationalite", "whatsapp": "Telephone WhatsApp", "telegram": "Telegram ou telephone", "email": "Email", "track": "Parcours souhaite", "offerType": "Type d'offre", "preferredLanguage": "Langue preferee", "currentLevel": "Niveau actuel", "goal": "Message court ou objectif", "consent": "J'accepte d'etre contacte au sujet de cette demande." },
-    "placeholders": { "fullName": "Votre nom complet", "age": "Votre age", "nationality": "Pays ou nationalite", "whatsapp": "+33...", "telegram": "@username ou telephone", "email": "you@example.com", "select": "Choisir une option", "goal": "Decrivez brievement votre objectif, delai ou difficulte." },
-    "helper": { "contact": "Ajoutez WhatsApp ou Telegram. Au moins un moyen de contact est requis.", "email": "Optionnel pour les cours et recommande pour les webinaires.", "privacy": "Vos donnees servent uniquement a repondre a cette demande." },
-    "submit": "Envoyer la demande", "submitting": "Envoi...", "success": "Votre demande a ete recue. Vous pouvez aussi reserver sur Preply pour aller plus vite.", "error": "Veuillez completer les champs signales.",
-    "validation": { "fullName": "Veuillez entrer votre nom complet.", "age": "Veuillez entrer un age valide.", "nationality": "Veuillez entrer votre nationalite.", "contact": "Veuillez ajouter WhatsApp ou Telegram.", "track": "Veuillez choisir un parcours.", "offerType": "Veuillez choisir un type d'offre.", "preferredLanguage": "Veuillez choisir une langue preferee.", "consent": "Le consentement est requis." }
+    "title": "Enregistrer votre interet",
+    "description": "Dites a Faris ce dont vous avez besoin. Vous pouvez aussi reserver directement sur Preply.",
+    "fields": {
+      "fullName": "Nom complet",
+      "age": "Age",
+      "nationality": "Nationalite",
+      "whatsapp": "Telephone WhatsApp",
+      "telegram": "Telegram ou telephone",
+      "email": "Email",
+      "track": "Parcours souhaite",
+      "offerType": "Type d'offre",
+      "preferredLanguage": "Langue preferee",
+      "currentLevel": "Niveau actuel",
+      "goal": "Message court ou objectif",
+      "consent": "J'accepte d'etre contacte au sujet de cette demande."
+    },
+    "placeholders": {
+      "fullName": "Votre nom complet",
+      "age": "Votre age",
+      "nationality": "Pays ou nationalite",
+      "whatsapp": "+33...",
+      "telegram": "@username ou telephone",
+      "email": "you@example.com",
+      "select": "Choisir une option",
+      "goal": "Decrivez brievement votre objectif, delai ou difficulte."
+    },
+    "helper": {
+      "contact": "Ajoutez WhatsApp ou Telegram. Au moins un moyen de contact est requis.",
+      "email": "Optionnel pour les cours et recommande pour les webinaires.",
+      "privacy": "Vos donnees servent uniquement a repondre a cette demande."
+    },
+    "submit": "Envoyer la demande",
+    "submitting": "Envoi...",
+    "success": "Votre demande a ete recue. Vous pouvez aussi reserver sur Preply pour aller plus vite.",
+    "error": "Veuillez completer les champs signales.",
+    "validation": {
+      "fullName": "Veuillez entrer votre nom complet.",
+      "age": "Veuillez entrer un age valide.",
+      "nationality": "Veuillez entrer votre nationalite.",
+      "contact": "Veuillez ajouter WhatsApp ou Telegram.",
+      "track": "Veuillez choisir un parcours.",
+      "offerType": "Veuillez choisir un type d'offre.",
+      "preferredLanguage": "Veuillez choisir une langue preferee.",
+      "consent": "Le consentement est requis."
+    }
   },
-  "Filters": { "track": "Parcours", "type": "Type", "all": "Tout", "planned": "Prevus" }
+  "Filters": {
+    "track": "Parcours",
+    "type": "Type",
+    "all": "Tout",
+    "planned": "Prevus"
+  }
 }

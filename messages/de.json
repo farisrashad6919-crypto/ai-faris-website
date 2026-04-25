@@ -1,24 +1,85 @@
 {
   "LocaleSwitcher": {
-    "label": "Sprachauswahl",
-    "localeNames": { "en": "Englisch", "ar": "Arabisch", "tr": "Türkisch", "es": "Spanisch", "it": "Italienisch", "de": "Deutsch", "fr": "Französisch", "uk": "Ukrainisch" }
+    "label": "Sprachauswahl"
   },
   "Navigation": {
-    "home": "Start", "about": "Uber Faris", "programs": "Programme", "reviews": "Bewertungen", "resources": "Ressourcen", "webinars": "Webinare", "faq": "FAQ", "contact": "Kontakt", "bookSession": "Auf Preply buchen", "openMenu": "Navigation offnen", "closeMenu": "Navigation schliessen"
+    "home": "Start",
+    "about": "Uber Faris",
+    "programs": "Programme",
+    "reviews": "Bewertungen",
+    "resources": "Ressourcen",
+    "webinars": "Webinare",
+    "faq": "FAQ",
+    "contact": "Kontakt",
+    "bookSession": "Auf Preply buchen",
+    "openMenu": "Navigation offnen",
+    "closeMenu": "Navigation schliessen"
   },
   "Footer": {
     "eyebrow": "Premium Englischtraining",
     "summary": "Faris Rashad English Trainer hilft ernsthaften Lernenden, strukturiertes, sicheres und messbares Englisch fur IELTS, Beruf, allgemeine Fluency und Lehrkrafteentwicklung aufzubauen.",
-    "connect": "Verbinden", "note": "Preply ist das wichtigste Buchungsziel. Formulare sammeln Interesse an Kursen, Webinaren, Training, Einstufungstests und Updates.", "copyright": "© {year} Faris Rashad English Trainer.", "source": "Auf Preply buchen"
+    "connect": "Verbinden",
+    "note": "Preply ist der wichtigste Buchungsweg. Du kannst auch eine Anfrage zu Kursen, Webinaren, Training, Einstufungstests oder Updates senden.",
+    "copyright": "© {year} Faris Rashad English Trainer.",
+    "source": "Auf Preply buchen"
   },
-  "NotFound": { "eyebrow": "Nicht gefunden", "title": "Diese Seite ist nicht verfugbar.", "description": "Die Route hat sich moglicherweise geandert. Kehre zur Startseite zuruck.", "cta": "Zur Startseite" },
+  "NotFound": {
+    "eyebrow": "Nicht gefunden",
+    "title": "Diese Seite ist nicht verfugbar.",
+    "description": "Die Route hat sich moglicherweise geandert. Kehre zur Startseite zuruck.",
+    "cta": "Zur Startseite"
+  },
   "LeadForm": {
-    "title": "Interesse registrieren", "description": "Sag Faris, was du brauchst. Wenn du bereit bist, kannst du direkt auf Preply buchen.",
-    "fields": { "fullName": "Vollstandiger Name", "age": "Alter", "nationality": "Nationalitat", "whatsapp": "WhatsApp Telefonnummer", "telegram": "Telegram oder Telefon", "email": "E-Mail", "track": "Interessiertes Programm", "offerType": "Angebotstyp", "preferredLanguage": "Bevorzugte Sprache", "currentLevel": "Aktuelles Englischlevel", "goal": "Kurze Nachricht oder Ziel", "consent": "Ich stimme zu, zu dieser Anfrage kontaktiert zu werden." },
-    "placeholders": { "fullName": "Dein vollstandiger Name", "age": "Dein Alter", "nationality": "Land oder Nationalitat", "whatsapp": "+49...", "telegram": "@username oder Telefon", "email": "you@example.com", "select": "Option auswahlen", "goal": "Beschreibe kurz Ziel, Zeitplan oder Herausforderung." },
-    "helper": { "contact": "WhatsApp oder Telegram hinzufugen. Mindestens eine Kontaktmethode ist erforderlich.", "email": "Optional fur Kursanfragen und empfohlen fur Webinare.", "privacy": "Deine Daten werden nur zur Beantwortung dieser Anfrage genutzt." },
-    "submit": "Anfrage senden", "submitting": "Senden...", "success": "Deine Anfrage wurde empfangen. Du kannst auch auf Preply buchen.", "error": "Bitte markierte Felder ausfullen.",
-    "validation": { "fullName": "Bitte vollstandigen Namen eingeben.", "age": "Bitte gultiges Alter eingeben.", "nationality": "Bitte Nationalitat eingeben.", "contact": "Bitte WhatsApp oder Telegram hinzufugen.", "track": "Bitte Programm auswahlen.", "offerType": "Bitte Angebotstyp auswahlen.", "preferredLanguage": "Bitte bevorzugte Sprache auswahlen.", "consent": "Zustimmung ist erforderlich." }
+    "title": "Interesse registrieren",
+    "description": "Sag Faris, was du brauchst. Wenn du bereit bist, kannst du direkt auf Preply buchen.",
+    "fields": {
+      "fullName": "Vollstandiger Name",
+      "age": "Alter",
+      "nationality": "Nationalitat",
+      "whatsapp": "WhatsApp Telefonnummer",
+      "telegram": "Telegram oder Telefon",
+      "email": "E-Mail",
+      "track": "Interessiertes Programm",
+      "offerType": "Angebotstyp",
+      "preferredLanguage": "Bevorzugte Sprache",
+      "currentLevel": "Aktuelles Englischlevel",
+      "goal": "Kurze Nachricht oder Ziel",
+      "consent": "Ich stimme zu, zu dieser Anfrage kontaktiert zu werden."
+    },
+    "placeholders": {
+      "fullName": "Dein vollstandiger Name",
+      "age": "Dein Alter",
+      "nationality": "Land oder Nationalitat",
+      "whatsapp": "+49...",
+      "telegram": "@username oder Telefon",
+      "email": "you@example.com",
+      "select": "Option auswahlen",
+      "goal": "Beschreibe kurz Ziel, Zeitplan oder Herausforderung."
+    },
+    "helper": {
+      "contact": "WhatsApp oder Telegram hinzufugen. Mindestens eine Kontaktmethode ist erforderlich.",
+      "email": "Optional fur Kursanfragen und empfohlen fur Webinare.",
+      "privacy": "Deine Daten werden nur zur Beantwortung dieser Anfrage genutzt."
+    },
+    "submit": "Anfrage senden",
+    "submitting": "Senden...",
+    "success": "Deine Anfrage wurde empfangen. Du kannst auch auf Preply buchen.",
+    "error": "Bitte markierte Felder ausfullen.",
+    "validation": {
+      "fullName": "Bitte vollstandigen Namen eingeben.",
+      "age": "Bitte gultiges Alter eingeben.",
+      "nationality": "Bitte Nationalitat eingeben.",
+      "contact": "Bitte WhatsApp oder Telegram hinzufugen.",
+      "track": "Bitte Programm auswahlen.",
+      "offerType": "Bitte Angebotstyp auswahlen.",
+      "preferredLanguage": "Bitte bevorzugte Sprache auswahlen.",
+      "consent": "Zustimmung ist erforderlich."
+    }
   },
-  "Filters": { "track": "Programm", "type": "Typ", "all": "Alle", "planned": "Geplant" }
+  "Filters": {
+    "track": "Programm",
+    "type": "Typ",
+    "all": "Alle",
+    "planned": "Geplant"
+  }
 }

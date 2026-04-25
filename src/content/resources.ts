@@ -13,7 +13,7 @@ export const resourceEntries: ResourceEntry[] = [
   {
     id: "ielts-readiness-test",
     title: "IELTS Readiness Test",
-    description: "A future diagnostic for IELTS speaking, writing, vocabulary, and study readiness.",
+    description: "A diagnostic for IELTS speaking, writing, vocabulary, and study readiness.",
     trackIds: ["ielts"],
     type: "placement-test",
     status: "planned",
@@ -21,7 +21,7 @@ export const resourceEntries: ResourceEntry[] = [
   {
     id: "business-meeting-phrases",
     title: "Meetings and Presentation Tool",
-    description: "A future workplace English tool for meeting language, presentation structure, and follow-up phrases.",
+    description: "A workplace English tool for meeting language, presentation structure, and follow-up phrases.",
     trackIds: ["business"],
     type: "tool",
     status: "planned",
@@ -29,7 +29,7 @@ export const resourceEntries: ResourceEntry[] = [
   {
     id: "general-grammar-quiz",
     title: "Grammar Confidence Quiz",
-    description: "A future quiz for learners who need clearer grammar while speaking.",
+    description: "A quiz for learners who need clearer grammar while speaking.",
     trackIds: ["general"],
     type: "quiz",
     status: "planned",
@@ -37,7 +37,7 @@ export const resourceEntries: ResourceEntry[] = [
   {
     id: "speaking-confidence-video",
     title: "Speaking Confidence Video",
-    description: "A future video lesson on speaking with less hesitation and more control.",
+    description: "A video lesson on speaking with less hesitation and more control.",
     trackIds: ["general", "business"],
     type: "video",
     status: "planned",
@@ -45,7 +45,7 @@ export const resourceEntries: ResourceEntry[] = [
   {
     id: "ielts-speaking-article",
     title: "IELTS Speaking Answer Structure",
-    description: "A future article explaining how to organize answers without sounding memorized.",
+    description: "A practical article explaining how to organize answers without sounding memorized.",
     trackIds: ["ielts"],
     type: "article",
     status: "planned",
@@ -53,7 +53,7 @@ export const resourceEntries: ResourceEntry[] = [
   {
     id: "teacher-reflection-template",
     title: "Teacher Reflection Template",
-    description: "A future downloadable tool for teachers reviewing lessons and feedback choices.",
+    description: "A downloadable tool for teachers reviewing lessons and feedback choices.",
     trackIds: ["teacher-training"],
     type: "tool",
     status: "planned",
@@ -61,7 +61,7 @@ export const resourceEntries: ResourceEntry[] = [
   {
     id: "teacher-development-webinar",
     title: "Teacher Development Webinar",
-    description: "A future live webinar for ESL teachers who want practical methodology.",
+    description: "A live webinar for ESL teachers who want practical methodology.",
     trackIds: ["teacher-training"],
     type: "webinar",
     status: "planned",
@@ -69,7 +69,7 @@ export const resourceEntries: ResourceEntry[] = [
   {
     id: "business-free-webinar",
     title: "Free Business English Webinar",
-    description: "A future webinar for professionals who want clearer meetings and interviews.",
+    description: "A webinar for professionals who want clearer meetings and interviews.",
     trackIds: ["business"],
     type: "webinar",
     status: "planned",

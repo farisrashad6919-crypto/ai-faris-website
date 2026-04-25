@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import type { Locale } from "@/i18n/routing";
 import type { ProofMediaItem } from "@/content/types";
-import { copy, uiCopy } from "@/content/locale-copy";
+import { copy } from "@/content/locale-copy";
 
 export function ProofMediaGrid({
   items,
@@ -24,11 +24,8 @@ export function ProofMediaGrid({
               src={item.src}
             />
           </div>
-          <figcaption className="space-y-2 p-5">
+          <figcaption className="p-5">
             <p className="font-display text-xl text-primary">{copy(locale, item.caption)}</p>
-            <p className="text-sm leading-6 text-secondary">
-              {copy(locale, item.privacyNote ?? uiCopy.common.proofNote)}
-            </p>
           </figcaption>
         </figure>
       ))}

@@ -1,16 +1,6 @@
 {
   "LocaleSwitcher": {
-    "label": "Language selector",
-    "localeNames": {
-      "en": "English",
-      "ar": "Arabic",
-      "tr": "Turkish",
-      "es": "Spanish",
-      "it": "Italian",
-      "de": "German",
-      "fr": "French",
-      "uk": "Ukrainian"
-    }
+    "label": "Language selector"
   },
   "Navigation": {
     "home": "Home",
@@ -29,7 +19,7 @@
     "eyebrow": "Premium English Training",
     "summary": "Faris Rashad English Trainer helps serious learners build structured, confident, measurable English across IELTS, business, general fluency, and teacher development.",
     "connect": "Connect",
-    "note": "Preply is the main booking destination. Lead forms collect interest for courses, webinars, training, placement tests, and updates.",
+    "note": "Preply is the main booking destination. You can also send an inquiry for courses, webinars, training, placement tests, or updates.",
     "copyright": "© {year} Faris Rashad English Trainer.",
     "source": "Book on Preply"
   },

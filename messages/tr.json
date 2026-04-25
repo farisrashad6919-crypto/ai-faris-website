@@ -1,16 +1,6 @@
 {
   "LocaleSwitcher": {
-    "label": "Dil secici",
-    "localeNames": {
-      "en": "İngilizce",
-      "ar": "Arapça",
-      "tr": "Türkçe",
-      "es": "İspanyolca",
-      "it": "İtalyanca",
-      "de": "Almanca",
-      "fr": "Fransızca",
-      "uk": "Ukraynaca"
-    }
+    "label": "Dil secici"
   },
   "Navigation": {
     "home": "Ana sayfa",
@@ -29,7 +19,7 @@
     "eyebrow": "Premium Ingilizce Egitimi",
     "summary": "Faris Rashad English Trainer; IELTS, Business English, General English ve ogretmen gelisimi icin yapili, guvenli ve olculebilir ilerleme sunar.",
     "connect": "Baglantilar",
-    "note": "Ana rezervasyon noktasi Preply'dir. Formlar kurs, webinar, egitim, seviye testi ve duyuru ilgisini toplar.",
+    "note": "Preply ana rezervasyon yoludur. Kurslar, webinarlar, e?itimler, seviye testleri veya g?ncellemeler i?in de mesaj g?nderebilirsiniz.",
     "copyright": "© {year} Faris Rashad English Trainer.",
     "source": "Preply'de rezervasyon"
   },

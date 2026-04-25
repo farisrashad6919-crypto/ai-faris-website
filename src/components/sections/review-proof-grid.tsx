@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import type { Locale } from "@/i18n/routing";
 import type { ReviewItem } from "@/content/types";
-import { copy, uiCopy } from "@/content/locale-copy";
+import { copy } from "@/content/locale-copy";
 
 type ReviewProofGridProps = {
   reviews: ReviewItem[];
@@ -16,7 +16,7 @@ export function ReviewProofGrid({ reviews, locale }: ReviewProofGridProps) {
         <article className="paper-panel overflow-hidden rounded-lg" key={review.id}>
           <div className="relative aspect-[4/5] bg-surface-container-low">
             <Image
-              alt={`${copy(locale, uiCopy.common.originalReview)} - ${review.reviewer}`}
+              alt={`${copy(locale, "Review from")} ${review.reviewer}`}
               className="object-contain"
               fill
               sizes="(max-width: 1024px) 100vw, 33vw"
@@ -33,22 +33,9 @@ export function ReviewProofGrid({ reviews, locale }: ReviewProofGridProps) {
                   .join(" / ")}
               </p>
             </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-secondary">
-                {copy(locale, uiCopy.common.localizedExcerpt)}
-              </p>
-              <p className="muted-copy mt-2 text-sm leading-6">
-                {copy(locale, review.localizedExcerpt)}
-              </p>
-            </div>
-            <details className="rounded-md bg-surface-container-low/80 p-4">
-              <summary className="text-sm font-semibold text-primary">
-                {copy(locale, uiCopy.common.cleanText)}
-              </summary>
-              <p className="muted-copy mt-3 text-sm leading-6">
-                {review.transcription}
-              </p>
-            </details>
+            <p className="muted-copy text-sm leading-6">
+              {copy(locale, review.localizedExcerpt)}
+            </p>
           </div>
         </article>
       ))}

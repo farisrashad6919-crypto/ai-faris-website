@@ -17,54 +17,42 @@ export const proofMedia: ProofMediaItem[] = [
     trackIds: ["business"],
     src: "/images/landing/classes/class-business-english-01-zoom.png",
     alt: "Business English online class screenshot with Zoom-style meeting interface",
-    caption: "A real one-to-one professional English session with a clean Zoom-style meeting frame.",
-    privacyNote:
-      "Students remain visible with consent; the meeting chrome is edited for a cleaner public presentation.",
+    caption: "Business English lesson",
   },
   {
     id: "teacher-training-gallery",
     trackIds: ["teacher-training"],
     src: "/images/landing/classes/class-esl-teacher-training-01.JPG",
     alt: "ESL teacher training group screenshot",
-    caption: "A teacher development group session with participants visible.",
-    privacyNote:
-      "Students and teachers remain visible with consent; the image is used as real class proof.",
+    caption: "Teacher training workshop",
   },
   {
     id: "teacher-training-cohort",
     trackIds: ["teacher-training"],
     src: "/images/landing/classes/class-esl-teacher-training-02.JPG",
     alt: "Teacher training cohort screenshot",
-    caption: "Live teacher training proof from an online cohort session.",
-    privacyNote:
-      "Participants remain visible with consent; the screenshot is selected for a credible public proof section.",
+    caption: "Live class moment",
   },
   {
     id: "general-speaking-class",
     trackIds: ["general"],
     src: "/images/landing/classes/class-general-english-adults-teens-02.png",
     alt: "General English video lesson screenshot",
-    caption: "Real General English speaking practice with the student visible.",
-    privacyNote:
-      "Students remain visible with consent; this is the main General English class image.",
+    caption: "General English class",
   },
   {
     id: "ielts-speaking-class",
     trackIds: ["ielts"],
     src: "/images/landing/classes/class-ielts-test-prep-01-zoom.png",
     alt: "IELTS preparation session screenshot with Zoom-style meeting interface",
-    caption: "IELTS speaking preparation proof with a clean Zoom-style meeting frame.",
-    privacyNote:
-      "Students remain visible with consent; the public derivative replaces the original interface styling.",
+    caption: "IELTS speaking session",
   },
   {
     id: "ielts-shared-screen",
     trackIds: ["ielts"],
     src: "/images/landing/classes/class-ielts-test-prep-02.png",
     alt: "IELTS test prep shared screen screenshot",
-    caption: "An IELTS preparation screen-share session with the class context visible.",
-    privacyNote:
-      "Students remain visible with consent; the screenshot supports IELTS lesson proof.",
+    caption: "IELTS speaking session",
   },
 ];
 

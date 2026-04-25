@@ -24,15 +24,15 @@ export function ReviewsPage({ locale }: { locale: Locale }) {
         }
         aside={
           <div className="space-y-4">
-            <h2 className="text-2xl">{t("Authenticity rules")}</h2>
+            <h2 className="text-2xl">{t("Learner feedback")}</h2>
             <p className="muted-copy text-sm leading-6">
-              {t("Review screenshots remain visible. Clean transcriptions and localized summaries support reading without changing meaning.")}
+              {t("A warm look at real experiences from learners preparing for exams, work, fluency, and teacher development.")}
             </p>
           </div>
         }
-        description={t("A track-based proof library using the uploaded review screenshots, with clean transcription and localized excerpt support.")}
-        eyebrow={t("Reviews and results")}
-        title={t("Real review screenshots, grouped by goal")}
+        description={t("Public feedback from learners I’ve worked with across different goals and backgrounds.")}
+        eyebrow={t("Real Reviews")}
+        title={t("Real words from real learners")}
       />
 
       {tracks.map((track) => {

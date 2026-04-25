@@ -40,7 +40,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
               <li>{t("Clear goals and honest feedback")}</li>
               <li>{t("Practical speaking and writing support")}</li>
               <li>{t("A warm but structured training environment")}</li>
-              <li>{t("Preply-first booking with future lead pathways")}</li>
+              <li>{t("Clear booking and inquiry options")}</li>
             </ul>
           </div>
         }
@@ -82,7 +82,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
 
       <SectionShell
         className="bg-surface-container-low/65"
-        description={t("The brand is built around evidence, not vague promises: real reviews, real class context, and a system that can grow with more tools and resources.")}
+        description={t("The work is built around evidence, not vague promises: real reviews, real class context, and a method that supports long-term progress.")}
         eyebrow={t("Method")}
         title={t("Structure plus support plus feedback")}
       >
