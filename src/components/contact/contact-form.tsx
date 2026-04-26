@@ -8,6 +8,7 @@ import { useFormStatus } from "react-dom";
 
 import { submitInquiry } from "@/features/contact/actions";
 import { localeSelfNames } from "@/i18n/locale-labels";
+import { useRouter } from "@/i18n/navigation";
 import { locales, type Locale } from "@/i18n/routing";
 import {
   initialInquiryState,
@@ -84,6 +85,7 @@ export function ContactForm({
 }: ContactFormProps) {
   const t = useTranslations("LeadForm");
   const [state, formAction] = useActionState(submitInquiry, initialInquiryState);
+  const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [tracking] = useState(() => {
     if (typeof window === "undefined") {
@@ -108,8 +110,9 @@ export function ContactForm({
   useEffect(() => {
     if (state.status === "success") {
       formRef.current?.reset();
+      router.push("/thank-you");
     }
-  }, [state.status]);
+  }, [router, state.status]);
 
   const requiredClass = "after:ms-1 after:text-error after:content-['*']";
 

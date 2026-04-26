@@ -19,8 +19,28 @@ type LeadFormMessages = {
   };
 };
 
+type LeadDeliveryResponse = {
+  ok?: boolean;
+  leadId?: string;
+  error?: string;
+};
+
 function stringValue(formData: FormData, key: string) {
   return String(formData.get(key) ?? "");
+}
+
+async function readLeadDeliveryResponse(response: Response) {
+  const body = await response.text();
+
+  if (!body.trim()) {
+    throw new Error("Lead delivery returned an empty response.");
+  }
+
+  try {
+    return JSON.parse(body) as LeadDeliveryResponse;
+  } catch {
+    throw new Error("Lead delivery returned an invalid JSON response.");
+  }
 }
 
 async function deliverLead(values: Record<string, unknown>) {
@@ -34,6 +54,7 @@ async function deliverLead(values: Record<string, unknown>) {
   const response = await fetch(endpoint, {
     method: "POST",
     headers: {
+      Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -45,6 +66,12 @@ async function deliverLead(values: Record<string, unknown>) {
 
   if (!response.ok) {
     throw new Error(`Lead delivery failed with ${response.status}`);
+  }
+
+  const result = await readLeadDeliveryResponse(response);
+
+  if (!result.ok) {
+    throw new Error(result.error || "Lead delivery was rejected.");
   }
 }
 
