@@ -53,6 +53,7 @@ export type FutureItem = {
   title: string;
   description: string;
   type: ResourceType;
+  href?: string;
 };
 
 export type FaqItem = {
@@ -96,4 +97,5 @@ export type RouteKey =
   | "faq"
   | "contact"
   | "thankYou"
+  | "placementTest"
   | TrackId;

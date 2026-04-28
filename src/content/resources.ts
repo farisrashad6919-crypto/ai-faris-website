@@ -7,9 +7,20 @@ export type ResourceEntry = {
   trackIds: TrackId[];
   type: ResourceType;
   status: "planned" | "available";
+  href?: string;
 };
 
 export const resourceEntries: ResourceEntry[] = [
+  {
+    id: "cefr-placement-test",
+    title: "15-Minute English Placement Test",
+    description:
+      "A CEFR-aligned adaptive diagnostic for grammar and vocabulary with a personalised recommendation.",
+    trackIds: ["ielts", "business", "general", "teacher-training"],
+    type: "placement-test",
+    status: "available",
+    href: "/placement-test",
+  },
   {
     id: "ielts-readiness-test",
     title: "IELTS Readiness Test",

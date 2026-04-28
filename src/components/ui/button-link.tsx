@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { MouseEventHandler, ReactNode } from "react";
 
 import { ArrowUpRight } from "lucide-react";
 
@@ -17,6 +17,7 @@ type ButtonLinkProps = {
   className?: string;
   variant?: keyof typeof variants;
   external?: boolean;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 };
 
 export function ButtonLink({
@@ -25,6 +26,7 @@ export function ButtonLink({
   className,
   variant = "primary",
   external = false,
+  onClick,
 }: ButtonLinkProps) {
   const classes = cn(variants[variant], className);
   const isExternal = external || isExternalHref(href);
@@ -34,6 +36,7 @@ export function ButtonLink({
       <a
         className={classes}
         href={href}
+        onClick={onClick}
         rel="noopener noreferrer"
         target="_blank"
       >
@@ -44,7 +47,7 @@ export function ButtonLink({
   }
 
   return (
-    <Link className={classes} href={href}>
+    <Link className={classes} href={href} onClick={onClick}>
       {children}
     </Link>
   );

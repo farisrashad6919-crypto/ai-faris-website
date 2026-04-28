@@ -7,6 +7,7 @@ import { tracks } from "@/content/tracks";
 import type { ResourceType, TrackId } from "@/content/types";
 import { copy } from "@/content/locale-copy";
 import { localeSelfNames } from "@/i18n/locale-labels";
+import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
@@ -151,6 +152,14 @@ export function FilterableContentGrid({
                 ) : null;
               })}
             </div>
+            {entry.href ? (
+              <Link
+                className="button-tertiary mt-5"
+                href={entry.href}
+              >
+                {copy(locale, "Open resource")}
+              </Link>
+            ) : null}
           </article>
         ))}
       </div>

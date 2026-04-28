@@ -9,6 +9,7 @@ import {
 
 import { copy } from "@/content/locale-copy";
 import type { FutureItem, ResourceType } from "@/content/types";
+import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 
 const icons: Record<ResourceType, typeof FileText> = {
@@ -48,6 +49,11 @@ export function FutureExpansionGrid({
                 <p className="muted-copy mt-2 text-sm leading-6">
                   {copy(locale, item.description)}
                 </p>
+                {item.href ? (
+                  <Link className="button-tertiary mt-4" href={item.href}>
+                    {copy(locale, "Open resource")}
+                  </Link>
+                ) : null}
               </div>
             </div>
           </article>

@@ -73,6 +73,10 @@ export function TrackLandingPage({ locale, track }: TrackLandingPageProps) {
   const media = getMediaForTrack(track.id);
   const sourcePage = `/programs/${track.slug}`;
   const t = (value: string) => copy(locale, value);
+  const tertiaryHref =
+    track.id === "ielts" || track.id === "general"
+      ? "/placement-test"
+      : "#lead-form";
 
   return (
     <>
@@ -118,7 +122,7 @@ export function TrackLandingPage({ locale, track }: TrackLandingPageProps) {
                 {copy(locale, track.secondaryCta)}
                 <ArrowRight className="size-4" />
               </ButtonLink>
-              <ButtonLink href="#lead-form" variant="tertiary">
+              <ButtonLink href={tertiaryHref} variant="tertiary">
                 {copy(locale, track.tertiaryCta)}
               </ButtonLink>
             </div>

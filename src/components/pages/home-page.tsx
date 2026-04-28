@@ -36,6 +36,7 @@ export function HomePage({ locale }: { locale: Locale }) {
     title: entry.title,
     description: entry.description,
     type: entry.type,
+    href: entry.href,
   }));
   const qualifications = [
     {
@@ -226,6 +227,9 @@ export function HomePage({ locale }: { locale: Locale }) {
           <ButtonLink href="/webinars" variant="secondary">
             <CalendarDays className="size-4" />
             {t("View webinars")}
+          </ButtonLink>
+          <ButtonLink href="/placement-test" variant="secondary">
+            {t("Take the placement test")}
           </ButtonLink>
         </div>
       </SectionShell>

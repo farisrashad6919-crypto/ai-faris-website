@@ -15,6 +15,9 @@ export function ResourcesPage({ locale }: { locale: Locale }) {
       <PageHero
         actions={
           <>
+            <ButtonLink href="/placement-test">
+              {t("Take the placement test")}
+            </ButtonLink>
             <ButtonLink href="/programs">{t("Choose a track")}</ButtonLink>
             <ButtonLink href={getBookingHref(locale)} variant="secondary">
               {t("Book on Preply")}

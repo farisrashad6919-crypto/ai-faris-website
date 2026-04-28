@@ -1,6 +1,7 @@
 # Google Apps Script Lead Storage
 
-This folder contains the starter Apps Script endpoint for the website lead form.
+This folder contains the Apps Script endpoint for the website lead form and
+English placement-test result storage.
 
 ## Frontend Environment Variables
 
@@ -27,7 +28,7 @@ local development. `LEAD_FORM_SHARED_SECRET` is optional but recommended.
 
 ## Request Payload
 
-The website posts JSON with fields such as:
+The contact form posts JSON with fields such as:
 
 ```json
 {
@@ -66,7 +67,26 @@ The website posts JSON with fields such as:
 
 ## Sheet Columns
 
+Contact leads continue to use the `Leads` tab:
+
 `timestamp`, `source_page`, `track`, `offer_type`, `full_name`, `age`,
 `nationality`, `whatsapp`, `telegram`, `email`, `preferred_language`,
 `current_level`, `short_goal`, `utm_source`, `utm_medium`, `utm_campaign`,
 `referrer`, `consent`, `locale`, `lead_id`.
+
+Placement test completions post with `submissionType: "placement-test"` and are
+stored in:
+
+- `Placement Tests`: full identity, contact, A1-C2 CEFR estimate,
+  grammar/vocabulary scores and level estimates, strongest/weakest area,
+  top grammar and vocabulary gaps, recommended first lessons, retake count,
+  timing, question ids, answer JSON, skill breakdown JSON, teacher diagnostic
+  JSON, tags, and `lead_id`.
+- `All Leads`: simplified follow-up row with contact details, recommended or
+  interested track, offer type `placement-test`, result summary, source page,
+  locale, and `lead_id`.
+- Optional track tabs such as `IELTS Leads` and `Business English Leads`, based
+  on `recommendedTrack`.
+
+The shared secret is verified by Apps Script and is only sent from server-side
+website actions.

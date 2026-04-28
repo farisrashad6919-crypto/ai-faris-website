@@ -67,6 +67,20 @@ export const staticRoutes: SiteRoute[] = [
     keywords: ["English resources", "IELTS quizzes", "placement tests", "English videos"],
   },
   {
+    key: "placementTest",
+    path: "/placement-test",
+    footer: true,
+    title: "15-Minute A1-C2 English Placement Test | Faris Rashad",
+    description:
+      "Take a CEFR-aligned adaptive English placement test for grammar and vocabulary, then receive an A1-C2 estimate and next-step recommendation.",
+    keywords: [
+      "English placement test",
+      "CEFR English test",
+      "English level check",
+      "English grammar vocabulary test",
+    ],
+  },
+  {
     key: "webinars",
     path: "/webinars",
     nav: true,

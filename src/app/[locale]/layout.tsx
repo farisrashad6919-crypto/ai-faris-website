@@ -69,9 +69,9 @@ export default async function LocaleLayout({
   params,
 }: {
   children: ReactNode;
-  params: Promise<{ locale: string }>;
+  params: Promise<unknown>;
 }) {
-  const locale = await resolveLocale(params);
+  const locale = await resolveLocale(params as Promise<{ locale: string }>);
   const direction = getDirection(locale);
   const fontVariables =
     locale === "ar"
