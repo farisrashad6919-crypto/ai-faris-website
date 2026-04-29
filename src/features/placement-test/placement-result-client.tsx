@@ -43,91 +43,22 @@ function getStoredResultSnapshot() {
   return sessionStorage.getItem(placementResultStorageKey) ?? "";
 }
 
-function skillName(locale: Locale, skill: keyof PlacementScoreProfile["skillBreakdown"]) {
-  return copy(locale, placementCopy.skills[skill]);
-}
-
-function formatConfidenceLabel(locale: Locale, label: string) {
-  const borderline = label.match(/^([ABC][12])\/([ABC][12]) borderline$/);
-
-  if (borderline) {
-    return `${borderline[1]}/${borderline[2]} ${copy(locale, placementCopy.resultPhrases.borderline)}`;
-  }
-
-  if (label.startsWith("Strong ")) {
-    return `${copy(locale, placementCopy.resultPhrases.strong)} ${label.replace("Strong ", "")}`;
-  }
-
-  if (label.startsWith("Likely ")) {
-    return `${copy(locale, placementCopy.resultPhrases.likely)} ${label.replace("Likely ", "")}`;
-  }
-
-  if (label === "Upper-B2 / approaching C1") {
-    return copy(locale, placementCopy.resultPhrases.upperB2);
-  }
-
-  return label;
-}
-
 function localizedTrackNextStep(locale: Locale, result: PlacementScoreProfile) {
   return copy(locale, placementCopy.trackNextSteps[result.recommendedTrack]);
 }
 
-function localizedRecommendations(locale: Locale, result: PlacementScoreProfile) {
-  const recommendations = [
-    copy(locale, placementCopy.recommendationItems.spacedReview),
-    copy(locale, placementCopy.recommendationItems.errorLog),
+function displayAreaRows(result: PlacementScoreProfile) {
+  return [
+    result.areaBreakdown["present-tense-control"],
+    result.areaBreakdown["past-tense-control"],
+    result.areaBreakdown["perfect-aspect-control"],
+    result.areaBreakdown["future-tense-control"],
+    result.areaBreakdown["tense-contrast-control"],
+    result.areaBreakdown["narrative-sequencing"],
+    result.areaBreakdown["stative-dynamic-control"],
+    result.areaBreakdown["professional-academic-tense-use"],
+    result.areaBreakdown["advanced-tense-precision"],
   ];
-
-  if (
-    result.weakestArea === "vocabulary" ||
-    result.recommendationTags.includes("collocations")
-  ) {
-    recommendations.push(copy(locale, placementCopy.recommendationItems.chunks));
-  }
-
-  if (
-    result.weakestArea === "grammar" ||
-    result.recommendationTags.includes("grammar-accuracy")
-  ) {
-    recommendations.push(copy(locale, placementCopy.recommendationItems.grammar));
-  }
-
-  if (result.recommendedTrack === "ielts") {
-    recommendations.push(copy(locale, placementCopy.recommendationItems.ielts));
-  }
-
-  if (result.recommendedTrack === "business") {
-    recommendations.push(copy(locale, placementCopy.recommendationItems.business));
-  }
-
-  return recommendations;
-}
-
-function localizedNarrative(locale: Locale, result: PlacementScoreProfile) {
-  const strongest = skillName(locale, result.strongestArea);
-  const weakest = skillName(locale, result.weakestArea);
-  const confidence = formatConfidenceLabel(locale, result.confidenceLabel);
-
-  return {
-    confidence,
-    interpretation: `${copy(locale, placementCopy.resultPhrases.currentEnglishLooks)} ${confidence}, ${copy(locale, placementCopy.resultPhrases.with)} ${strongest.toLowerCase()} ${copy(locale, placementCopy.resultPhrases.strongerThan)} ${weakest.toLowerCase()}.`,
-    summary: `${copy(locale, placementCopy.resultPhrases.currentEnglishLooks)} ${result.estimatedCefrLevel}. ${strongest} ${copy(locale, placementCopy.resultPhrases.strongestSentence)} ${weakest} ${copy(locale, placementCopy.resultPhrases.weakestSentence)} ${copy(locale, placementCopy.resultPhrases.summaryBalanced)}`,
-    strengths: [
-      `${strongest} ${copy(locale, placementCopy.resultPhrases.strongestSentence)}`,
-      result.overallScore >= 70
-        ? copy(locale, placementCopy.resultPhrases.solidEvidence)
-        : copy(locale, placementCopy.resultPhrases.enoughEvidence),
-    ],
-    gaps: [
-      `${weakest} ${copy(locale, placementCopy.resultPhrases.weakestSentence)}`,
-      result.borderlineNote
-        ? copy(locale, placementCopy.resultPhrases.boundaryLive)
-        : copy(locale, placementCopy.resultPhrases.liveSkills),
-    ],
-    recommendations: localizedRecommendations(locale, result),
-    nextStep: localizedTrackNextStep(locale, result),
-  };
 }
 
 export function PlacementResultClient({ locale }: { locale: Locale }) {
@@ -184,7 +115,8 @@ export function PlacementResultClient({ locale }: { locale: Locale }) {
           : "placement_result_retry_failed",
         {
           locale,
-          estimatedCefrLevel: nextState.result.estimatedCefrLevel,
+          masteryLabel: nextState.result.masteryLabel,
+          overallScore: nextState.result.overallScore,
           recommendedTrack: nextState.result.recommendedTrack,
           leadId: nextState.status === "success" ? nextState.leadId : undefined,
         },
@@ -198,7 +130,8 @@ export function PlacementResultClient({ locale }: { locale: Locale }) {
     trackPlacementEvent("placement_cta_clicked", {
       locale,
       ctaType,
-      estimatedCefrLevel: result.estimatedCefrLevel,
+      masteryLabel: result.masteryLabel,
+      overallScore: result.overallScore,
       confidenceLabel: result.confidenceLabel,
       recommendedTrack: result.recommendedTrack,
       storageStatus: stored?.state.status,
@@ -218,10 +151,7 @@ export function PlacementResultClient({ locale }: { locale: Locale }) {
     );
   }
 
-  const narrative = result ? localizedNarrative(locale, result) : null;
-  const skillRows = Object.entries(result.skillBreakdown) as Array<
-    [keyof PlacementScoreProfile["skillBreakdown"], (typeof result.skillBreakdown)["grammar"]]
-  >;
+  const areaRows = displayAreaRows(result);
 
   return (
     <div className="space-y-8">
@@ -255,11 +185,9 @@ export function PlacementResultClient({ locale }: { locale: Locale }) {
         <p className="eyebrow">{t(placementCopy.resultTitle)}</p>
         <div className="mt-5 grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-end">
           <div>
-            <h1 className="text-5xl md:text-6xl">
-              {narrative?.confidence}
-            </h1>
+            <h1 className="text-5xl md:text-6xl">{result.masteryLabel}</h1>
             <p className="muted-copy mt-4 max-w-3xl text-lg leading-8">
-              {narrative?.interpretation}
+              {result.recommendationSummary}
             </p>
           </div>
           <div className="rounded-md bg-primary p-5 text-surface-container-lowest">
@@ -267,24 +195,24 @@ export function PlacementResultClient({ locale }: { locale: Locale }) {
               {t(placementCopy.overallLevel)}
             </p>
             <p className="mt-3 text-5xl font-semibold">
-              {result.estimatedCefrLevel}
+              {result.overallScore}%
             </p>
             <p className="mt-2 text-sm text-surface-container-lowest/72">
-              {t(placementCopy.confidence)}: {narrative?.confidence}
+              {t(placementCopy.confidence)}: {result.confidenceLabel}
             </p>
           </div>
         </div>
       </section>
 
       <section className="grid gap-4 md:grid-cols-3">
-        {skillRows.map(([skill, data]) => (
-          <article className="paper-panel rounded-md p-5" key={skill}>
-            <p className="eyebrow">{skillName(locale, skill)}</p>
+        {areaRows.map((area) => (
+          <article className="paper-panel rounded-md p-5" key={area.label}>
+            <p className="eyebrow">{area.label}</p>
             <p className="mt-4 text-4xl font-semibold text-primary">
-              {data.levelEstimate}
+              {area.score}%
             </p>
             <p className="mt-2 text-sm text-secondary">
-              {data.score}/100 / {data.correct}/{data.total}
+              {area.correct}/{area.total} correct
             </p>
           </article>
         ))}
@@ -294,7 +222,7 @@ export function PlacementResultClient({ locale }: { locale: Locale }) {
         <div className="paper-panel rounded-md p-6">
           <h2 className="text-3xl">{t(placementCopy.strengths)}</h2>
           <ul className="mt-5 grid gap-3 text-sm leading-6 text-secondary">
-            {narrative?.strengths.map((item) => (
+            {result.strengths.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
@@ -302,7 +230,10 @@ export function PlacementResultClient({ locale }: { locale: Locale }) {
         <div className="paper-panel rounded-md p-6">
           <h2 className="text-3xl">{t(placementCopy.gaps)}</h2>
           <ul className="mt-5 grid gap-3 text-sm leading-6 text-secondary">
-            {narrative?.gaps.map((item) => (
+            {result.gaps.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+            {result.weakTenseAreas.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
@@ -310,12 +241,12 @@ export function PlacementResultClient({ locale }: { locale: Locale }) {
       </section>
 
       <section className="paper-panel rounded-md p-6">
-        <h2 className="text-3xl">{t(placementCopy.recommendations)}</h2>
-        <p className="muted-copy mt-3 max-w-3xl text-base leading-7">
-          {narrative?.summary}
-        </p>
+        <h2 className="text-3xl">{t(placementCopy.contrasts)}</h2>
         <div className="mt-5 grid gap-3 md:grid-cols-2">
-          {narrative?.recommendations.map((item) => (
+          {(result.tenseContrastsToStudy.length
+            ? result.tenseContrastsToStudy
+            : ["Keep practising tense consistency in longer speaking answers."]
+          ).map((item) => (
             <div
               className="rounded-md bg-surface-container-low/80 p-4 text-sm leading-6 text-primary"
               key={item}
@@ -330,13 +261,11 @@ export function PlacementResultClient({ locale }: { locale: Locale }) {
         <div className="paper-panel rounded-md p-6">
           <h2 className="text-3xl">{t(placementCopy.teachingPriorities)}</h2>
           <div className="mt-5 grid gap-3 text-sm leading-6 text-secondary">
-            {[...result.topGrammarGaps, ...result.topVocabularyGaps]
-              .slice(0, 5)
-              .map((gap) => (
-                <p className="rounded-md bg-surface-container-low/80 p-3" key={gap}>
-                  {gap}
-                </p>
-              ))}
+            {result.topTenseWeaknesses.map((gap) => (
+              <p className="rounded-md bg-surface-container-low/80 p-3" key={gap}>
+                {gap}
+              </p>
+            ))}
           </div>
         </div>
         <div className="paper-panel rounded-md p-6">
@@ -346,6 +275,20 @@ export function PlacementResultClient({ locale }: { locale: Locale }) {
               <li key={lesson}>{lesson}</li>
             ))}
           </ol>
+        </div>
+      </section>
+
+      <section className="paper-panel rounded-md p-6">
+        <h2 className="text-3xl">{t(placementCopy.recommendations)}</h2>
+        <div className="mt-5 grid gap-3 md:grid-cols-2">
+          {result.recommendations.map((item) => (
+            <div
+              className="rounded-md bg-surface-container-low/80 p-4 text-sm leading-6 text-primary"
+              key={item}
+            >
+              {item}
+            </div>
+          ))}
         </div>
       </section>
 
@@ -361,7 +304,7 @@ export function PlacementResultClient({ locale }: { locale: Locale }) {
                 : t(placementCopy.resultPhrases.personalTraining)}
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-surface-container-lowest/78 md:text-base">
-              {narrative?.nextStep}
+              {localizedTrackNextStep(locale, result)}
             </p>
           </div>
           <div className="flex flex-wrap gap-4">

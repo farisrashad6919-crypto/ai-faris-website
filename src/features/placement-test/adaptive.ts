@@ -1,36 +1,49 @@
 import { placementItemBank } from "./item-bank";
-import { adjacentLevels, levelFromValue, valueForLevel } from "./levels";
 import type {
-  CefrLevel,
   PlacementAnswer,
   PlacementItem,
-  PlacementSkill,
+  TenseDiagnosticArea,
+  TenseDifficultyBand,
 } from "./types";
 
-export const minimumMeaningfulQuestions = 20;
-export const defaultQuestionsTarget = 28;
+export const minimumMeaningfulQuestions = 30;
+export const defaultQuestionsTarget = 30;
 export const maxQuestionsTarget = 30;
 export const routingQuestionsTarget = 8;
-export const coreQuestionsTarget = 14;
-
-const skills: PlacementSkill[] = ["grammar", "vocabulary"];
-const routingLevels: CefrLevel[] = ["A2", "B1", "B2", "C1"];
-const stageWeight: Record<number, number> = {
-  1: 0.8,
-  2: 1,
-  3: 1.2,
-};
-const discriminationWeight = {
-  low: 0.85,
-  medium: 1,
-  high: 1.18,
-};
+export const coreQuestionsTarget = 12;
+export const confirmationQuestionsTarget = 10;
 
 type AdaptiveContext = {
   sessionId: string;
   recentlySeenItemIds?: string[];
   retakeCount?: number;
 };
+
+type AbilityBand = "weak" | "developing" | "strong";
+
+const stageWeight: Record<number, number> = {
+  1: 0.8,
+  2: 1,
+  3: 1.18,
+};
+
+const difficultyBandWeight: Record<TenseDifficultyBand, number> = {
+  easy: 0.82,
+  medium: 1,
+  hard: 1.12,
+  advanced: 1.24,
+};
+
+const routingAreaTargets: TenseDiagnosticArea[] = [
+  "present-tense-control",
+  "past-tense-control",
+  "perfect-aspect-control",
+  "future-tense-control",
+  "tense-contrast-control",
+  "narrative-sequencing",
+  "stative-dynamic-control",
+  "professional-academic-tense-use",
+];
 
 function hashString(value: string) {
   let hash = 0;
@@ -41,7 +54,7 @@ function hashString(value: string) {
 }
 
 function seededScore(seed: string, item: PlacementItem) {
-  return hashString(`${seed}:${item.id}:${item.construct}`) / 1000000000;
+  return hashString(`${seed}:${item.id}:${item.targetTense}`) / 1000000000;
 }
 
 function uniqueAnswers(answers: PlacementAnswer[]) {
@@ -53,53 +66,81 @@ function uniqueAnswers(answers: PlacementAnswer[]) {
 }
 
 function answerIsCorrect(answer: PlacementAnswer, item: PlacementItem) {
-  const expected = Array.isArray(item.correctAnswerId)
-    ? item.correctAnswerId
-    : [item.correctAnswerId];
   const selected = [...answer.selectedOptionIds].sort();
-
-  return (
-    expected.length === selected.length &&
-    [...expected].sort().every((id, index) => id === selected[index])
-  );
+  return selected.length === 1 && selected[0] === item.correctAnswerId;
 }
 
-function scoreAnswersForRouting(answers: PlacementAnswer[]) {
-  const evidence = uniqueAnswers(answers).reduce(
-    (result, answer) => {
+function answeredItems(answers: PlacementAnswer[]) {
+  return uniqueAnswers(answers)
+    .map((answer) => {
       const item = placementItemBank.find((candidate) => candidate.id === answer.itemId);
-      if (!item) return result;
-
-      const correct = answerIsCorrect(answer, item);
-      const weight =
-        discriminationWeight[item.discrimination] * (stageWeight[answer.stage] ?? 1);
-      const correction = correct ? 0.42 : -0.78;
-
+      if (!item) return null;
       return {
-        total: result.total + (item.difficulty + correction) * weight,
-        weight: result.weight + weight,
+        answer,
+        item,
+        correct: answerIsCorrect(answer, item),
+      };
+    })
+    .filter(Boolean) as Array<{
+    answer: PlacementAnswer;
+    item: PlacementItem;
+    correct: boolean;
+  }>;
+}
+
+function weightedAccuracy(answers: PlacementAnswer[]) {
+  const entries = answeredItems(answers);
+  const totals = entries.reduce(
+    (result, entry) => {
+      const weight =
+        (stageWeight[entry.answer.stage] ?? 1) *
+        difficultyBandWeight[entry.item.difficultyBand];
+      return {
+        possible: result.possible + weight,
+        earned: result.earned + (entry.correct ? weight : 0),
       };
     },
-    { total: 0, weight: 0 },
+    { earned: 0, possible: 0 },
   );
 
-  if (evidence.weight === 0) return "B1" satisfies CefrLevel;
-
-  return levelFromValue(evidence.total / evidence.weight);
+  return totals.possible ? totals.earned / totals.possible : 0.5;
 }
 
-function targetQuestionCount(answers: PlacementAnswer[]) {
-  if (answers.length < routingQuestionsTarget + coreQuestionsTarget) {
-    return defaultQuestionsTarget;
+function abilityBand(answers: PlacementAnswer[]): AbilityBand {
+  const accuracy = weightedAccuracy(answers);
+  if (accuracy < 0.48) return "weak";
+  if (accuracy >= 0.74) return "strong";
+  return "developing";
+}
+
+function weakAreas(answers: PlacementAnswer[]) {
+  const counts = new Map<TenseDiagnosticArea, { wrong: number; total: number }>();
+
+  for (const entry of answeredItems(answers)) {
+    const current = counts.get(entry.item.diagnosticArea) ?? { wrong: 0, total: 0 };
+    counts.set(entry.item.diagnosticArea, {
+      wrong: current.wrong + (entry.correct ? 0 : 1),
+      total: current.total + 1,
+    });
   }
 
-  const durationSeconds = Math.max(...answers.map((answer) => answer.elapsedSeconds));
-  const averageSeconds = durationSeconds / Math.max(1, answers.length);
+  return Array.from(counts.entries())
+    .sort((a, b) => {
+      const aRate = a[1].wrong / Math.max(1, a[1].total);
+      const bRate = b[1].wrong / Math.max(1, b[1].total);
+      return bRate - aRate || b[1].wrong - a[1].wrong;
+    })
+    .map(([area]) => area);
+}
 
-  if (averageSeconds > 45) return 26;
-  if (averageSeconds < 18) return maxQuestionsTarget;
+function candidateDifficultyScore(item: PlacementItem, band: AbilityBand) {
+  const target: Record<AbilityBand, number> = {
+    weak: 2.1,
+    developing: 3.6,
+    strong: 5.0,
+  };
 
-  return defaultQuestionsTarget;
+  return Math.abs(item.difficulty - target[band]);
 }
 
 function sortCandidates(
@@ -107,35 +148,39 @@ function sortCandidates(
   {
     seed,
     recentlySeen,
-    targetLevel,
-    preferredSkill,
-    usedConstructs,
+    areaTargets,
+    usedAreas,
+    usedTenses,
+    band,
   }: {
     seed: string;
     recentlySeen: Set<string>;
-    targetLevel: CefrLevel;
-    preferredSkill?: PlacementSkill;
-    usedConstructs: Map<string, number>;
+    areaTargets: TenseDiagnosticArea[];
+    usedAreas: Map<TenseDiagnosticArea, number>;
+    usedTenses: Map<string, number>;
+    band: AbilityBand;
   },
 ) {
-  const targetValue = valueForLevel(targetLevel);
-
   return [...items].sort((a, b) => {
     const recentA = recentlySeen.has(a.id) && a.avoidIfSeenRecently ? 1 : 0;
     const recentB = recentlySeen.has(b.id) && b.avoidIfSeenRecently ? 1 : 0;
     if (recentA !== recentB) return recentA - recentB;
 
-    const skillA = preferredSkill && a.skill !== preferredSkill ? 0.45 : 0;
-    const skillB = preferredSkill && b.skill !== preferredSkill ? 0.45 : 0;
-    if (skillA !== skillB) return skillA - skillB;
+    const areaTargetA = areaTargets.includes(a.diagnosticArea) ? 0 : 0.3;
+    const areaTargetB = areaTargets.includes(b.diagnosticArea) ? 0 : 0.3;
+    if (areaTargetA !== areaTargetB) return areaTargetA - areaTargetB;
 
-    const constructA = (usedConstructs.get(a.construct) ?? 0) * 0.55;
-    const constructB = (usedConstructs.get(b.construct) ?? 0) * 0.55;
-    if (constructA !== constructB) return constructA - constructB;
+    const areaA = (usedAreas.get(a.diagnosticArea) ?? 0) * 0.5;
+    const areaB = (usedAreas.get(b.diagnosticArea) ?? 0) * 0.5;
+    if (areaA !== areaB) return areaA - areaB;
 
-    const distanceA = Math.abs(a.difficulty - targetValue);
-    const distanceB = Math.abs(b.difficulty - targetValue);
-    if (distanceA !== distanceB) return distanceA - distanceB;
+    const tenseA = (usedTenses.get(a.targetTense) ?? 0) * 0.42;
+    const tenseB = (usedTenses.get(b.targetTense) ?? 0) * 0.42;
+    if (tenseA !== tenseB) return tenseA - tenseB;
+
+    const difficultyA = candidateDifficultyScore(a, band);
+    const difficultyB = candidateDifficultyScore(b, band);
+    if (difficultyA !== difficultyB) return difficultyA - difficultyB;
 
     return seededScore(seed, a) - seededScore(seed, b);
   });
@@ -146,92 +191,53 @@ function selectItems({
   seed,
   usedIds,
   usedStems,
-  usedConstructs,
+  usedAreas,
+  usedTenses,
   recentlySeen,
   candidates,
-  targetLevel,
-  skillPattern,
+  band,
+  areaTargets,
 }: {
   count: number;
   seed: string;
   usedIds: Set<string>;
   usedStems: Set<string>;
-  usedConstructs: Map<string, number>;
+  usedAreas: Map<TenseDiagnosticArea, number>;
+  usedTenses: Map<string, number>;
   recentlySeen: Set<string>;
   candidates: PlacementItem[];
-  targetLevel: CefrLevel;
-  skillPattern: PlacementSkill[];
+  band: AbilityBand;
+  areaTargets: TenseDiagnosticArea[];
 }) {
   const selected: PlacementItem[] = [];
 
   for (let index = 0; index < count; index += 1) {
-    const preferredSkill = skillPattern[index % skillPattern.length];
     const match = sortCandidates(candidates, {
       seed: `${seed}:${index}`,
       recentlySeen,
-      targetLevel,
-      preferredSkill,
-      usedConstructs,
-    }).find(
-      (item) =>
-        !usedIds.has(item.id) &&
-        !usedStems.has(item.stem.trim().toLowerCase()),
-    );
+      areaTargets,
+      usedAreas,
+      usedTenses,
+      band,
+    }).find((item) => {
+      if (usedIds.has(item.id)) return false;
+      if (usedStems.has(item.stem.trim().toLowerCase())) return false;
+      return true;
+    });
 
     if (!match) break;
 
     selected.push(match);
     usedIds.add(match.id);
     usedStems.add(match.stem.trim().toLowerCase());
-    usedConstructs.set(match.construct, (usedConstructs.get(match.construct) ?? 0) + 1);
+    usedAreas.set(match.diagnosticArea, (usedAreas.get(match.diagnosticArea) ?? 0) + 1);
+    usedTenses.set(match.targetTense, (usedTenses.get(match.targetTense) ?? 0) + 1);
   }
 
   return selected;
 }
 
-function routingItems(context: AdaptiveContext) {
-  const usedIds = new Set<string>();
-  const usedStems = new Set<string>();
-  const usedConstructs = new Map<string, number>();
-  const recentlySeen = new Set(context.recentlySeenItemIds ?? []);
-  const selected: PlacementItem[] = [];
-
-  for (const level of routingLevels) {
-    for (const skill of skills) {
-      const candidates = placementItemBank.filter(
-        (item) =>
-          item.cefrLevel === level &&
-          item.skill === skill &&
-          item.isRoutingItem,
-      );
-      selected.push(
-        ...selectItems({
-          count: 1,
-          seed: `${context.sessionId}:routing:${level}:${skill}:${context.retakeCount ?? 0}`,
-          usedIds,
-          usedStems,
-          usedConstructs,
-          recentlySeen,
-          candidates,
-          targetLevel: level,
-          skillPattern: [skill],
-        }),
-      );
-    }
-  }
-
-  return selected;
-}
-
-function coreItems({
-  answers,
-  context,
-  targetLevel,
-}: {
-  answers: PlacementAnswer[];
-  context: AdaptiveContext;
-  targetLevel: CefrLevel;
-}) {
+function selectionState(answers: PlacementAnswer[], context: AdaptiveContext) {
   const usedIds = new Set(answers.map((answer) => answer.itemId));
   const usedStems = new Set(
     answers
@@ -239,66 +245,131 @@ function coreItems({
       .filter(Boolean)
       .map((stem) => String(stem).trim().toLowerCase()),
   );
-  const usedConstructs = new Map<string, number>();
-  const recentlySeen = new Set(context.recentlySeenItemIds ?? []);
-  const levels = adjacentLevels(targetLevel);
+  return {
+    usedIds,
+    usedStems,
+    usedAreas: new Map<TenseDiagnosticArea, number>(),
+    usedTenses: new Map<string, number>(),
+    recentlySeen: new Set(context.recentlySeenItemIds ?? []),
+  };
+}
+
+function routingItems(context: AdaptiveContext) {
+  const state = selectionState([], context);
+  const selected: PlacementItem[] = [];
+
+  for (const area of routingAreaTargets) {
+    const preferred = placementItemBank.filter(
+      (item) =>
+        item.isRoutingItem &&
+        item.diagnosticArea === area &&
+        item.difficultyBand !== "advanced",
+    );
+    const fallback = placementItemBank.filter(
+      (item) => item.diagnosticArea === area && item.difficultyBand !== "advanced",
+    );
+    selected.push(
+      ...selectItems({
+        count: 1,
+        seed: `${context.sessionId}:routing:${area}:${context.retakeCount ?? 0}`,
+        candidates: preferred.length ? preferred : fallback,
+        band: "developing",
+        areaTargets: [area],
+        ...state,
+      }),
+    );
+  }
+
+  if (selected.length < routingQuestionsTarget) {
+    selected.push(
+      ...selectItems({
+        count: routingQuestionsTarget - selected.length,
+        seed: `${context.sessionId}:routing:fallback:${context.retakeCount ?? 0}`,
+        candidates: placementItemBank.filter((item) => item.difficultyBand !== "advanced"),
+        band: "developing",
+        areaTargets: routingAreaTargets,
+        ...state,
+      }),
+    );
+  }
+
+  return selected.slice(0, routingQuestionsTarget);
+}
+
+function coreItems({
+  answers,
+  context,
+  band,
+}: {
+  answers: PlacementAnswer[];
+  context: AdaptiveContext;
+  band: AbilityBand;
+}) {
+  const state = selectionState(answers, context);
+  const areas = weakAreas(answers);
+  const areaTargets = areas.length ? areas : routingAreaTargets;
+  const allowedBands: TenseDifficultyBand[] =
+    band === "weak"
+      ? ["easy", "medium", "hard"]
+      : band === "strong"
+        ? ["medium", "hard", "advanced"]
+        : ["medium", "hard"];
   const candidates = placementItemBank.filter(
     (item) =>
-      levels.includes(item.cefrLevel) &&
       !item.isRoutingItem &&
-      !item.isConfirmationItem,
+      allowedBands.includes(item.difficultyBand) &&
+      (band === "strong" || item.difficultyBand !== "advanced"),
   );
 
   return selectItems({
     count: coreQuestionsTarget,
-    seed: `${context.sessionId}:core:${targetLevel}:${context.retakeCount ?? 0}`,
-    usedIds,
-    usedStems,
-    usedConstructs,
-    recentlySeen,
+    seed: `${context.sessionId}:core:${band}:${context.retakeCount ?? 0}`,
     candidates,
-    targetLevel,
-    skillPattern: ["grammar", "vocabulary"],
+    band,
+    areaTargets,
+    ...state,
   });
 }
 
 function confirmationItems({
   answers,
   context,
-  targetLevel,
+  band,
   count,
 }: {
   answers: PlacementAnswer[];
   context: AdaptiveContext;
-  targetLevel: CefrLevel;
+  band: AbilityBand;
   count: number;
 }) {
-  const usedIds = new Set(answers.map((answer) => answer.itemId));
-  const usedStems = new Set(
-    answers
-      .map((answer) => placementItemBank.find((item) => item.id === answer.itemId)?.stem)
-      .filter(Boolean)
-      .map((stem) => String(stem).trim().toLowerCase()),
-  );
-  const usedConstructs = new Map<string, number>();
-  const recentlySeen = new Set(context.recentlySeenItemIds ?? []);
-  const levels = adjacentLevels(targetLevel);
-  const candidates = placementItemBank.filter(
-    (item) =>
-      levels.includes(item.cefrLevel) &&
-      (item.isConfirmationItem || item.isAnchorItem),
-  );
+  const state = selectionState(answers, context);
+  const areas = weakAreas(answers);
+  const strongAreaTargets: TenseDiagnosticArea[] = [
+    "advanced-tense-precision",
+    "professional-academic-tense-use",
+    ...areas,
+    ...routingAreaTargets,
+  ];
+  const areaTargets: TenseDiagnosticArea[] =
+    band === "strong"
+      ? strongAreaTargets
+      : areas.length
+        ? areas.slice(0, 4)
+        : routingAreaTargets;
+  const candidates = placementItemBank.filter((item) => {
+    if (!item.isConfirmationItem && !item.isAnchorItem) return false;
+    if (band === "weak") return item.difficultyBand !== "advanced";
+    if (band === "strong") return item.difficultyBand === "hard" || item.difficultyBand === "advanced";
+    return item.difficultyBand === "medium" || item.difficultyBand === "hard" || item.difficultyBand === "advanced";
+  });
 
   return selectItems({
     count,
-    seed: `${context.sessionId}:confirmation:${targetLevel}:${context.retakeCount ?? 0}`,
-    usedIds,
-    usedStems,
-    usedConstructs,
-    recentlySeen,
+    seed: `${context.sessionId}:confirmation:${band}:${context.retakeCount ?? 0}`,
     candidates,
-    targetLevel,
-    skillPattern: ["vocabulary", "grammar"],
+    band,
+    areaTargets,
+    ...state,
   });
 }
 
@@ -311,16 +382,16 @@ export function getNextAdaptiveStage(
   context: AdaptiveContext,
 ) {
   const unique = uniqueAnswers(answers);
-  const targetLevel = scoreAnswersForRouting(unique);
   const answeredCount = unique.length;
-  const totalQuestionsTarget = targetQuestionCount(unique);
+  const band = abilityBand(unique);
+  const totalQuestionsTarget = defaultQuestionsTarget;
 
   if (answeredCount < routingQuestionsTarget) {
     return {
       completed: false,
       stage: 1,
       items: getInitialRoutingItems(context),
-      targetLevel,
+      abilityBand: band,
       totalQuestionsTarget,
     };
   }
@@ -329,8 +400,8 @@ export function getNextAdaptiveStage(
     return {
       completed: false,
       stage: 2,
-      items: coreItems({ answers: unique, context, targetLevel }),
-      targetLevel,
+      items: coreItems({ answers: unique, context, band }),
+      abilityBand: band,
       totalQuestionsTarget,
     };
   }
@@ -342,10 +413,10 @@ export function getNextAdaptiveStage(
       items: confirmationItems({
         answers: unique,
         context,
-        targetLevel,
+        band,
         count: totalQuestionsTarget - answeredCount,
       }),
-      targetLevel,
+      abilityBand: band,
       totalQuestionsTarget,
     };
   }
@@ -354,7 +425,7 @@ export function getNextAdaptiveStage(
     completed: true,
     stage: 4,
     items: [],
-    targetLevel,
+    abilityBand: band,
     totalQuestionsTarget,
   };
 }

@@ -1,57 +1,48 @@
-import { a1GrammarItems } from "./a1/grammar";
-import { a1VocabularyItems } from "./a1/vocabulary";
-import { a2GrammarItems } from "./a2/grammar";
-import { a2VocabularyItems } from "./a2/vocabulary";
-import { b1GrammarItems } from "./b1/grammar";
-import { b1VocabularyItems } from "./b1/vocabulary";
-import { b2GrammarItems } from "./b2/grammar";
-import { b2VocabularyItems } from "./b2/vocabulary";
-import { c1GrammarItems } from "./c1/grammar";
-import { c1VocabularyItems } from "./c1/vocabulary";
-import { c2GrammarItems } from "./c2/grammar";
-import { c2VocabularyItems } from "./c2/vocabulary";
-import type { PlacementItem, PublicPlacementItem } from "../types";
+import { tenseItems } from "./tense-items";
+import type { PlacementItem, PlacementOption, PublicPlacementItem } from "../types";
 
-export const placementItemBank: PlacementItem[] = [
-  ...a1VocabularyItems,
-  ...a1GrammarItems,
-  ...a2VocabularyItems,
-  ...a2GrammarItems,
-  ...b1VocabularyItems,
-  ...b1GrammarItems,
-  ...b2VocabularyItems,
-  ...b2GrammarItems,
-  ...c1VocabularyItems,
-  ...c1GrammarItems,
-  ...c2VocabularyItems,
-  ...c2GrammarItems,
-];
+export const placementItemBank: PlacementItem[] = tenseItems;
 
 const itemById = new Map(placementItemBank.map((item) => [item.id, item]));
+
+function hashString(value: string) {
+  let hash = 0;
+  for (let index = 0; index < value.length; index += 1) {
+    hash = Math.imul(31, hash) + value.charCodeAt(index);
+  }
+  return Math.abs(hash);
+}
+
+function shuffleOptions(options: PlacementOption[], seed: string) {
+  return [...options].sort((a, b) => {
+    const scoreA = hashString(`${seed}:${a.id}:${a.text}`);
+    const scoreB = hashString(`${seed}:${b.id}:${b.text}`);
+    return scoreA - scoreB;
+  });
+}
 
 export function getPlacementItem(id: string) {
   return itemById.get(id);
 }
 
-export function toPublicPlacementItem(item: PlacementItem): PublicPlacementItem {
-  const publicItem: Partial<PlacementItem> = { ...item };
-
-  delete publicItem.correctAnswerId;
-  delete publicItem.difficulty;
-  delete publicItem.discrimination;
-  delete publicItem.explanation;
-  delete publicItem.feedbackIfWrong;
-  delete publicItem.teachingImplication;
-  delete publicItem.recommendationTags;
-  delete publicItem.relatedTrackTags;
-  delete publicItem.isAnchorItem;
-  delete publicItem.isRoutingItem;
-  delete publicItem.isConfirmationItem;
-  delete publicItem.avoidIfSeenRecently;
-
-  return publicItem as PublicPlacementItem;
+export function toPublicPlacementItem(
+  item: PlacementItem,
+  seed = "",
+): PublicPlacementItem {
+  return {
+    id: item.id,
+    itemType: item.itemType,
+    difficultyBand: item.difficultyBand,
+    targetTense: item.targetTense,
+    diagnosticArea: item.diagnosticArea,
+    stem: item.stem,
+    context: item.context,
+    options: shuffleOptions(item.options, `${seed}:${item.id}`),
+    estimatedTimeSeconds: item.estimatedTimeSeconds,
+    version: item.version,
+  };
 }
 
-export function toPublicPlacementItems(items: PlacementItem[]) {
-  return items.map(toPublicPlacementItem);
+export function toPublicPlacementItems(items: PlacementItem[], seed = "") {
+  return items.map((item) => toPublicPlacementItem(item, seed));
 }

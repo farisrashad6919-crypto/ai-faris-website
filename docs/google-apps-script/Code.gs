@@ -4,6 +4,7 @@
  * Supports:
  * - Existing contact/inquiry leads.
  * - English placement-test completions with full diagnostic storage.
+ * - English Tense Mastery Test completions with tense diagnostics.
  *
  * Frontend env variables:
  * - GOOGLE_APPS_SCRIPT_LEADS_ENDPOINT: deployed Apps Script Web App URL
@@ -94,6 +95,57 @@ const PLACEMENT_TEST_COLUMNS = [
   "question_ids_seen",
   "answer_summary_json",
   "skill_breakdown_json",
+  "teacher_diagnostic_json",
+  "recommendation_tags",
+  "lead_id",
+];
+
+const TENSE_TEST_COLUMNS = [
+  "timestamp",
+  "test_session_id",
+  "full_name",
+  "age",
+  "nationality",
+  "whatsapp",
+  "telegram",
+  "email",
+  "preferred_language",
+  "consent",
+  "locale",
+  "source_page",
+  "referrer",
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "mastery_label",
+  "confidence_label",
+  "overall_tense_score",
+  "present_score",
+  "past_score",
+  "perfect_score",
+  "future_score",
+  "tense_contrast_score",
+  "narrative_sequencing_score",
+  "stative_dynamic_score",
+  "professional_academic_score",
+  "advanced_precision_score",
+  "strongest_area",
+  "weakest_area",
+  "weak_tense_areas_json",
+  "tense_contrasts_to_study_json",
+  "recommended_first_lessons_json",
+  "top_tense_weaknesses_json",
+  "recommended_track",
+  "recommended_next_step",
+  "recommendation_summary",
+  "completion_time_seconds",
+  "completed_at",
+  "retake_count",
+  "total_questions_answered",
+  "correct_answers_count",
+  "question_ids_seen",
+  "answer_summary_json",
+  "area_breakdown_json",
   "teacher_diagnostic_json",
   "recommendation_tags",
   "lead_id",
@@ -202,6 +254,41 @@ function validatePlacementPayload_(payload) {
     "correctAnswersCount",
     "answerSummaryJson",
     "skillBreakdownJson",
+  ]);
+
+  if (!payload.whatsapp && !payload.telegram) {
+    throw new Error("WhatsApp or Telegram is required.");
+  }
+
+  if (!payload.consent) {
+    throw new Error("Consent is required.");
+  }
+}
+
+function validateTensePayload_(payload) {
+  requireFields_(payload, [
+    "testSessionId",
+    "fullName",
+    "age",
+    "nationality",
+    "preferredLanguage",
+    "masteryLabel",
+    "confidenceLabel",
+    "overallTenseScore",
+    "presentScore",
+    "pastScore",
+    "perfectScore",
+    "futureScore",
+    "recommendedTrack",
+    "recommendedNextStep",
+    "recommendationSummary",
+    "recommendedFirstLessonsJson",
+    "topTenseWeaknessesJson",
+    "completedAt",
+    "totalQuestionsAnswered",
+    "correctAnswersCount",
+    "answerSummaryJson",
+    "areaBreakdownJson",
   ]);
 
   if (!payload.whatsapp && !payload.telegram) {
@@ -327,6 +414,97 @@ function appendPlacementLeadRows_(payload) {
   return leadId;
 }
 
+function tenseLeadSummary_(payload) {
+  const goal = payload.goal ? " Goal: " + payload.goal : "";
+  return [
+    "Tense mastery: " + payload.masteryLabel,
+    "Overall tense score: " + payload.overallTenseScore,
+    "Weaknesses: " + payload.topTenseWeaknessesJson,
+    "Recommended track: " + payload.recommendedTrack,
+    goal,
+  ].join(". ");
+}
+
+function appendTenseLeadRows_(payload) {
+  const leadId = Utilities.getUuid();
+  const timestamp = payload.timestamp || new Date().toISOString();
+  const summary = tenseLeadSummary_(payload);
+
+  appendRow_("Tense Test Results", TENSE_TEST_COLUMNS, {
+    timestamp: timestamp,
+    test_session_id: payload.testSessionId || "",
+    full_name: payload.fullName || "",
+    age: payload.age || "",
+    nationality: payload.nationality || "",
+    whatsapp: payload.whatsapp || "",
+    telegram: payload.telegram || "",
+    email: payload.email || "",
+    preferred_language: payload.preferredLanguage || "",
+    consent: payload.consent ? "yes" : "",
+    locale: payload.locale || "",
+    source_page: payload.sourcePage || "",
+    referrer: payload.referrer || "",
+    utm_source: payload.utmSource || "",
+    utm_medium: payload.utmMedium || "",
+    utm_campaign: payload.utmCampaign || "",
+    mastery_label: payload.masteryLabel || "",
+    confidence_label: payload.confidenceLabel || "",
+    overall_tense_score: payload.overallTenseScore || "",
+    present_score: payload.presentScore || "",
+    past_score: payload.pastScore || "",
+    perfect_score: payload.perfectScore || "",
+    future_score: payload.futureScore || "",
+    tense_contrast_score: payload.tenseContrastScore || "",
+    narrative_sequencing_score: payload.narrativeSequencingScore || "",
+    stative_dynamic_score: payload.stativeDynamicScore || "",
+    professional_academic_score: payload.professionalAcademicScore || "",
+    advanced_precision_score: payload.advancedPrecisionScore || "",
+    strongest_area: payload.strongestArea || "",
+    weakest_area: payload.weakestArea || "",
+    weak_tense_areas_json: payload.weakTenseAreasJson || "",
+    tense_contrasts_to_study_json: payload.tenseContrastsToStudyJson || "",
+    recommended_first_lessons_json: payload.recommendedFirstLessonsJson || "",
+    top_tense_weaknesses_json: payload.topTenseWeaknessesJson || "",
+    recommended_track: payload.recommendedTrack || "",
+    recommended_next_step: payload.recommendedNextStep || "",
+    recommendation_summary: payload.recommendationSummary || "",
+    completion_time_seconds: payload.completionTimeSeconds || "",
+    completed_at: payload.completedAt || "",
+    retake_count: payload.retakeCount || "",
+    total_questions_answered: payload.totalQuestionsAnswered || "",
+    correct_answers_count: payload.correctAnswersCount || "",
+    question_ids_seen: payload.questionIdsSeen || "",
+    answer_summary_json: payload.answerSummaryJson || "",
+    area_breakdown_json: payload.areaBreakdownJson || "",
+    teacher_diagnostic_json: payload.teacherDiagnosticJson || "",
+    recommendation_tags: payload.recommendationTags || "",
+    lead_id: leadId,
+  });
+
+  const simplifiedLead = {
+    timestamp: timestamp,
+    full_name: payload.fullName || "",
+    whatsapp: payload.whatsapp || "",
+    telegram: payload.telegram || "",
+    email: payload.email || "",
+    interested_track: payload.interestedTrack || payload.recommendedTrack || "",
+    offer_type: "tense-test",
+    short_goal_result_summary: summary,
+    source_page: payload.sourcePage || "",
+    locale: payload.locale || "",
+    lead_id: leadId,
+  };
+
+  appendRow_("All Leads", ALL_LEADS_COLUMNS, simplifiedLead);
+
+  const trackTab = TRACK_LEAD_TABS[payload.recommendedTrack];
+  if (trackTab) {
+    appendRow_(trackTab, ALL_LEADS_COLUMNS, simplifiedLead);
+  }
+
+  return leadId;
+}
+
 function sendContactNotification_(payload, leadId) {
   const subject = "New website lead: " + (payload.track || "unknown track");
   const body = [
@@ -391,10 +569,55 @@ function sendPlacementNotification_(payload, leadId) {
   MailApp.sendEmail(NOTIFICATION_EMAIL, subject, body);
 }
 
+function sendTenseNotification_(payload, leadId) {
+  const subject =
+    "New tense mastery test completed: " +
+    (payload.fullName || "Student") +
+    " - " +
+    (payload.masteryLabel || "result pending");
+  const body = [
+    "A new English Tense Mastery Test was completed.",
+    "",
+    "Lead ID: " + leadId,
+    "Name: " + (payload.fullName || ""),
+    "Age: " + (payload.age || ""),
+    "Nationality: " + (payload.nationality || ""),
+    "WhatsApp: " + (payload.whatsapp || ""),
+    "Telegram: " + (payload.telegram || ""),
+    "Email: " + (payload.email || ""),
+    "",
+    "Mastery label: " + (payload.masteryLabel || ""),
+    "Confidence: " + (payload.confidenceLabel || ""),
+    "Overall tense score: " + (payload.overallTenseScore || ""),
+    "Present score: " + (payload.presentScore || ""),
+    "Past score: " + (payload.pastScore || ""),
+    "Perfect score: " + (payload.perfectScore || ""),
+    "Future score: " + (payload.futureScore || ""),
+    "Tense contrast score: " + (payload.tenseContrastScore || ""),
+    "Narrative sequencing score: " + (payload.narrativeSequencingScore || ""),
+    "Strongest area: " + (payload.strongestArea || ""),
+    "Weakest area: " + (payload.weakestArea || ""),
+    "Top tense weaknesses: " + (payload.topTenseWeaknessesJson || ""),
+    "Recommended track: " + (payload.recommendedTrack || ""),
+    "Recommended next step: " + (payload.recommendedNextStep || ""),
+    "Recommended first 3 lessons: " + (payload.recommendedFirstLessonsJson || ""),
+    "Source page: " + (payload.sourcePage || ""),
+  ].join("\n");
+
+  MailApp.sendEmail(NOTIFICATION_EMAIL, subject, body);
+}
+
 function handlePlacementSubmission_(payload) {
   validatePlacementPayload_(payload);
   const leadId = appendPlacementLeadRows_(payload);
   sendPlacementNotification_(payload, leadId);
+  return leadId;
+}
+
+function handleTenseSubmission_(payload) {
+  validateTensePayload_(payload);
+  const leadId = appendTenseLeadRows_(payload);
+  sendTenseNotification_(payload, leadId);
   return leadId;
 }
 
@@ -411,10 +634,14 @@ function doPost(e) {
 
     verifySecret_(payload);
 
-    const leadId =
-      payload.submissionType === "placement-test"
-        ? handlePlacementSubmission_(payload)
-        : handleContactSubmission_(payload);
+    let leadId;
+    if (payload.submissionType === "tense-test") {
+      leadId = handleTenseSubmission_(payload);
+    } else if (payload.submissionType === "placement-test") {
+      leadId = handlePlacementSubmission_(payload);
+    } else {
+      leadId = handleContactSubmission_(payload);
+    }
 
     return jsonResponse({ ok: true, leadId: leadId }, 200);
   } catch (error) {

@@ -1,33 +1,48 @@
 import type { TrackId } from "@/content/types";
 import type { Locale } from "@/i18n/routing";
 
-export const cefrLevels = ["A1", "A2", "B1", "B2", "C1", "C2"] as const;
-export type CefrLevel = (typeof cefrLevels)[number];
+export const tenseDifficultyBands = [
+  "easy",
+  "medium",
+  "hard",
+  "advanced",
+] as const;
+export type TenseDifficultyBand = (typeof tenseDifficultyBands)[number];
 
-export type PlacementSkill = "vocabulary" | "grammar";
-export type PlacementRoutingRole = "routing" | "core" | "confirmation";
-export type PlacementDiscrimination = "low" | "medium" | "high";
+export const tenseDiagnosticAreas = [
+  "present-tense-control",
+  "past-tense-control",
+  "perfect-aspect-control",
+  "future-tense-control",
+  "tense-contrast-control",
+  "narrative-sequencing",
+  "stative-dynamic-control",
+  "professional-academic-tense-use",
+  "advanced-tense-precision",
+] as const;
+export type TenseDiagnosticArea = (typeof tenseDiagnosticAreas)[number];
+
+export type TenseMasteryLabel =
+  | "Basic tense control"
+  | "Developing tense control"
+  | "Independent tense control"
+  | "Strong tense control"
+  | "Advanced tense control";
+
 export type PlacementItemType =
-  | "contextual-lexical-choice"
-  | "collocation-completion"
-  | "phrase-chunk-recognition"
-  | "word-family-choice"
-  | "phrasal-verb-context"
-  | "register-choice"
-  | "meaning-in-context"
-  | "near-synonym-distinction"
-  | "multiple-meaning-choice"
-  | "academic-professional-vocabulary"
-  | "sentence-cloze"
-  | "short-dialogue-grammar-choice"
-  | "meaning-focused-grammar-contrast"
+  | "contextual-choice"
+  | "dialogue-completion"
+  | "timeline-reasoning"
+  | "error-correction"
   | "error-identification"
-  | "corrected-sentence-selection"
   | "best-rewrite"
-  | "tense-aspect-control"
-  | "modal-meaning-choice"
-  | "clause-complexity-choice"
-  | "discourse-cohesion-grammar";
+  | "mini-story-cloze"
+  | "professional-context"
+  | "ielts-speaking-response"
+  | "meaning-contrast"
+  | "stative-verb"
+  | "dynamic-meaning"
+  | "advanced-context";
 
 export type PlacementOption = {
   id: string;
@@ -36,18 +51,15 @@ export type PlacementOption = {
 
 export type PlacementItem = {
   id: string;
-  cefrLevel: CefrLevel;
-  skill: PlacementSkill;
-  subskill: string;
-  construct: string;
-  microSkill: string;
-  difficulty: number;
-  discrimination: PlacementDiscrimination;
   itemType: PlacementItemType;
+  difficulty: number;
+  difficultyBand: TenseDifficultyBand;
+  targetTense: string;
+  diagnosticArea: TenseDiagnosticArea;
   stem: string;
   context: string;
   options: PlacementOption[];
-  correctAnswerId: string | string[];
+  correctAnswerId: string;
   explanation: string;
   feedbackIfWrong: string;
   teachingImplication: string;
@@ -65,7 +77,6 @@ export type PublicPlacementItem = Omit<
   PlacementItem,
   | "correctAnswerId"
   | "difficulty"
-  | "discrimination"
   | "explanation"
   | "feedbackIfWrong"
   | "teachingImplication"
@@ -103,46 +114,49 @@ export type PlacementStageResponse = {
   completed: boolean;
 };
 
+export type TenseAreaBreakdown = {
+  score: number;
+  correct: number;
+  total: number;
+  label: string;
+};
+
 export type PlacementScoreProfile = {
-  estimatedCefrLevel: CefrLevel;
+  masteryLabel: TenseMasteryLabel;
   confidenceLabel: string;
   overallScore: number;
-  vocabularyScore: number;
-  grammarScore: number;
-  vocabularyLevelEstimate: CefrLevel;
-  grammarLevelEstimate: CefrLevel;
-  strongestArea: PlacementSkill;
-  weakestArea: PlacementSkill;
-  borderlineNote: string;
+  presentScore: number;
+  pastScore: number;
+  perfectScore: number;
+  futureScore: number;
+  tenseContrastScore: number;
+  narrativeSequencingScore: number;
+  stativeDynamicScore: number;
+  professionalAcademicScore: number;
+  advancedPrecisionScore: number;
+  strongestArea: TenseDiagnosticArea;
+  weakestArea: TenseDiagnosticArea;
+  weakTenseAreas: string[];
+  tenseContrastsToStudy: string[];
   recommendedTrack: TrackId;
   recommendedNextStep: string;
   recommendationSummary: string;
   recommendedFirstLessons: string[];
-  topGrammarGaps: string[];
-  topVocabularyGaps: string[];
+  topTenseWeaknesses: string[];
   recommendationTags: string[];
   strengths: string[];
   gaps: string[];
   recommendations: string[];
-  skillBreakdown: Record<
-    PlacementSkill,
-    {
-      score: number;
-      levelEstimate: CefrLevel;
-      correct: number;
-      total: number;
-    }
-  >;
+  areaBreakdown: Record<TenseDiagnosticArea, TenseAreaBreakdown>;
   totalQuestionsAnswered: number;
   correctAnswersCount: number;
   questionIdsSeen: string[];
   retakeCount: number;
   answerSummary: Array<{
     itemId: string;
-    skill: PlacementSkill;
-    cefrLevel: CefrLevel;
-    construct: string;
-    subskill: string;
+    targetTense: string;
+    diagnosticArea: TenseDiagnosticArea;
+    difficultyBand: TenseDifficultyBand;
     selectedOptionIds: string[];
     correct: boolean;
     stage: number;
@@ -152,8 +166,7 @@ export type PlacementScoreProfile = {
     cannotDoYetSummary: string;
     incorrectAnswerPatterns: string[];
     recommendedFirstLessons: string[];
-    topGrammarGaps: string[];
-    topVocabularyGaps: string[];
+    topTenseWeaknesses: string[];
   };
 };
 

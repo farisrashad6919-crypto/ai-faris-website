@@ -1,13 +1,16 @@
 "use server";
 
-import { randomUUID } from "node:crypto";
-
 import { deliverLead } from "@/lib/lead-delivery";
 
 import { getNextAdaptiveStage, minimumMeaningfulQuestions } from "./adaptive";
 import { getPlacementItem, toPublicPlacementItems } from "./item-bank";
-import { placementAnswerSchema, placementSubmissionSchema } from "./schema";
+import {
+  placementAnswerSchema,
+  placementAnonymousScoreSchema,
+  placementSubmissionSchema,
+} from "./schema";
 import { scorePlacementAttempt } from "./scoring";
+import { createPlacementStartResponse } from "./start";
 import type {
   PlacementAnswer,
   PlacementStageResponse,
@@ -67,20 +70,10 @@ function validationFieldErrors(error: ReturnType<typeof placementSubmissionSchem
 export async function startPlacementTest(
   input: PlacementStartInput,
 ): Promise<PlacementStageResponse> {
-  const sessionId = randomUUID();
-  const stage = getNextAdaptiveStage([], {
-    sessionId,
+  return createPlacementStartResponse({
     recentlySeenItemIds: input.recentlySeenItemIds,
     retakeCount: input.retakeCount,
   });
-
-  return {
-    sessionId,
-    stage: stage.stage,
-    items: toPublicPlacementItems(stage.items),
-    totalQuestionsTarget: stage.totalQuestionsTarget,
-    completed: false,
-  };
 }
 
 export async function getPlacementStage({
@@ -108,9 +101,57 @@ export async function getPlacementStage({
   return {
     sessionId,
     stage: stage.stage,
-    items: toPublicPlacementItems(stage.items),
+    items: toPublicPlacementItems(stage.items, `${sessionId}:${stage.stage}`),
     totalQuestionsTarget: stage.totalQuestionsTarget,
     completed: stage.completed,
+  };
+}
+
+export async function scorePlacementResult(
+  input: unknown,
+): Promise<PlacementSubmitState> {
+  const parsed = placementAnonymousScoreSchema.safeParse(input);
+
+  if (!parsed.success) {
+    return {
+      status: "validation_error",
+      message: "Please complete the test before viewing your result.",
+      fieldErrors: {
+        answers: "Please answer all test questions before viewing your result.",
+      },
+    };
+  }
+
+  if (!hasOnlyKnownItems(parsed.data.answers)) {
+    return {
+      status: "validation_error",
+      message: "Please complete the test before viewing your result.",
+      fieldErrors: {
+        answers: "Some test answers could not be verified.",
+      },
+    };
+  }
+
+  const result = scorePlacementAttempt(parsed.data.answers, {
+    interestedTrack: parsed.data.interestedTrack,
+    learningGoal: parsed.data.learningGoal,
+    retakeCount: parsed.data.retakeCount,
+  });
+
+  if (result.totalQuestionsAnswered < minimumMeaningfulQuestions) {
+    return {
+      status: "validation_error",
+      message: "Please complete the test before viewing your result.",
+      fieldErrors: {
+        answers: "Please answer more questions before viewing your result.",
+      },
+    };
+  }
+
+  return {
+    status: "success",
+    result,
+    message: "Your tense mastery result is ready.",
   };
 }
 
@@ -154,7 +195,7 @@ export async function submitPlacementResult(
   }
 
   const payload = {
-    submissionType: "placement-test",
+    submissionType: "tense-test",
     timestamp: new Date().toISOString(),
     testSessionId: parsed.data.sessionId,
     fullName: parsed.data.details.fullName,
@@ -172,24 +213,29 @@ export async function submitPlacementResult(
     utmMedium: parsed.data.tracking.utmMedium,
     utmCampaign: parsed.data.tracking.utmCampaign,
     interestedTrack: parsed.data.details.interestedTrack || result.recommendedTrack,
-    offerType: "placement-test",
+    offerType: "tense-test",
     goal: parsed.data.details.learningGoal,
-    estimatedCefrLevel: result.estimatedCefrLevel,
+    masteryLabel: result.masteryLabel,
     confidenceLabel: result.confidenceLabel,
-    overallScore: result.overallScore,
-    vocabularyScore: result.vocabularyScore,
-    grammarScore: result.grammarScore,
-    vocabularyLevelEstimate: result.vocabularyLevelEstimate,
-    grammarLevelEstimate: result.grammarLevelEstimate,
+    overallTenseScore: result.overallScore,
+    presentScore: result.presentScore,
+    pastScore: result.pastScore,
+    perfectScore: result.perfectScore,
+    futureScore: result.futureScore,
+    tenseContrastScore: result.tenseContrastScore,
+    narrativeSequencingScore: result.narrativeSequencingScore,
+    stativeDynamicScore: result.stativeDynamicScore,
+    professionalAcademicScore: result.professionalAcademicScore,
+    advancedPrecisionScore: result.advancedPrecisionScore,
     strongestArea: result.strongestArea,
     weakestArea: result.weakestArea,
-    borderlineNote: result.borderlineNote,
+    weakTenseAreasJson: JSON.stringify(result.weakTenseAreas),
+    tenseContrastsToStudyJson: JSON.stringify(result.tenseContrastsToStudy),
     recommendedTrack: result.recommendedTrack,
     recommendedNextStep: result.recommendedNextStep,
     recommendationSummary: result.recommendationSummary,
     recommendedFirstLessonsJson: JSON.stringify(result.recommendedFirstLessons),
-    topGrammarGapsJson: JSON.stringify(result.topGrammarGaps),
-    topVocabularyGapsJson: JSON.stringify(result.topVocabularyGaps),
+    topTenseWeaknessesJson: JSON.stringify(result.topTenseWeaknesses),
     completionTimeSeconds: parsed.data.completionTimeSeconds,
     completedAt: parsed.data.completedAt,
     retakeCount: parsed.data.retakeCount,
@@ -197,7 +243,7 @@ export async function submitPlacementResult(
     correctAnswersCount: result.correctAnswersCount,
     questionIdsSeen: result.questionIdsSeen.join(","),
     answerSummaryJson: JSON.stringify(result.answerSummary),
-    skillBreakdownJson: JSON.stringify(result.skillBreakdown),
+    areaBreakdownJson: JSON.stringify(result.areaBreakdown),
     teacherDiagnosticJson: JSON.stringify(result.teacherDiagnostic),
     recommendationTags: result.recommendationTags.join(","),
   };

@@ -71,7 +71,7 @@ export const tracks: TrackContent[] = [
     secondaryCta: text("Join the Free IELTS Webinar"),
     tertiaryCta: text("Take the IELTS Readiness Test"),
     future: [
-      { title: "IELTS Placement Tests", description: "Readiness diagnostics by skill.", type: "placement-test", href: "/placement-test" },
+      { title: "English Tense Mastery Test", description: "Check tense accuracy for IELTS speaking and writing.", type: "placement-test", href: "/placement-test" },
       { title: "IELTS Mini Quizzes", description: "Fast practice for grammar, vocabulary, and strategy.", type: "quiz" },
       { title: "IELTS Videos", description: "Speaking and writing breakdowns.", type: "video" },
       { title: "IELTS Articles", description: "Practical study guidance and band strategy.", type: "article" },
@@ -152,7 +152,7 @@ export const tracks: TrackContent[] = [
     secondaryCta: text("Join the Free Business English Webinar"),
     tertiaryCta: text("Register Your Interest"),
     future: [
-      { title: "Business Placement Tests", description: "Workplace communication diagnostics.", type: "placement-test", href: "/placement-test" },
+      { title: "English Tense Mastery Test", description: "Check tense accuracy for updates, meetings, and professional email.", type: "placement-test", href: "/placement-test" },
       { title: "Communication Quizzes", description: "Meeting, interview, and email practice.", type: "quiz" },
       { title: "Workplace English Videos", description: "Short lessons for real professional situations.", type: "video" },
       { title: "Interview Articles", description: "Guides for answer structure and language.", type: "article" },
@@ -233,7 +233,7 @@ export const tracks: TrackContent[] = [
     secondaryCta: text("Join the Free English Webinar"),
     tertiaryCta: text("Take the General English Placement Test"),
     future: [
-      { title: "Level Placement Tests", description: "Clear starting-level checks.", type: "placement-test", href: "/placement-test" },
+      { title: "English Tense Mastery Test", description: "Find tense patterns to fix before live speaking practice.", type: "placement-test", href: "/placement-test" },
       { title: "Grammar Quizzes", description: "Fast practice by level and topic.", type: "quiz" },
       { title: "Speaking Videos", description: "Confidence and fluency lessons.", type: "video" },
       { title: "Study Articles", description: "Practical learning guidance.", type: "article" },

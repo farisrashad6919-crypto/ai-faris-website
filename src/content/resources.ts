@@ -12,10 +12,10 @@ export type ResourceEntry = {
 
 export const resourceEntries: ResourceEntry[] = [
   {
-    id: "cefr-placement-test",
-    title: "15-Minute English Placement Test",
+    id: "tense-mastery-test",
+    title: "English Tense Mastery Test",
     description:
-      "A CEFR-aligned adaptive diagnostic for grammar and vocabulary with a personalised recommendation.",
+      "A focused grammar diagnostic that checks how accurately you use English tenses in real situations.",
     trackIds: ["ielts", "business", "general", "teacher-training"],
     type: "placement-test",
     status: "available",

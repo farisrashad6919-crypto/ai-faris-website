@@ -1,27 +1,38 @@
 import type { TrackId } from "@/content/types";
 
 import { placementItemBank } from "./item-bank";
-import { cefrValues, formatScore, levelFromValue, valueForLevel } from "./levels";
-import type {
-  CefrLevel,
-  PlacementAnswer,
-  PlacementItem,
-  PlacementScoreProfile,
-  PlacementSkill,
+import {
+  tenseDiagnosticAreas,
+  type PlacementAnswer,
+  type PlacementItem,
+  type PlacementScoreProfile,
+  type TenseDiagnosticArea,
+  type TenseMasteryLabel,
 } from "./types";
 
-const skills: PlacementSkill[] = ["vocabulary", "grammar"];
-
 const stageWeights: Record<number, number> = {
-  1: 0.8,
+  1: 0.82,
   2: 1,
-  3: 1.22,
+  3: 1.18,
 };
 
-const discriminationWeights = {
-  low: 0.85,
+const difficultyWeights = {
+  easy: 0.86,
   medium: 1,
-  high: 1.18,
+  hard: 1.16,
+  advanced: 1.32,
+} as const;
+
+const areaLabels: Record<TenseDiagnosticArea, string> = {
+  "present-tense-control": "Present tense control",
+  "past-tense-control": "Past tense control",
+  "perfect-aspect-control": "Perfect aspect control",
+  "future-tense-control": "Future tense control",
+  "tense-contrast-control": "Tense contrast control",
+  "narrative-sequencing": "Narrative sequencing",
+  "stative-dynamic-control": "Stative and dynamic verb control",
+  "professional-academic-tense-use": "Professional and academic tense use",
+  "advanced-tense-precision": "Advanced tense precision",
 };
 
 type ScoreContext = {
@@ -35,8 +46,11 @@ type AnsweredEntry = {
   item: PlacementItem;
   correct: boolean;
   weight: number;
-  evidenceValue: number;
 };
+
+function formatScore(value: number) {
+  return Math.round(Math.max(0, Math.min(100, value)));
+}
 
 function uniqueAnswers(answers: PlacementAnswer[]) {
   return Array.from(
@@ -47,24 +61,8 @@ function uniqueAnswers(answers: PlacementAnswer[]) {
 }
 
 function answerIsCorrect(answer: PlacementAnswer, item: PlacementItem) {
-  const expected = Array.isArray(item.correctAnswerId)
-    ? item.correctAnswerId
-    : [item.correctAnswerId];
   const selected = [...answer.selectedOptionIds].sort();
-
-  return (
-    expected.length === selected.length &&
-    [...expected].sort().every((id, index) => id === selected[index])
-  );
-}
-
-function evidenceValue(item: PlacementItem, correct: boolean) {
-  if (correct) {
-    return Math.min(6.15, item.difficulty + 0.34);
-  }
-
-  const penalty = item.difficulty <= 2 ? 1.05 : item.difficulty <= 4 ? 0.82 : 0.58;
-  return Math.max(1, item.difficulty - penalty);
+  return selected.length === 1 && selected[0] === item.correctAnswerId;
 }
 
 function getAnsweredItems(answers: PlacementAnswer[]): AnsweredEntry[] {
@@ -72,136 +70,212 @@ function getAnsweredItems(answers: PlacementAnswer[]): AnsweredEntry[] {
     .map((answer) => {
       const item = placementItemBank.find((candidate) => candidate.id === answer.itemId);
       if (!item) return null;
-      const correct = answerIsCorrect(answer, item);
       const roleWeight =
         (item.isConfirmationItem ? 1.1 : 1) * (item.isAnchorItem ? 1.04 : 1);
       const weight =
-        discriminationWeights[item.discrimination] *
         (stageWeights[answer.stage] ?? 1) *
+        difficultyWeights[item.difficultyBand] *
         roleWeight;
+
       return {
         answer,
         item,
-        correct,
+        correct: answerIsCorrect(answer, item),
         weight,
-        evidenceValue: evidenceValue(item, correct),
       };
     })
     .filter(Boolean) as AnsweredEntry[];
 }
 
-function scoreGroup(group: AnsweredEntry[]) {
-  if (group.length === 0) {
+function scoreGroup(entries: AnsweredEntry[]) {
+  if (entries.length === 0) {
     return {
       score: 0,
-      level: "A1" as CefrLevel,
-      ability: 1,
       correct: 0,
       total: 0,
+      possible: 0,
+      earned: 0,
     };
   }
 
-  const possible = group.reduce((total, entry) => total + entry.weight, 0);
-  const earned = group.reduce(
+  const possible = entries.reduce((total, entry) => total + entry.weight, 0);
+  const earned = entries.reduce(
     (total, entry) => total + (entry.correct ? entry.weight : 0),
     0,
   );
-  const evidence = group.reduce(
-    (result, entry) => ({
-      total: result.total + entry.evidenceValue * entry.weight,
-      weight: result.weight + entry.weight,
-    }),
-    { total: 0, weight: 0 },
-  );
-  const ability = Math.max(1, Math.min(6.1, evidence.total / evidence.weight));
+  const correct = entries.filter((entry) => entry.correct).length;
 
   return {
     score: possible > 0 ? formatScore((earned / possible) * 100) : 0,
-    level: levelFromValue(ability),
-    ability,
-    correct: group.filter((entry) => entry.correct).length,
-    total: group.length,
+    correct,
+    total: entries.length,
+    possible,
+    earned,
   };
 }
 
-function findBorderline(ability: number) {
-  const thresholds = [
-    { value: 1.55, label: "A1/A2 borderline" },
-    { value: 2.45, label: "A2/B1 borderline" },
-    { value: 3.45, label: "B1/B2 borderline" },
-    { value: 4.45, label: "B2/C1 borderline" },
-    { value: 5.45, label: "C1/C2 borderline" },
-  ];
-  const nearest = thresholds
-    .map((threshold) => ({
-      ...threshold,
-      distance: Math.abs(ability - threshold.value),
-    }))
-    .sort((a, b) => a.distance - b.distance)[0];
-
-  return nearest.distance <= 0.2 ? nearest.label : "";
+function masteryLabel(score: number): TenseMasteryLabel {
+  if (score < 45) return "Basic tense control";
+  if (score < 60) return "Developing tense control";
+  if (score < 75) return "Independent tense control";
+  if (score < 88) return "Strong tense control";
+  return "Advanced tense control";
 }
 
 function confidenceLabel({
-  level,
-  ability,
-  subskillSpread,
+  score,
   total,
-  grammarLevel,
-  vocabularyLevel,
+  areaSpread,
+  advancedCorrect,
+  advancedTotal,
 }: {
-  level: CefrLevel;
-  ability: number;
-  subskillSpread: number;
+  score: number;
   total: number;
-  grammarLevel: CefrLevel;
-  vocabularyLevel: CefrLevel;
+  areaSpread: number;
+  advancedCorrect: number;
+  advancedTotal: number;
 }) {
-  const borderline = findBorderline(ability);
+  const nearBoundary =
+    Math.min(
+      Math.abs(score - 45),
+      Math.abs(score - 60),
+      Math.abs(score - 75),
+      Math.abs(score - 88),
+    ) <= 3;
 
-  if (borderline) return borderline;
-
-  if (
-    cefrValues[vocabularyLevel] >= cefrValues.C2 &&
-    cefrValues[grammarLevel] <= cefrValues.C1
-  ) {
-    return "C2-level vocabulary control, but grammar evidence suggests C1";
+  if (nearBoundary) return "Borderline tense-control profile";
+  if (total >= 30 && score >= 88 && advancedTotal >= 5 && advancedCorrect / advancedTotal >= 0.75) {
+    return "Advanced evidence across tense forms";
   }
-
-  if (level === "B2" && ability >= 4.22) return "B2 moving toward C1";
-  if (level === "C1" && ability >= 5.18) return "Upper-C1 / approaching C2";
-  if (total >= 24 && subskillSpread <= 0.85) return `Strong ${level}`;
-
-  return `Likely ${level}`;
+  if (total >= 30 && score >= 75 && areaSpread <= 22) {
+    return "Strong evidence from a balanced tense profile";
+  }
+  if (areaSpread >= 35) return "Mixed profile with uneven tense control";
+  return "Useful diagnostic estimate";
 }
 
-function countGapTags(entries: AnsweredEntry[], skill?: PlacementSkill) {
+function areaScore(entries: AnsweredEntry[], area: TenseDiagnosticArea) {
+  const group = scoreGroup(entries.filter((entry) => entry.item.diagnosticArea === area));
+  return {
+    score: group.score,
+    correct: group.correct,
+    total: group.total,
+    label: areaLabels[area],
+  };
+}
+
+function countWeakTags(entries: AnsweredEntry[]) {
   const counts = new Map<string, number>();
 
   for (const entry of entries) {
     if (entry.correct) continue;
-    if (skill && entry.item.skill !== skill) continue;
+    counts.set(entry.item.targetTense, (counts.get(entry.item.targetTense) ?? 0) + 1);
+    counts.set(entry.item.diagnosticArea, (counts.get(entry.item.diagnosticArea) ?? 0) + 1);
     for (const tag of entry.item.recommendationTags) {
       counts.set(tag, (counts.get(tag) ?? 0) + 1);
     }
-    counts.set(entry.item.construct, (counts.get(entry.item.construct) ?? 0) + 1);
-    counts.set(entry.item.subskill, (counts.get(entry.item.subskill) ?? 0) + 1);
   }
 
   return Array.from(counts.entries())
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-    .map(([tag]) => tag)
-    .slice(0, 5);
+    .map(([tag]) => tag);
+}
+
+function tenseContrastSuggestions(tags: string[]) {
+  const suggestions = new Set<string>();
+  const joined = tags.join(" ");
+
+  if (/present-simple|present-continuous|stative/.test(joined)) {
+    suggestions.add("Present Simple vs Present Continuous, including stative verbs");
+  }
+  if (/present-perfect|past-simple|unfinished-time|finished-time|since/.test(joined)) {
+    suggestions.add("Present Perfect vs Past Simple with time markers");
+  }
+  if (/past-continuous|interruption|timeline/.test(joined)) {
+    suggestions.add("Past Simple vs Past Continuous in stories");
+  }
+  if (/past-perfect|earlier-past|sequence|before|after/.test(joined)) {
+    suggestions.add("Past Perfect for earlier past events and causes");
+  }
+  if (/will|going-to|future-arrangement|future-continuous|future-perfect/.test(joined)) {
+    suggestions.add("Future forms for plans, offers, arrangements, and deadlines");
+  }
+  if (/business|professional|academic|formal-register|report/.test(joined)) {
+    suggestions.add("Tense precision in professional and academic communication");
+  }
+
+  return Array.from(suggestions).slice(0, 5);
+}
+
+function lessonAimsFromWeaknesses({
+  tags,
+  areaBreakdown,
+  overallScore,
+}: {
+  tags: string[];
+  areaBreakdown: PlacementScoreProfile["areaBreakdown"];
+  overallScore: number;
+}) {
+  const lessons: string[] = [];
+  const joined = tags.join(" ");
+
+  if (
+    areaBreakdown["present-tense-control"].score < 70 ||
+    areaBreakdown["stative-dynamic-control"].score < 70 ||
+    /present-simple|present-continuous|stative/.test(joined)
+  ) {
+    lessons.push("Review Present Simple vs Present Continuous, including stative and dynamic meanings.");
+  }
+
+  if (/present-perfect|past-simple|since|unfinished-time|finished-time/.test(joined)) {
+    lessons.push("Practise Present Perfect vs Past Simple with finished and unfinished time markers.");
+  }
+
+  if (
+    areaBreakdown["narrative-sequencing"].score < 70 ||
+    /past-continuous|past-perfect|sequence|interruption/.test(joined)
+  ) {
+    lessons.push("Build accuracy with past storytelling tenses and event sequencing.");
+  }
+
+  if (
+    areaBreakdown["future-tense-control"].score < 70 ||
+    /future|will|going-to|arrangement/.test(joined)
+  ) {
+    lessons.push("Practise future forms for plans, predictions, arrangements, and deadlines.");
+  }
+
+  if (
+    areaBreakdown["professional-academic-tense-use"].score < 72 ||
+    areaBreakdown["advanced-tense-precision"].score < 72 ||
+    /professional|academic|report|advanced/.test(joined)
+  ) {
+    lessons.push("Develop advanced tense control for professional, IELTS-style, and academic communication.");
+  }
+
+  if (overallScore < 50) {
+    lessons.unshift("Stabilise core tense form and meaning before moving into longer speaking answers.");
+  }
+
+  const fallback = [
+    "Use guided speaking correction to turn tense knowledge into accurate communication.",
+    "Create a small tense error log and practise corrected examples with spaced review.",
+    "Connect tense practice to personal stories, workplace updates, and future plans.",
+  ];
+
+  return [...lessons, ...fallback].filter((item, index, array) => array.indexOf(item) === index).slice(0, 3);
 }
 
 function inferTrack({
   context,
-  level,
   tags,
+  professionalScore,
+  overallScore,
 }: {
   context?: ScoreContext;
-  level: CefrLevel;
   tags: string[];
+  professionalScore: number;
+  overallScore: number;
 }): TrackId {
   const goal = `${context?.learningGoal ?? ""} ${context?.interestedTrack ?? ""}`.toLowerCase();
 
@@ -221,268 +295,196 @@ function inferTrack({
     return "teacher-training";
   }
   if (context?.interestedTrack) return context.interestedTrack;
-  if (level === "C1" || level === "C2" || tags.includes("discourse-control")) {
+  if (professionalScore >= 78 && overallScore >= 75) return "business";
+  if (tags.some((tag) => tag.includes("ielts"))) return "ielts";
+  if (overallScore >= 84 && tags.some((tag) => tag.includes("advanced"))) {
     return "teacher-training";
   }
-
   return "general";
 }
 
 function trackNextStep(track: TrackId) {
   switch (track) {
     case "ielts":
-      return "Book an IELTS diagnostic lesson to connect this level estimate to your target band and exam timeline.";
+      return "Book an IELTS-focused grammar lesson to practise tense control in speaking and writing answers.";
     case "business":
-      return "Book a Business English diagnostic lesson to turn these gaps into meetings, interviews, presentations, and email practice.";
+      return "Book a Business English lesson to use accurate tenses in meetings, updates, interviews, and email.";
     case "teacher-training":
-      return "Book an advanced diagnostic lesson to check precision, teacher-language goals, or professional English needs.";
+      return "Book an advanced grammar and teacher-language lesson to refine tense explanation, register, and precision.";
     case "general":
     default:
-      return "Book a General English diagnostic lesson to confirm live communication skills and build a focused study plan.";
+      return "Book a focused grammar and speaking lesson to turn tense knowledge into accurate communication.";
   }
-}
-
-function recommendedFirstLessons({
-  level,
-  weakest,
-  grammarGaps,
-  vocabularyGaps,
-  track,
-}: {
-  level: CefrLevel;
-  weakest: PlacementSkill;
-  grammarGaps: string[];
-  vocabularyGaps: string[];
-  track: TrackId;
-}) {
-  const lessons = [
-    weakest === "grammar"
-      ? "Grammar-for-communication lesson: stabilise repeated sentence patterns through guided speaking."
-      : "Vocabulary depth lesson: build chunks, collocations, and retrieval practice around the learner's real goals.",
-    level === "B1" || level === "B2"
-      ? "Fluency expansion lesson: connect ideas with tense control, linking, and more precise topic vocabulary."
-      : "Accuracy baseline lesson: confirm what is automatic, what breaks under pressure, and what needs review.",
-    track === "ielts"
-      ? "IELTS bridge lesson: map grammar and vocabulary gaps to speaking/writing band needs."
-      : track === "business"
-        ? "Live professional scenario lesson: practise the most useful workplace situations with correction."
-        : track === "teacher-training"
-          ? "Advanced precision lesson: refine explanation language, register, and professional accuracy."
-          : "Personal study-plan lesson: set weekly grammar, vocabulary, and speaking priorities.",
-  ];
-
-  if (grammarGaps[0] && vocabularyGaps[0]) {
-    lessons[1] = `Integrated accuracy lesson: practise ${grammarGaps[0]} with ${vocabularyGaps[0]} in realistic answers.`;
-  }
-
-  return lessons;
 }
 
 function recommendationsFor({
-  weakest,
-  grammarGaps,
-  vocabularyGaps,
+  weakestArea,
+  score,
   track,
-  level,
 }: {
-  weakest: PlacementSkill;
-  grammarGaps: string[];
-  vocabularyGaps: string[];
+  weakestArea: TenseDiagnosticArea;
+  score: number;
   track: TrackId;
-  level: CefrLevel;
 }) {
   const recommendations = [
-    "Use spaced review and retrieval practice instead of rereading notes passively.",
-    "Keep an error log with corrected example sentences and revisit it weekly.",
+    "Use retrieval practice: answer short tense questions from memory, then check and correct.",
+    "Keep a tense error log with one corrected example for each repeated mistake.",
+    "Practise tense contrasts in speaking, not only in isolated sentences.",
   ];
 
-  if (weakest === "grammar" || grammarGaps.length > vocabularyGaps.length) {
-    recommendations.push("Practise grammar through short communicative answers, then correct the repeated patterns.");
+  if (weakestArea === "narrative-sequencing") {
+    recommendations.push("Tell short past stories using background action, interruption, and earlier-past events.");
   }
-
-  if (weakest === "vocabulary" || vocabularyGaps.length >= grammarGaps.length) {
-    recommendations.push("Learn vocabulary in chunks, collocations, word families, and short useful sentences.");
+  if (weakestArea === "future-tense-control") {
+    recommendations.push("Compare will, going to, present continuous, future continuous, and future perfect in real plans.");
   }
-
-  if (level === "B1" || level === "B2") {
-    recommendations.push("Build longer answers with linking, tense consistency, and topic vocabulary.");
+  if (weakestArea === "professional-academic-tense-use") {
+    recommendations.push("Practise workplace updates and report-style sentences with accurate time reference.");
   }
-
-  if (level === "C1" || level === "C2") {
-    recommendations.push("Focus on register, nuance, discourse control, hedging, and precise collocation.");
+  if (score >= 75) {
+    recommendations.push("Move from sentence accuracy into longer answers where tense consistency is harder to maintain.");
   }
-
   if (track === "ielts") {
-    recommendations.push("Connect these gaps to IELTS-style speaking and writing tasks with guided correction.");
+    recommendations.push("Apply each tense contrast to IELTS Speaking Part 1, Part 2 stories, and Writing examples.");
   }
-
   if (track === "business") {
-    recommendations.push("Apply the language in meetings, presentations, email, and interview scenarios.");
+    recommendations.push("Use meeting updates, project timelines, and email follow-ups as tense practice contexts.");
   }
 
-  return recommendations;
+  return recommendations.slice(0, 6);
 }
 
-function buildRecommendationSummary({
-  level,
-  strongest,
-  weakest,
-  track,
-  grammarLevel,
-  vocabularyLevel,
-}: {
-  level: CefrLevel;
-  strongest: PlacementSkill;
-  weakest: PlacementSkill;
-  track: TrackId;
-  grammarLevel: CefrLevel;
-  vocabularyLevel: CefrLevel;
-}) {
-  return `Your English evidence is around ${level}. Vocabulary evidence suggests ${vocabularyLevel}; grammar evidence suggests ${grammarLevel}. Your stronger tested area is ${strongest}, and the priority area to stabilise is ${weakest}. Recommended track: ${track}.`;
+function weaknessLabel(value: string) {
+  return value
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
 export function scorePlacementAttempt(
   answers: PlacementAnswer[],
   context?: ScoreContext,
 ): PlacementScoreProfile {
-  const answeredItems = getAnsweredItems(answers);
-  const overall = scoreGroup(answeredItems);
-  const skillScores = Object.fromEntries(
-    skills.map((skill) => [
-      skill,
-      scoreGroup(answeredItems.filter((entry) => entry.item.skill === skill)),
-    ]),
-  ) as Record<PlacementSkill, ReturnType<typeof scoreGroup>>;
-  const sortedSkills = [...skills].sort((a, b) => {
-    const levelDelta =
-      cefrValues[skillScores[b].level] - cefrValues[skillScores[a].level];
-    if (levelDelta !== 0) return levelDelta;
-    return skillScores[b].score - skillScores[a].score;
-  });
-  const strongestArea = sortedSkills[0];
-  const weakestArea = sortedSkills[sortedSkills.length - 1];
-  const subskillAbilities = skills.map((skill) => skillScores[skill].ability);
-  const subskillSpread =
-    Math.max(...subskillAbilities) - Math.min(...subskillAbilities);
-  const borderlineNote = findBorderline(overall.ability);
-  const topGrammarGaps = countGapTags(answeredItems, "grammar");
-  const topVocabularyGaps = countGapTags(answeredItems, "vocabulary");
-  const recommendationTags = Array.from(
-    new Set([...topGrammarGaps, ...topVocabularyGaps, ...countGapTags(answeredItems)]),
-  ).slice(0, 8);
+  const entries = getAnsweredItems(answers);
+  const overall = scoreGroup(entries);
+  const areaBreakdown = Object.fromEntries(
+    tenseDiagnosticAreas.map((area) => [area, areaScore(entries, area)]),
+  ) as PlacementScoreProfile["areaBreakdown"];
+  const scoredAreas = tenseDiagnosticAreas.filter(
+    (area) => areaBreakdown[area].total > 0,
+  );
+  const strongestArea = [...scoredAreas].sort(
+    (a, b) => areaBreakdown[b].score - areaBreakdown[a].score,
+  )[0] ?? "present-tense-control";
+  const weakestArea = [...scoredAreas].sort(
+    (a, b) => areaBreakdown[a].score - areaBreakdown[b].score,
+  )[0] ?? "present-tense-control";
+  const scores = scoredAreas.map((area) => areaBreakdown[area].score);
+  const areaSpread = scores.length
+    ? Math.max(...scores) - Math.min(...scores)
+    : 0;
+  const advancedEntries = entries.filter(
+    (entry) => entry.item.difficultyBand === "advanced",
+  );
+  const weakTags = countWeakTags(entries);
+  const topTenseWeaknesses = weakTags.slice(0, 5).map(weaknessLabel);
+  const tenseContrastsToStudy = tenseContrastSuggestions(weakTags);
+  const weakTenseAreas = scoredAreas
+    .filter((area) => areaBreakdown[area].score < 68)
+    .sort((a, b) => areaBreakdown[a].score - areaBreakdown[b].score)
+    .map((area) => areaLabels[area])
+    .slice(0, 5);
   const recommendedTrack = inferTrack({
     context,
-    level: overall.level,
-    tags: recommendationTags,
+    tags: weakTags,
+    professionalScore: areaBreakdown["professional-academic-tense-use"].score,
+    overallScore: overall.score,
+  });
+  const recommendedFirstLessons = lessonAimsFromWeaknesses({
+    tags: weakTags,
+    areaBreakdown,
+    overallScore: overall.score,
   });
   const recommendedNextStep = trackNextStep(recommendedTrack);
-  const firstLessons = recommendedFirstLessons({
-    level: overall.level,
-    weakest: weakestArea,
-    grammarGaps: topGrammarGaps,
-    vocabularyGaps: topVocabularyGaps,
-    track: recommendedTrack,
+  const label = masteryLabel(overall.score);
+  const confidence = confidenceLabel({
+    score: overall.score,
+    total: entries.length,
+    areaSpread,
+    advancedCorrect: advancedEntries.filter((entry) => entry.correct).length,
+    advancedTotal: advancedEntries.length,
   });
-  const recommendationSummary = buildRecommendationSummary({
-    level: overall.level,
-    strongest: strongestArea,
-    weakest: weakestArea,
-    track: recommendedTrack,
-    grammarLevel: skillScores.grammar.level,
-    vocabularyLevel: skillScores.vocabulary.level,
-  });
+  const recommendationSummary = `${label}. Your strongest tested area is ${areaLabels[strongestArea].toLowerCase()}, while ${areaLabels[weakestArea].toLowerCase()} needs the most careful follow-up.`;
   const strengths = [
-    `${strongestArea} is the stronger tested area in this adaptive diagnostic.`,
-    overall.score >= 70
-      ? "You handled a good share of level-targeted evidence successfully."
-      : "The test found a practical starting band and several teachable priorities.",
+    `${areaLabels[strongestArea]} is currently your strongest tense area.`,
+    overall.score >= 75
+      ? "You can control several tense choices in realistic sentence and dialogue contexts."
+      : "The test found clear, teachable tense priorities rather than only a raw score.",
   ];
   const gaps = [
-    `${weakestArea} needs the most careful follow-up.`,
-    borderlineNote
-      ? "Your result sits near a CEFR boundary, so live confirmation will be especially useful."
-      : "Speaking, listening, writing, and real-time communication may show a different level and should be checked live.",
+    `${areaLabels[weakestArea]} is the first area to stabilise.`,
+    tenseContrastsToStudy[0]
+      ? `Start with ${tenseContrastsToStudy[0].toLowerCase()}.`
+      : "Longer speaking and writing may reveal additional tense-control gaps.",
   ];
-  const incorrectPatterns = answeredItems
+  const incorrectAnswerPatterns = entries
     .filter((entry) => !entry.correct)
-    .map((entry) => `${entry.item.skill}: ${entry.item.construct}`)
-    .slice(0, 10);
+    .map(
+      (entry) =>
+        `${areaLabels[entry.item.diagnosticArea]}: ${entry.item.targetTense}`,
+    )
+    .slice(0, 12);
 
   return {
-    estimatedCefrLevel: overall.level,
-    confidenceLabel: confidenceLabel({
-      level: overall.level,
-      ability: overall.ability,
-      subskillSpread,
-      total: answeredItems.length,
-      grammarLevel: skillScores.grammar.level,
-      vocabularyLevel: skillScores.vocabulary.level,
-    }),
+    masteryLabel: label,
+    confidenceLabel: confidence,
     overallScore: overall.score,
-    vocabularyScore: skillScores.vocabulary.score,
-    grammarScore: skillScores.grammar.score,
-    vocabularyLevelEstimate: skillScores.vocabulary.level,
-    grammarLevelEstimate: skillScores.grammar.level,
+    presentScore: areaBreakdown["present-tense-control"].score,
+    pastScore: areaBreakdown["past-tense-control"].score,
+    perfectScore: areaBreakdown["perfect-aspect-control"].score,
+    futureScore: areaBreakdown["future-tense-control"].score,
+    tenseContrastScore: areaBreakdown["tense-contrast-control"].score,
+    narrativeSequencingScore: areaBreakdown["narrative-sequencing"].score,
+    stativeDynamicScore: areaBreakdown["stative-dynamic-control"].score,
+    professionalAcademicScore:
+      areaBreakdown["professional-academic-tense-use"].score,
+    advancedPrecisionScore: areaBreakdown["advanced-tense-precision"].score,
     strongestArea,
     weakestArea,
-    borderlineNote,
+    weakTenseAreas,
+    tenseContrastsToStudy,
     recommendedTrack,
     recommendedNextStep,
     recommendationSummary,
-    recommendedFirstLessons: firstLessons,
-    topGrammarGaps,
-    topVocabularyGaps,
-    recommendationTags,
+    recommendedFirstLessons,
+    topTenseWeaknesses,
+    recommendationTags: weakTags.slice(0, 10),
     strengths,
     gaps,
     recommendations: recommendationsFor({
-      weakest: weakestArea,
-      grammarGaps: topGrammarGaps,
-      vocabularyGaps: topVocabularyGaps,
+      weakestArea,
+      score: overall.score,
       track: recommendedTrack,
-      level: overall.level,
     }),
-    skillBreakdown: {
-      vocabulary: {
-        score: skillScores.vocabulary.score,
-        levelEstimate: skillScores.vocabulary.level,
-        correct: skillScores.vocabulary.correct,
-        total: skillScores.vocabulary.total,
-      },
-      grammar: {
-        score: skillScores.grammar.score,
-        levelEstimate: skillScores.grammar.level,
-        correct: skillScores.grammar.correct,
-        total: skillScores.grammar.total,
-      },
-    },
-    totalQuestionsAnswered: answeredItems.length,
-    correctAnswersCount: answeredItems.filter((entry) => entry.correct).length,
-    questionIdsSeen: answeredItems.map((entry) => entry.item.id),
+    areaBreakdown,
+    totalQuestionsAnswered: entries.length,
+    correctAnswersCount: entries.filter((entry) => entry.correct).length,
+    questionIdsSeen: entries.map((entry) => entry.item.id),
     retakeCount: context?.retakeCount ?? 0,
-    answerSummary: answeredItems.map((entry) => ({
+    answerSummary: entries.map((entry) => ({
       itemId: entry.item.id,
-      skill: entry.item.skill,
-      cefrLevel: entry.item.cefrLevel,
-      construct: entry.item.construct,
-      subskill: entry.item.subskill,
+      targetTense: entry.item.targetTense,
+      diagnosticArea: entry.item.diagnosticArea,
+      difficultyBand: entry.item.difficultyBand,
       selectedOptionIds: entry.answer.selectedOptionIds,
       correct: entry.correct,
       stage: entry.answer.stage,
     })),
     teacherDiagnostic: {
-      canDoSummary: `Likely ${overall.level} overall evidence, with ${strongestArea} more stable than ${weakestArea}.`,
-      cannotDoYetSummary: `First lessons should check ${weakestArea}, especially ${[...topGrammarGaps, ...topVocabularyGaps].slice(0, 3).join(", ") || "accuracy under pressure"}.`,
-      incorrectAnswerPatterns: incorrectPatterns,
-      recommendedFirstLessons: firstLessons,
-      topGrammarGaps,
-      topVocabularyGaps,
+      canDoSummary: `${label}: ${areaLabels[strongestArea].toLowerCase()} looks more stable than ${areaLabels[weakestArea].toLowerCase()}.`,
+      cannotDoYetSummary: `First lessons should target ${topTenseWeaknesses.slice(0, 3).join(", ") || areaLabels[weakestArea]}.`,
+      incorrectAnswerPatterns,
+      recommendedFirstLessons,
+      topTenseWeaknesses,
     },
   };
-}
-
-export function resultIsNearLevel(result: PlacementScoreProfile, level: CefrLevel) {
-  return Math.abs(
-    valueForLevel(result.estimatedCefrLevel) - valueForLevel(level),
-  ) <= 1;
 }

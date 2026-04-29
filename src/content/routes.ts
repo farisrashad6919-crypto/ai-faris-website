@@ -70,14 +70,14 @@ export const staticRoutes: SiteRoute[] = [
     key: "placementTest",
     path: "/placement-test",
     footer: true,
-    title: "15-Minute A1-C2 English Placement Test | Faris Rashad",
+    title: "English Tense Mastery Test | Faris Rashad",
     description:
-      "Take a CEFR-aligned adaptive English placement test for grammar and vocabulary, then receive an A1-C2 estimate and next-step recommendation.",
+      "Take a focused English tense diagnostic that checks how accurately you use English tenses in real situations.",
     keywords: [
-      "English placement test",
-      "CEFR English test",
-      "English level check",
-      "English grammar vocabulary test",
+      "English tense test",
+      "English grammar tense test",
+      "English tense diagnostic",
+      "English tenses level check",
     ],
   },
   {

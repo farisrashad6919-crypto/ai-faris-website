@@ -13,15 +13,13 @@ import type { PlacementAnswer, PlacementItem } from "./types";
 const context = { sessionId: "adaptive-test-session", retakeCount: 0 };
 
 function correctIds(item: PlacementItem) {
-  return Array.isArray(item.correctAnswerId)
-    ? item.correctAnswerId
-    : [item.correctAnswerId];
+  return [item.correctAnswerId];
 }
 
-function answersFor(count: number): PlacementAnswer[] {
-  return placementItemBank.slice(0, count).map((item, index) => ({
+function answersForItems(items: PlacementItem[], correct = true): PlacementAnswer[] {
+  return items.map((item, index) => ({
     itemId: item.id,
-    selectedOptionIds: correctIds(item),
+    selectedOptionIds: correct ? correctIds(item) : ["wrong"],
     stage:
       index < routingQuestionsTarget
         ? 1
@@ -33,20 +31,20 @@ function answersFor(count: number): PlacementAnswer[] {
   }));
 }
 
-describe("placement adaptive routing", () => {
-  it("starts with eight routing items across A2-C1 and both tested skills", () => {
+function answersFor(count: number, correct = true): PlacementAnswer[] {
+  return answersForItems(placementItemBank.slice(0, count), correct);
+}
+
+describe("tense diagnostic adaptive routing", () => {
+  it("starts with eight routing items across tense diagnostic areas", () => {
     const items = getInitialRoutingItems(context);
 
     expect(items).toHaveLength(8);
-    expect(new Set(items.map((item) => item.skill))).toEqual(
-      new Set(["vocabulary", "grammar"]),
-    );
-    expect(new Set(items.map((item) => item.cefrLevel))).toEqual(
-      new Set(["A2", "B1", "B2", "C1"]),
-    );
+    expect(new Set(items.map((item) => item.diagnosticArea)).size).toBeGreaterThanOrEqual(6);
+    expect(items.every((item) => item.difficultyBand !== "advanced")).toBe(true);
   });
 
-  it("returns a level-targeted core stage after routing answers", () => {
+  it("returns a core tense stage after routing answers", () => {
     const stage = getNextAdaptiveStage(answersFor(routingQuestionsTarget), context);
 
     expect(stage.completed).toBe(false);
@@ -55,19 +53,24 @@ describe("placement adaptive routing", () => {
     expect(new Set(stage.items.map((item) => item.id)).size).toBe(coreQuestionsTarget);
   });
 
-  it("returns confirmation items before completion", () => {
-    const stage = getNextAdaptiveStage(
-      answersFor(routingQuestionsTarget + coreQuestionsTarget),
-      context,
-    );
+  it("avoids advanced overload when the learner is weak", () => {
+    const stage = getNextAdaptiveStage(answersFor(routingQuestionsTarget, false), context);
+
+    expect(stage.stage).toBe(2);
+    expect(stage.items.every((item) => item.difficultyBand !== "advanced")).toBe(true);
+  });
+
+  it("includes advanced confirmation when the learner is strong", () => {
+    const strongAnswers = answersFor(routingQuestionsTarget + coreQuestionsTarget, true);
+    const stage = getNextAdaptiveStage(strongAnswers, context);
 
     expect(stage.completed).toBe(false);
     expect(stage.stage).toBe(3);
-    expect(stage.items.length).toBeGreaterThanOrEqual(4);
-    expect(stage.items.length).toBeLessThanOrEqual(8);
+    expect(stage.items.length).toBe(defaultQuestionsTarget - strongAnswers.length);
+    expect(stage.items.some((item) => item.difficultyBand === "advanced")).toBe(true);
   });
 
-  it("marks the test completed at the target question count", () => {
+  it("marks the test completed at the 30-question target", () => {
     const stage = getNextAdaptiveStage(answersFor(defaultQuestionsTarget), context);
 
     expect(stage.completed).toBe(true);

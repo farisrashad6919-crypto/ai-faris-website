@@ -1,6 +1,13 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useRef, useState, useTransition } from "react";
+import {
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 
 import { ArrowRight, CheckCircle2, LoaderCircle } from "lucide-react";
 
@@ -8,23 +15,20 @@ import { getBookingHref } from "@/config/site";
 import { copy } from "@/content/locale-copy";
 import { tracks } from "@/content/tracks";
 import type { TrackId } from "@/content/types";
-import { localeSelfNames } from "@/i18n/locale-labels";
-import { useRouter } from "@/i18n/navigation";
-import { locales, type Locale } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/navigation";
+import { type Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
 import {
   getPlacementStage,
+  scorePlacementResult,
   startPlacementTest,
-  submitPlacementResult,
 } from "./actions";
 import { trackPlacementEvent } from "./analytics";
 import { placementCopy } from "./copy";
 import type {
   PlacementAnswer,
   PlacementStageResponse,
-  PlacementSubmitState,
-  PublicPlacementItem,
 } from "./types";
 
 export const placementResultStorageKey = "faris-placement-test-result";
@@ -32,38 +36,14 @@ const placementExposureStorageKey = "faris-placement-test-exposure";
 
 type PlacementTestClientProps = {
   locale: Locale;
-};
-
-type DetailValues = {
-  fullName: string;
-  age: string;
-  nationality: string;
-  whatsapp: string;
-  telegram: string;
-  email: string;
-  preferredLanguage: Locale;
-  learningGoal: string;
-  interestedTrack: TrackId | "";
-  consent: boolean;
+  initialStageResponse?: PlacementStageResponse;
+  initialStartedAt?: string;
 };
 
 type PlacementExposure = {
   recentlySeenItemIds: string[];
   retakeCount: number;
 };
-
-const emptyDetails = (locale: Locale): DetailValues => ({
-  fullName: "",
-  age: "",
-  nationality: "",
-  whatsapp: "",
-  telegram: "",
-  email: "",
-  preferredLanguage: locale,
-  learningGoal: "",
-  interestedTrack: "",
-  consent: false,
-});
 
 function readPlacementExposure(): PlacementExposure {
   if (typeof window === "undefined") {
@@ -113,58 +93,93 @@ function secondsSince(startedAt: string) {
   return Math.max(0, Math.round((Date.now() - Date.parse(startedAt)) / 1000));
 }
 
-function skillLabel(locale: Locale, skill: PublicPlacementItem["skill"]) {
-  return copy(locale, placementCopy.skills[skill]);
-}
-
-function TrackingValues() {
-  if (typeof window === "undefined") {
-    return {
-      utmSource: "",
-      utmMedium: "",
-      utmCampaign: "",
-      referrer: "",
-    };
-  }
-
-  const params = new URLSearchParams(window.location.search);
-
-  return {
-    utmSource: params.get("utm_source") ?? "",
-    utmMedium: params.get("utm_medium") ?? "",
-    utmCampaign: params.get("utm_campaign") ?? "",
-    referrer: document.referrer,
-  };
-}
-
-export function PlacementTestClient({ locale }: PlacementTestClientProps) {
+export function PlacementTestClient({
+  locale,
+  initialStageResponse,
+  initialStartedAt = "",
+}: PlacementTestClientProps) {
   const router = useRouter();
-  const [step, setStep] = useState<"intro" | "test" | "details">("intro");
+  const [step, setStep] = useState<"intro" | "test">(
+    initialStageResponse ? "test" : "intro",
+  );
   const [introGoal, setIntroGoal] = useState("");
   const [selfEstimatedLevel, setSelfEstimatedLevel] = useState("");
   const [introTrack, setIntroTrack] = useState<TrackId | "">("");
-  const [startedAt, setStartedAt] = useState("");
-  const [stageResponse, setStageResponse] = useState<PlacementStageResponse | null>(null);
+  const [startedAt, setStartedAt] = useState(initialStartedAt);
+  const [stageResponse, setStageResponse] = useState<PlacementStageResponse | null>(
+    initialStageResponse ?? null,
+  );
   const [answers, setAnswers] = useState<PlacementAnswer[]>([]);
   const [recentlySeenItemIds, setRecentlySeenItemIds] = useState<string[]>([]);
   const [retakeCount, setRetakeCount] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [details, setDetails] = useState<DetailValues>(() => emptyDetails(locale));
-  const [fieldErrors, setFieldErrors] = useState<
-    Extract<PlacementSubmitState, { status: "validation_error" }>["fieldErrors"]
-  >({});
   const [message, setMessage] = useState("");
   const [isPending, startTransition] = useTransition();
   const containerRef = useRef<HTMLElement | null>(null);
-  const tracking = useMemo(() => TrackingValues(), []);
+  const autoStartRef = useRef(false);
   const t = (value: Parameters<typeof copy>[1]) => copy(locale, value);
   const sourcePage = "/placement-test";
+  const startHref = "/placement-test?start=1#placement-test";
   const answeredCount = new Set(answers.map((answer) => answer.itemId)).size;
   const currentItem = stageResponse?.items[currentIndex] ?? null;
   const selectedOptionIds = currentItem
     ? (answers.find((answer) => answer.itemId === currentItem.id)?.selectedOptionIds ?? [])
     : [];
   const hasSelectedOption = selectedOptionIds.length > 0;
+
+  const startTest = useCallback(() => {
+    if (isPending || step !== "intro") return;
+
+    setMessage("");
+    startTransition(async () => {
+      try {
+        const started = nowIso();
+        const exposure = readPlacementExposure();
+        const response = await startPlacementTest({
+          locale,
+          sourcePage,
+          interestedTrack: introTrack,
+          learningGoal: introGoal,
+          selfEstimatedLevel,
+          recentlySeenItemIds: exposure.recentlySeenItemIds,
+          retakeCount: exposure.retakeCount,
+        });
+        trackPlacementEvent("placement_test_started", {
+          locale,
+          sourcePage,
+          interestedTrack: introTrack,
+          selfEstimatedLevel,
+          retakeCount: exposure.retakeCount,
+        });
+        setStartedAt(started);
+        setRecentlySeenItemIds(exposure.recentlySeenItemIds);
+        setRetakeCount(exposure.retakeCount);
+        setStageResponse(response);
+        setCurrentIndex(0);
+        setStep("test");
+      } catch (error) {
+        console.error("Placement test start failed", error);
+        setMessage(copy(locale, placementCopy.startError));
+        window.location.assign(`/${locale}${startHref}`);
+      }
+    });
+  }, [
+    introGoal,
+    introTrack,
+    isPending,
+    locale,
+    selfEstimatedLevel,
+    sourcePage,
+    step,
+  ]);
+
+  const handleStartLinkClick = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>) => {
+      event.preventDefault();
+      startTest();
+    },
+    [startTest],
+  );
 
   useEffect(() => {
     if (step === "intro") return;
@@ -177,36 +192,23 @@ export function PlacementTestClient({ locale }: PlacementTestClientProps) {
     });
   }, [currentIndex, stageResponse?.stage, step]);
 
+  useEffect(() => {
+    const handleHashStart = () => {
+      if (autoStartRef.current || step !== "intro") return;
+      if (window.location.hash !== "#placement-test") return;
+
+      autoStartRef.current = true;
+      startTest();
+    };
+
+    handleHashStart();
+    window.addEventListener("hashchange", handleHashStart);
+
+    return () => window.removeEventListener("hashchange", handleHashStart);
+  }, [startTest, step]);
+
   const setContainerRef = (node: HTMLElement | null) => {
     containerRef.current = node;
-  };
-
-  const startTest = () => {
-    startTransition(async () => {
-      const started = nowIso();
-      const exposure = readPlacementExposure();
-      const response = await startPlacementTest({
-        locale,
-        sourcePage,
-        interestedTrack: introTrack,
-        learningGoal: introGoal,
-        selfEstimatedLevel,
-        recentlySeenItemIds: exposure.recentlySeenItemIds,
-        retakeCount: exposure.retakeCount,
-      });
-      trackPlacementEvent("placement_test_started", {
-        locale,
-        sourcePage,
-        interestedTrack: introTrack,
-        selfEstimatedLevel,
-        retakeCount: exposure.retakeCount,
-      });
-      setStartedAt(started);
-      setRecentlySeenItemIds(exposure.recentlySeenItemIds);
-      setRetakeCount(exposure.retakeCount);
-      setStageResponse(response);
-      setStep("test");
-    });
   };
 
   const selectAnswer = (optionId: string) => {
@@ -230,8 +232,9 @@ export function PlacementTestClient({ locale }: PlacementTestClientProps) {
 
     trackPlacementEvent("placement_question_answered", {
       itemId: currentItem.id,
-      skill: currentItem.skill,
-      cefrLevel: currentItem.cefrLevel,
+      targetTense: currentItem.targetTense,
+      diagnosticArea: currentItem.diagnosticArea,
+      difficultyBand: currentItem.difficultyBand,
       stage: stageResponse.stage,
       answeredCount: nextAnsweredCount,
     });
@@ -240,6 +243,52 @@ export function PlacementTestClient({ locale }: PlacementTestClientProps) {
       ...current.filter((item) => item.itemId !== currentItem.id),
       answer,
     ]);
+  };
+
+  const showAnonymousResult = async (
+    sessionId: string,
+    completedAnswers: PlacementAnswer[],
+  ) => {
+    const completedAt = nowIso();
+    const effectiveStartedAt = startedAt || completedAt;
+    const submission = {
+      sessionId,
+      locale,
+      sourcePage,
+      startedAt: effectiveStartedAt,
+      completedAt,
+      completionTimeSeconds: secondsSince(effectiveStartedAt),
+      answers: completedAnswers,
+      interestedTrack: introTrack,
+      learningGoal: introGoal,
+      retakeCount,
+    };
+    const state = await scorePlacementResult(submission);
+
+    if (state.status === "validation_error") {
+      setMessage(state.message);
+      return;
+    }
+
+    trackPlacementEvent("placement_test_completed", {
+      locale,
+      masteryLabel: state.result.masteryLabel,
+      overallScore: state.result.overallScore,
+      confidenceLabel: state.result.confidenceLabel,
+      recommendedTrack: state.result.recommendedTrack,
+      storageStatus: "not_collected",
+    });
+    savePlacementExposure(state.result.questionIdsSeen, retakeCount);
+
+    sessionStorage.setItem(
+      placementResultStorageKey,
+      JSON.stringify({
+        state,
+        submission,
+        savedAt: nowIso(),
+      }),
+    );
+    router.push("/placement-test/result");
   };
 
   const continueTest = () => {
@@ -265,12 +314,7 @@ export function PlacementTestClient({ locale }: PlacementTestClientProps) {
       });
 
       if (response.completed) {
-        setStep("details");
-        setDetails((current) => ({
-          ...current,
-          learningGoal: current.learningGoal || introGoal,
-          interestedTrack: current.interestedTrack || introTrack,
-        }));
+        await showAnonymousResult(stageResponse.sessionId, nextAnswers);
         return;
       }
 
@@ -279,85 +323,19 @@ export function PlacementTestClient({ locale }: PlacementTestClientProps) {
     });
   };
 
-  const submitDetails = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!stageResponse) return;
-
-    setMessage("");
-    setFieldErrors({});
-
-    const completedAt = nowIso();
-    const effectiveStartedAt = startedAt || completedAt;
-    const submission = {
-      sessionId: stageResponse.sessionId,
-      locale,
-      sourcePage,
-      startedAt: effectiveStartedAt,
-      completedAt,
-      completionTimeSeconds: secondsSince(effectiveStartedAt),
-      answers,
-      details,
-      tracking,
-      retakeCount,
-    };
-
-    startTransition(async () => {
-      const state = await submitPlacementResult(submission);
-
-      if (state.status === "validation_error") {
-        setFieldErrors(state.fieldErrors);
-        setMessage(state.message);
-        return;
-      }
-
-      trackPlacementEvent("placement_test_completed", {
-        locale,
-        estimatedCefrLevel: state.result.estimatedCefrLevel,
-        confidenceLabel: state.result.confidenceLabel,
-        recommendedTrack: state.result.recommendedTrack,
-        storageStatus: state.status,
-        leadId: state.status === "success" ? state.leadId : undefined,
-      });
-      trackPlacementEvent(
-        state.status === "success"
-          ? "placement_result_storage_succeeded"
-          : "placement_result_storage_failed",
-        {
-          locale,
-          sessionId: submission.sessionId,
-          estimatedCefrLevel: state.result.estimatedCefrLevel,
-          recommendedTrack: state.result.recommendedTrack,
-          leadId: state.status === "success" ? state.leadId : undefined,
-        },
-      );
-      savePlacementExposure(state.result.questionIdsSeen, retakeCount);
-
-      sessionStorage.setItem(
-        placementResultStorageKey,
-        JSON.stringify({
-          state,
-          submission,
-          savedAt: nowIso(),
-        }),
-      );
-      router.push("/placement-test/result");
-    });
-  };
-
   if (step === "intro") {
     return (
       <div className="paper-panel rounded-lg p-5 md:p-8" ref={setContainerRef}>
-        <button
+        <Link
+          aria-disabled={isPending}
           className="button-primary fixed inset-x-4 bottom-4 z-40 justify-center shadow-glow md:hidden"
-          disabled={isPending}
-          onClick={startTest}
-          type="button"
+          href={startHref}
+          onClick={handleStartLinkClick}
         >
           {isPending ? <LoaderCircle className="size-4 animate-spin" /> : null}
           {t(placementCopy.beginNow)}
           <ArrowRight className="size-4" />
-        </button>
+        </Link>
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(18rem,0.85fr)]">
           <div className="space-y-5">
@@ -368,20 +346,27 @@ export function PlacementTestClient({ locale }: PlacementTestClientProps) {
             <p className="muted-copy text-base leading-7">
               {t(placementCopy.introDescriptionCurrent)}
             </p>
-            <button
+            <Link
+              aria-disabled={isPending}
               className="button-primary w-full justify-center sm:w-auto"
-              disabled={isPending}
-              onClick={startTest}
-              type="button"
+              href={startHref}
+              onClick={handleStartLinkClick}
             >
               {isPending ? <LoaderCircle className="size-4 animate-spin" /> : null}
               {t(placementCopy.beginDiagnostic)}
               <ArrowRight className="size-4" />
-            </button>
+            </Link>
+            {message ? (
+              <p className="rounded-md bg-error/10 p-3 text-sm leading-6 text-error">
+                {message}
+              </p>
+            ) : null}
             <div className="grid gap-3 sm:grid-cols-2">
               {[
-                [placementCopy.skills.vocabulary, placementCopy.introCards.vocabulary],
-                [placementCopy.skills.grammar, placementCopy.introCards.grammar],
+                [placementCopy.measurements.present, placementCopy.introCards.present],
+                [placementCopy.measurements.past, placementCopy.introCards.past],
+                [placementCopy.measurements.perfect, placementCopy.introCards.perfect],
+                [placementCopy.measurements.future, placementCopy.introCards.future],
               ].map(([title, description]) => (
                 <div className="rounded-md bg-surface-container-low/80 p-4" key={title.en}>
                   <p className="font-semibold text-primary">{t(title)}</p>
@@ -436,224 +421,33 @@ export function PlacementTestClient({ locale }: PlacementTestClientProps) {
                   value={selfEstimatedLevel}
                 >
                   <option value="">{t(placementCopy.selectOption)}</option>
-                  {["A1", "A2", "B1", "B2", "C1", "C2", "Not sure"].map((level) => (
+                  {[
+                    "I often confuse basic tenses",
+                    "I can use simple tenses but make mistakes",
+                    "I am fairly confident in most tenses",
+                    "I need advanced tense precision",
+                    "Not sure",
+                  ].map((level) => (
                     <option key={level} value={level}>
                       {t(level)}
                     </option>
                   ))}
                 </select>
               </label>
-              <button
+              <Link
+                aria-disabled={isPending}
                 className="button-primary justify-center"
-                disabled={isPending}
-                onClick={startTest}
-                type="button"
+                href={startHref}
+                onClick={handleStartLinkClick}
               >
                 {isPending ? <LoaderCircle className="size-4 animate-spin" /> : null}
                 {t(placementCopy.start)}
                 <ArrowRight className="size-4" />
-              </button>
+              </Link>
             </div>
           </div>
         </div>
       </div>
-    );
-  }
-
-  if (step === "details") {
-    return (
-      <form
-        className="paper-panel scroll-mt-28 rounded-lg p-5 md:p-8"
-        onSubmit={submitDetails}
-        ref={setContainerRef}
-      >
-        <div className="mb-6 max-w-3xl space-y-3">
-          <p className="eyebrow">{t(placementCopy.detailsReady)}</p>
-          <h2 className="text-3xl md:text-4xl">{t(placementCopy.detailsTitle)}</h2>
-          <p className="muted-copy text-base leading-7">
-            {t(placementCopy.detailsDescription)}
-          </p>
-        </div>
-
-        <div className="grid gap-5 md:grid-cols-2">
-          <label>
-            <span className="mb-2 block text-sm font-semibold text-primary">
-              {t(placementCopy.fields.fullName)} *
-            </span>
-            <input
-              className="premium-input"
-              onChange={(event) =>
-                setDetails((current) => ({ ...current, fullName: event.target.value }))
-              }
-              value={details.fullName}
-            />
-            {fieldErrors.fullName ? (
-              <p className="mt-2 text-sm text-error">{fieldErrors.fullName}</p>
-            ) : null}
-          </label>
-          <label>
-            <span className="mb-2 block text-sm font-semibold text-primary">
-              {t(placementCopy.fields.age)} *
-            </span>
-            <input
-              className="premium-input"
-              min={7}
-              onChange={(event) =>
-                setDetails((current) => ({ ...current, age: event.target.value }))
-              }
-              type="number"
-              value={details.age}
-            />
-            {fieldErrors.age ? (
-              <p className="mt-2 text-sm text-error">{fieldErrors.age}</p>
-            ) : null}
-          </label>
-          <label>
-            <span className="mb-2 block text-sm font-semibold text-primary">
-              {t(placementCopy.fields.nationality)} *
-            </span>
-            <input
-              className="premium-input"
-              onChange={(event) =>
-                setDetails((current) => ({ ...current, nationality: event.target.value }))
-              }
-              value={details.nationality}
-            />
-            {fieldErrors.nationality ? (
-              <p className="mt-2 text-sm text-error">{fieldErrors.nationality}</p>
-            ) : null}
-          </label>
-          <label>
-            <span className="mb-2 block text-sm font-semibold text-primary">
-              {t(placementCopy.fields.email)}
-            </span>
-            <input
-              className="premium-input"
-              onChange={(event) =>
-                setDetails((current) => ({ ...current, email: event.target.value }))
-              }
-              type="email"
-              value={details.email}
-            />
-            {fieldErrors.email ? (
-              <p className="mt-2 text-sm text-error">{fieldErrors.email}</p>
-            ) : null}
-          </label>
-          <label>
-            <span className="mb-2 block text-sm font-semibold text-primary">
-              {t(placementCopy.fields.whatsapp)}
-            </span>
-            <input
-              className="premium-input"
-              onChange={(event) =>
-                setDetails((current) => ({ ...current, whatsapp: event.target.value }))
-              }
-              value={details.whatsapp}
-            />
-            {fieldErrors.whatsapp ? (
-              <p className="mt-2 text-sm text-error">{fieldErrors.whatsapp}</p>
-            ) : null}
-          </label>
-          <label>
-            <span className="mb-2 block text-sm font-semibold text-primary">
-              {t(placementCopy.fields.telegram)}
-            </span>
-            <input
-              className="premium-input"
-              onChange={(event) =>
-                setDetails((current) => ({ ...current, telegram: event.target.value }))
-              }
-              value={details.telegram}
-            />
-            {fieldErrors.telegram ? (
-              <p className="mt-2 text-sm text-error">{fieldErrors.telegram}</p>
-            ) : null}
-          </label>
-          <label>
-            <span className="mb-2 block text-sm font-semibold text-primary">
-              {t(placementCopy.fields.preferredLanguage)} *
-            </span>
-            <select
-              className="premium-input"
-              onChange={(event) =>
-                setDetails((current) => ({
-                  ...current,
-                  preferredLanguage: event.target.value as Locale,
-                }))
-              }
-              value={details.preferredLanguage}
-            >
-              {locales.map((option) => (
-                <option key={option} value={option}>
-                  {localeSelfNames[option]}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            <span className="mb-2 block text-sm font-semibold text-primary">
-              {t(placementCopy.interestedTrack)}
-            </span>
-            <select
-              className="premium-input"
-              onChange={(event) =>
-                setDetails((current) => ({
-                  ...current,
-                  interestedTrack: event.target.value as TrackId | "",
-                }))
-              }
-              value={details.interestedTrack}
-            >
-              <option value="">{t(placementCopy.selectOption)}</option>
-              {tracks.map((track) => (
-                <option key={track.id} value={track.id}>
-                  {copy(locale, track.title)}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-
-        <label className="mt-5 block">
-          <span className="mb-2 block text-sm font-semibold text-primary">
-            {t(placementCopy.fields.learningGoal)}
-          </span>
-          <textarea
-            className="premium-input min-h-28"
-            onChange={(event) =>
-              setDetails((current) => ({ ...current, learningGoal: event.target.value }))
-            }
-            value={details.learningGoal}
-          />
-        </label>
-
-        <label className="mt-5 flex items-start gap-3 rounded-md bg-surface-container-low/80 p-4 text-sm leading-6">
-          <input
-            checked={details.consent}
-            className="mt-1"
-            onChange={(event) =>
-              setDetails((current) => ({ ...current, consent: event.target.checked }))
-            }
-            type="checkbox"
-          />
-          <span>
-            {t(placementCopy.fields.consent)} <span className="text-error">*</span>
-          </span>
-        </label>
-        {fieldErrors.consent ? (
-          <p className="mt-2 text-sm text-error">{fieldErrors.consent}</p>
-        ) : null}
-
-        <div className="mt-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <p className={cn("text-sm", message ? "text-error" : "text-secondary")}>
-            {message || t(placementCopy.noPaywallMessage)}
-          </p>
-          <button className="button-primary justify-center" disabled={isPending} type="submit">
-            {isPending ? <LoaderCircle className="size-4 animate-spin" /> : null}
-            {isPending ? t(placementCopy.saving) : t(placementCopy.submitDetails)}
-          </button>
-        </div>
-      </form>
     );
   }
 
@@ -668,11 +462,11 @@ export function PlacementTestClient({ locale }: PlacementTestClientProps) {
             {t(placementCopy.progress)} {answeredCount}/{stageResponse?.totalQuestionsTarget}
           </p>
           <h2 className="mt-3 text-3xl">
-            {currentItem ? skillLabel(locale, currentItem.skill) : ""}
+            {currentItem?.targetTense}
           </h2>
         </div>
         <div className="rounded-sm bg-tertiary-fixed/55 px-3 py-2 text-sm font-semibold text-tertiary">
-          {currentItem?.cefrLevel}
+          {currentItem?.difficultyBand}
         </div>
       </div>
 

@@ -5,6 +5,6 @@ export {
   toPublicPlacementItems,
 } from "./item-bank/index";
 export {
-  requiredDistribution,
+  requiredTenseItemCount,
   validatePlacementItemBank,
 } from "./item-bank/validation";

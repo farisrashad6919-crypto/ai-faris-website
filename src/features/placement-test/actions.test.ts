@@ -1,18 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { placementItemBank } from "./item-bank";
-import { submitPlacementResult } from "./actions";
+import { scorePlacementResult, submitPlacementResult } from "./actions";
 import type { PlacementItem, PlacementResultSubmission } from "./types";
 
 const selectedItems = [
-  ...placementItemBank.filter((item) => item.skill === "vocabulary").slice(0, 14),
-  ...placementItemBank.filter((item) => item.skill === "grammar").slice(0, 14),
+  ...placementItemBank.filter((item) => item.difficultyBand !== "advanced").slice(0, 22),
+  ...placementItemBank.filter((item) => item.difficultyBand === "advanced").slice(0, 8),
 ];
 
 function correctIds(item: PlacementItem) {
-  return Array.isArray(item.correctAnswerId)
-    ? item.correctAnswerId
-    : [item.correctAnswerId];
+  return [item.correctAnswerId];
 }
 
 function validSubmission(
@@ -28,7 +26,7 @@ function validSubmission(
     answers: selectedItems.map((item, index) => ({
       itemId: item.id,
       selectedOptionIds: correctIds(item),
-      stage: index < 8 ? 1 : index < 22 ? 2 : 3,
+      stage: index < 8 ? 1 : index < 20 ? 2 : 3,
       answeredAt: "2026-04-27T10:02:00.000Z",
       elapsedSeconds: index * 25,
     })),
@@ -70,6 +68,32 @@ afterEach(() => {
 });
 
 describe("submitPlacementResult", () => {
+  it("scores a completed test without collecting personal details", async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+
+    const result = await scorePlacementResult({
+      sessionId: "test-session-123",
+      locale: "en",
+      sourcePage: "/placement-test",
+      startedAt: "2026-04-27T10:00:00.000Z",
+      completedAt: "2026-04-27T10:15:00.000Z",
+      completionTimeSeconds: 900,
+      answers: validSubmission().answers,
+      interestedTrack: "general",
+      learningGoal: "I want better grammar accuracy.",
+      retakeCount: 1,
+    });
+
+    expect(result.status).toBe("success");
+    if (result.status === "success") {
+      expect(result.result.masteryLabel).toBeDefined();
+      expect(result.result.recommendedFirstLessons).toHaveLength(3);
+      expect(result.leadId).toBeUndefined();
+    }
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it("validates WhatsApp-or-Telegram contact details", async () => {
     const result = await submitPlacementResult(
       validSubmission({
@@ -122,20 +146,19 @@ describe("submitPlacementResult", () => {
     const body = JSON.parse(String(init.body)) as Record<string, unknown>;
 
     expect(body.secret).toBe("test-secret");
-    expect(body.submissionType).toBe("placement-test");
+    expect(body.submissionType).toBe("tense-test");
     expect(body.fullName).toBe("Mona Hassan");
-    expect(body.offerType).toBe("placement-test");
-    expect(body.estimatedCefrLevel).toBeDefined();
+    expect(body.offerType).toBe("tense-test");
+    expect(body.masteryLabel).toBeDefined();
     expect(body.confidenceLabel).toBeDefined();
-    expect(body.vocabularyScore).toBeDefined();
-    expect(body.grammarScore).toBeDefined();
-    expect(body.readingScore).toBeUndefined();
-    expect(body.recommendedFirstLessonsJson).toContain("lesson");
-    expect(body.topGrammarGapsJson).toBeTypeOf("string");
-    expect(body.topVocabularyGapsJson).toBeTypeOf("string");
+    expect(body.overallTenseScore).toBeDefined();
+    expect(body.presentScore).toBeDefined();
+    expect(body.futureScore).toBeDefined();
+    expect(JSON.parse(String(body.recommendedFirstLessonsJson))).toHaveLength(3);
+    expect(body.topTenseWeaknessesJson).toBeTypeOf("string");
     expect(body.retakeCount).toBe(1);
     expect(body.answerSummaryJson).toContain("itemId");
-    expect(body.skillBreakdownJson).toContain("vocabulary");
+    expect(body.areaBreakdownJson).toContain("present-tense-control");
     expect(body.teacherDiagnosticJson).toContain("recommendedFirstLessons");
     expect(body.recommendationTags).toBeTypeOf("string");
   });
@@ -154,7 +177,7 @@ describe("submitPlacementResult", () => {
 
     expect(result.status).toBe("storage_error");
     if (result.status === "storage_error") {
-      expect(result.result.estimatedCefrLevel).toBeDefined();
+      expect(result.result.masteryLabel).toBeDefined();
       expect(result.message).toContain("result is ready");
     }
   });

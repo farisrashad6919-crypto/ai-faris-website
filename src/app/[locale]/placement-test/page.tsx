@@ -8,6 +8,7 @@ import { getPageMetadata } from "@/lib/metadata";
 
 type PageProps = {
   params: Promise<{ locale: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 export async function generateMetadata({
@@ -17,9 +18,25 @@ export async function generateMetadata({
   return getPageMetadata(locale, "placementTest");
 }
 
-export default async function PlacementTestRoute({ params }: PageProps) {
+function hasStartParam(
+  searchParams: { [key: string]: string | string[] | undefined } | undefined,
+) {
+  const start = searchParams?.start;
+  return Array.isArray(start) ? start.includes("1") : start === "1";
+}
+
+export default async function PlacementTestRoute({
+  params,
+  searchParams,
+}: PageProps) {
   const locale = await resolveLocale(params);
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
   setRequestLocale(locale);
 
-  return <PlacementTestPage locale={locale} />;
+  return (
+    <PlacementTestPage
+      autoStart={hasStartParam(resolvedSearchParams)}
+      locale={locale}
+    />
+  );
 }

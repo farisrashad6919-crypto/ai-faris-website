@@ -29,7 +29,7 @@ export const placementSubmissionSchema = z
     startedAt: z.string().trim().min(1),
     completedAt: z.string().trim().min(1),
     completionTimeSeconds: z.coerce.number().min(1).max(3600),
-    answers: z.array(placementAnswerSchema).min(20).max(32),
+    answers: z.array(placementAnswerSchema).min(30).max(30),
     details: z.object({
       fullName: z.string().trim().min(2).max(100),
       age: z.coerce.number().int().min(7).max(100),
@@ -61,3 +61,20 @@ export const placementSubmissionSchema = z
   );
 
 export type PlacementSubmissionValues = z.infer<typeof placementSubmissionSchema>;
+
+export const placementAnonymousScoreSchema = z.object({
+  sessionId: z.string().trim().min(8).max(80),
+  locale: z.enum(locales),
+  sourcePage: z.string().trim().min(1).max(220),
+  startedAt: z.string().trim().min(1),
+  completedAt: z.string().trim().min(1),
+  completionTimeSeconds: z.coerce.number().min(1).max(3600),
+  answers: z.array(placementAnswerSchema).min(30).max(30),
+  interestedTrack: z.union([z.enum(trackOptions), z.literal("")]).optional().default(""),
+  learningGoal: z.string().trim().max(1000).optional().default(""),
+  retakeCount: z.coerce.number().int().min(0).max(50).optional().default(0),
+});
+
+export type PlacementAnonymousScoreValues = z.infer<
+  typeof placementAnonymousScoreSchema
+>;
