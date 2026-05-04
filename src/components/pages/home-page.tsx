@@ -11,6 +11,7 @@ import {
 import { FutureExpansionGrid } from "@/components/sections/future-expansion-grid";
 import { ProofMediaGrid } from "@/components/sections/proof-media-grid";
 import { ReviewProofGrid } from "@/components/sections/review-proof-grid";
+import { RemotionPromoVideo } from "@/components/sections/remotion-promo-video";
 import { SectionShell } from "@/components/sections/section-shell";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Reveal } from "@/components/ui/reveal";
@@ -148,6 +149,14 @@ export function HomePage({ locale }: { locale: Locale }) {
 
       <SectionShell
         className="section-space-sm bg-surface-container-low/65"
+        description={t("Explore the programs, real class moments, and feedback-driven approach behind measurable progress in IELTS, Business English, General English, and teacher development.")}
+        eyebrow={t("Signature training experience")}
+        title={t("See how focused English training moves you forward")}
+      >
+        <RemotionPromoVideo />
+      </SectionShell>
+
+      <SectionShell
         description={t("Pick the page that matches your real goal. Each path shows who it helps, what we can train, real learner feedback, and the clearest next step.")}
         eyebrow={t("Choose your path")}
         title={t("Four focused ways to work together")}

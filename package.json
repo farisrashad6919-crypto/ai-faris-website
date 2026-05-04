@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "video:studio": "remotion studio src/remotion/index.ts",
+    "video:poster": "remotion still src/remotion/index.ts HomepagePromo public/videos/homepage-promo-poster.png --frame=45 --overwrite",
+    "video:render": "remotion render src/remotion/index.ts HomepagePromo public/videos/homepage-promo.mp4 --codec=h264 --pixel-format=yuv420p --overwrite"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -20,6 +23,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@remotion/cli": "^4.0.454",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -30,6 +34,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
     "jsdom": "^29.0.2",
+    "remotion": "^4.0.454",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.4"
