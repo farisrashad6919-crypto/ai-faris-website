@@ -94,7 +94,7 @@ export default async function LocaleLayout({
             {copy(locale, "Skip to content")}
           </a>
           <div className="relative isolate overflow-x-clip">
-            <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[34rem] bg-[radial-gradient(circle_at_top,rgba(255,221,182,0.38),transparent_46%)]" />
+            <div aria-hidden="true" className="site-ambient" />
             <SiteHeader locale={locale} />
             <main id="content">{children}</main>
             <SiteFooter locale={locale} />

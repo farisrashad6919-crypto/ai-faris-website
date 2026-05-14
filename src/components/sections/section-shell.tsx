@@ -29,7 +29,7 @@ export function SectionShell({
         {(eyebrow || title || description) && (
           <div
             className={cn(
-              "mb-12 flex max-w-3xl flex-col gap-4",
+              "section-heading mb-12 flex max-w-4xl flex-col gap-4",
               align === "center" && "mx-auto items-center text-center",
             )}
           >

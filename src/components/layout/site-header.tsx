@@ -22,11 +22,11 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <header className="sticky top-0 z-50 px-3 pt-3 md:px-4 md:pt-4">
+    <header className="site-header sticky top-0 z-50 px-3 pt-3 md:px-4 md:pt-4">
       <div className="glass-panel mx-auto w-full max-w-[76rem] rounded-lg px-3 py-2.5 md:px-5">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 md:gap-4 xl:flex xl:justify-between">
           <Link
-            className="min-w-0 max-w-[13.5rem] sm:max-w-none xl:w-[20rem] xl:flex-none"
+            className="min-w-0 max-w-[10.5rem] sm:max-w-none xl:w-[20rem] xl:flex-none"
             href="/"
           >
             <span className="block truncate font-display text-base leading-tight text-primary md:text-xl">
@@ -59,7 +59,7 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
             </ButtonLink>
           </div>
 
-          <div className="flex shrink-0 items-center gap-2 xl:hidden">
+          <div className="flex shrink-0 items-center gap-1.5 xl:hidden">
             <LocaleSwitcher
               align="end"
               triggerLabel="code"

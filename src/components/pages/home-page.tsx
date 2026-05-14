@@ -74,17 +74,17 @@ export function HomePage({ locale }: { locale: Locale }) {
         ]}
       />
 
-      <section className="section-space pt-10">
+      <section className="section-space hero-section pt-10">
         <div className="container-shell grid gap-10 lg:grid-cols-[minmax(0,1.02fr)_minmax(20rem,0.98fr)] lg:items-center">
-          <Reveal className="space-y-7">
+          <Reveal className="hero-copy space-y-7">
             <p className="eyebrow">Faris Rashad English Trainer</p>
-            <h1 className="max-w-4xl text-4xl leading-[1.08] sm:text-5xl md:text-7xl">
+            <h1 className="hero-title max-w-4xl text-4xl leading-[1.08] sm:text-5xl md:text-7xl">
               {t("Structured English training for serious progress.")}
             </h1>
             <p className="muted-copy max-w-2xl text-lg leading-8">
               {t("Choose a clear path for IELTS, Business English, General English, or ESL teacher development, with real feedback, authentic proof, and Preply as the fastest booking route.")}
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="hero-actions flex flex-wrap gap-4">
               <ButtonLink href={getBookingHref(locale)}>
                 {t("Book on Preply")}
               </ButtonLink>
@@ -93,22 +93,35 @@ export function HomePage({ locale }: { locale: Locale }) {
                 <ArrowRight className="size-4" />
               </ButtonLink>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <div className="paper-panel rounded-md p-4">
+            <div className="hero-path-rail" aria-label="Training paths">
+              {tracks.map((track) => (
+                <ButtonLink
+                  className="hero-path-link"
+                  href={`/programs/${track.slug}`}
+                  key={track.id}
+                  variant="tertiary"
+                >
+                  {copy(locale, track.shortTitle)}
+                  <ArrowRight className="size-3.5" />
+                </ButtonLink>
+              ))}
+            </div>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div className="paper-panel motion-card metric-card rounded-md p-4">
                 <p className="text-2xl font-semibold text-primary">2018</p>
-                  <p className="mt-2 text-sm leading-6 text-secondary">
+                <p className="mt-2 text-sm leading-6 text-secondary">
                   {t("Teaching since")}
                 </p>
               </div>
-              <div className="paper-panel rounded-md p-4">
+              <div className="paper-panel motion-card metric-card rounded-md p-4">
                 <p className="text-2xl font-semibold text-primary">60+</p>
-                  <p className="mt-2 text-sm leading-6 text-secondary">
+                <p className="mt-2 text-sm leading-6 text-secondary">
                   {t("Countries worldwide")}
                 </p>
               </div>
-              <div className="paper-panel rounded-md p-4">
+              <div className="paper-panel motion-card metric-card rounded-md p-4">
                 <p className="text-2xl font-semibold text-primary">4</p>
-                  <p className="mt-2 text-sm leading-6 text-secondary">
+                <p className="mt-2 text-sm leading-6 text-secondary">
                   {t("Focused training tracks")}
                 </p>
               </div>
@@ -116,10 +129,10 @@ export function HomePage({ locale }: { locale: Locale }) {
           </Reveal>
 
           <Reveal className="space-y-4" delay={0.08}>
-            <div className="grid gap-3 sm:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2">
               {qualifications.map(({ title, description, Icon }) => (
                 <div
-                  className="paper-panel rounded-md border border-primary/8 p-4 shadow-sm"
+                  className="paper-panel motion-card qualification-card rounded-md border border-primary/8 p-4 shadow-sm"
                   key={title}
                 >
                   <Icon className="size-5 text-on-tertiary-container" />
@@ -130,8 +143,8 @@ export function HomePage({ locale }: { locale: Locale }) {
                 </div>
               ))}
             </div>
-            <div className="paper-panel overflow-hidden rounded-lg p-4">
-              <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-surface-container-low">
+            <div className="paper-panel motion-card hero-portrait-card overflow-hidden rounded-lg p-4">
+              <div className="hero-image-frame relative aspect-[16/10] overflow-hidden rounded-md bg-surface-container-low">
                 <Image
                   alt={siteConfig.brandName}
                   className="object-cover"
@@ -141,6 +154,7 @@ export function HomePage({ locale }: { locale: Locale }) {
                   src={portraitAssets.hero}
                   style={{ objectPosition: "76% center" }}
                 />
+                <span aria-hidden="true" className="hero-scanline" />
               </div>
             </div>
           </Reveal>
@@ -163,7 +177,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       >
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {tracks.map((track, index) => (
-            <Reveal className="paper-panel rounded-md p-6" delay={index * 0.04} key={track.id}>
+            <Reveal className="paper-panel motion-card track-card rounded-md p-6" delay={index * 0.04} key={track.id}>
               <p className="eyebrow">{copy(locale, track.eyebrow)}</p>
               <h2 className="mt-3 text-2xl">{copy(locale, track.shortTitle)}</h2>
               <p className="muted-copy mt-3 text-sm leading-6">
@@ -190,7 +204,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             ["Real speaking", "Practice stays connected to the moments you actually need English for."],
             ["Follow-through", "You know what to work on after class instead of leaving with vague advice."],
           ].map(([title, description], index) => (
-            <Reveal className="paper-panel rounded-md p-6" delay={index * 0.04} key={title}>
+            <Reveal className="paper-panel motion-card approach-card rounded-md p-6" delay={index * 0.04} key={title}>
               <BadgeCheck className="size-6 text-on-tertiary-container" />
               <h3 className="mt-4 text-2xl">{t(title)}</h3>
               <p className="muted-copy mt-3 text-sm leading-6">{t(description)}</p>
