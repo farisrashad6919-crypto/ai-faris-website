@@ -1,6 +1,7 @@
 import { siteConfig } from "@/config/site";
 import type { Locale } from "@/i18n/routing";
 
+import { coursePath } from "./phonetics-course";
 import { tracks } from "./tracks";
 import type { RouteKey } from "./types";
 
@@ -65,6 +66,26 @@ export const staticRoutes: SiteRoute[] = [
     description:
       "A focused library for placement tests, quizzes, videos, articles, learning tools, and webinar replays.",
     keywords: ["English resources", "IELTS quizzes", "placement tests", "English videos"],
+  },
+  {
+    key: "phoneticsCourse",
+    path: coursePath,
+    footer: true,
+    title: "Free American English Phonetics Course | ESL Pronunciation Self-Study",
+    description:
+      "Study American English phonetics for free with a complete self-study course covering IPA, consonants, vowels, syllables, stress, rhythm, intonation, connected speech, silent letters, -s endings, and -ed endings.",
+    keywords: [
+      "free English phonetics course",
+      "American English phonetics course",
+      "ESL pronunciation course",
+      "American English pronunciation for ESL learners",
+      "IPA sounds English",
+      "English consonant sounds",
+      "English vowel sounds",
+      "English pronunciation self-study",
+      "free pronunciation course",
+    ],
+    ogImage: "/images/video-thumb-pronunciation-01.jpg",
   },
   {
     key: "placementTest",

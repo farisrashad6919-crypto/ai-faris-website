@@ -93,6 +93,7 @@ export type RouteKey =
   | "programs"
   | "reviews"
   | "resources"
+  | "phoneticsCourse"
   | "webinars"
   | "faq"
   | "contact"
