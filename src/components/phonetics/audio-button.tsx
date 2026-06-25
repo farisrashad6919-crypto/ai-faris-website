@@ -10,6 +10,11 @@ type AudioButtonProps = {
   label: string;
   speechText?: string;
   audioSrc?: string;
+  ipa?: string;
+  lang?: string;
+  pitch?: number;
+  rate?: number;
+  type?: "sound" | "word" | "minimal-pair" | "sentence" | "paragraph" | "rule";
   className?: string;
   compact?: boolean;
 };
@@ -74,6 +79,9 @@ export function AudioButton({
   label,
   speechText,
   audioSrc,
+  lang = "en-US",
+  pitch = 0.96,
+  rate = 0.76,
   className,
   compact = false,
 }: AudioButtonProps) {
@@ -118,9 +126,9 @@ export function AudioButton({
     }
 
     const utterance = new SpeechSynthesisUtterance(preparedText);
-    utterance.lang = "en-US";
-    utterance.rate = 0.76;
-    utterance.pitch = 0.96;
+    utterance.lang = lang;
+    utterance.rate = rate;
+    utterance.pitch = pitch;
     utterance.voice = getAmericanVoice();
     utterance.onend = () => setIsPlaying(false);
     utterance.onerror = () => {
@@ -149,6 +157,7 @@ export function AudioButton({
     setIsPlaying(true);
 
     if (audioSrc) {
+      // Add MP3 paths later in /public/audio/phonetics; this button will use them before browser TTS.
       const audio = new Audio(audioSrc);
       activeAudio = audio;
       audio.onended = () => setIsPlaying(false);

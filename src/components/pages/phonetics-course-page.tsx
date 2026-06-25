@@ -19,8 +19,13 @@ import {
 } from "lucide-react";
 
 import { AudioButton } from "@/components/phonetics/audio-button";
-import { CopyPracticeButton, PrintCourseButton } from "@/components/phonetics/course-tools";
+import {
+  CopyPracticeButton,
+  DownloadPracticeRoutineButton,
+  PrintCourseButton,
+} from "@/components/phonetics/course-tools";
 import { PracticeChecklist } from "@/components/phonetics/practice-checklist";
+import { QuizReveal } from "@/components/phonetics/quiz-reveal";
 import { SoundChart } from "@/components/phonetics/sound-chart";
 import { FaqList } from "@/components/sections/faq-list";
 import { SectionShell } from "@/components/sections/section-shell";
@@ -29,12 +34,17 @@ import { StructuredData } from "@/components/ui/structured-data";
 import { getBookingHref, siteConfig } from "@/config/site";
 import {
   consonantLessons,
+  audioInstructions,
   courseBenefits,
   courseModules,
   coursePath,
+  dailyPracticeRoutine,
   faqItems,
+  learnerPaths,
   phoneticsNavItems,
   practiceChecklistItems,
+  practiceTextLibrary,
+  reviewSections,
   soundLessons,
   studyPath,
   vowelLessons,
@@ -63,6 +73,50 @@ const moduleVisuals = [
   { label: "Linking", value: "turn off -> tur-noff", note: "words connect naturally" },
 ];
 
+const extraPracticeWords: Record<string, string[]> = {
+  p: ["park", "puppy", "pencil", "purple", "people", "open", "apple", "stop"],
+  b: ["blue", "bring", "better", "busy", "about", "rubber", "job", "web"],
+  t: ["tea", "table", "teacher", "today", "better", "little", "write", "meet"],
+  d: ["do", "door", "deep", "dollar", "middle", "ready", "food", "made"],
+  k: ["key", "class", "clean", "quick", "music", "market", "take", "speak"],
+  g: ["green", "great", "again", "bigger", "garden", "goes", "dog", "flag"],
+  f: ["family", "feel", "first", "four", "after", "office", "life", "roof"],
+  v: ["visit", "very", "video", "voice", "every", "travel", "move", "love"],
+  theta: ["thank", "third", "thick", "thin", "month", "north", "bath", "teeth"],
+  eth: ["the", "they", "these", "those", "other", "father", "smooth", "bathe"],
+  s: ["sun", "same", "school", "simple", "listen", "missing", "bus", "nice"],
+  z: ["zero", "zebra", "busy", "easy", "reason", "present", "has", "goes"],
+  sh: ["show", "short", "sure", "English", "action", "special", "finish", "cash"],
+  zh: ["pleasure", "decision", "usually", "visual", "treasure", "occasion", "beige", "massage"],
+  h: ["hello", "hand", "help", "history", "behind", "ahead", "perhaps", "rehearse"],
+  ch: ["cheap", "child", "change", "chance", "kitchen", "future", "each", "much"],
+  j: ["June", "jump", "giant", "general", "enjoy", "orange", "large", "page"],
+  m: ["make", "more", "morning", "money", "summer", "woman", "home", "room"],
+  n: ["new", "need", "number", "never", "dinner", "sunny", "phone", "green"],
+  ng: ["song", "long", "thing", "morning", "English", "strong", "young", "bring"],
+  l: ["learn", "language", "listen", "little", "yellow", "family", "school", "feel"],
+  r: ["read", "really", "around", "correct", "sorry", "teacher", "hard", "clear"],
+  y: ["year", "young", "yellow", "yesterday", "beyond", "yes", "you", "use"],
+  w: ["we", "word", "window", "weather", "away", "always", "quick", "question"],
+  i: ["sheep", "seat", "clean", "green", "speak", "keep", "team", "please"],
+  ih: ["ship", "fish", "milk", "big", "minute", "women", "English", "listen"],
+  "eɪ": ["say", "make", "take", "late", "table", "paper", "play", "today"],
+  eh: ["ten", "best", "help", "message", "ready", "many", "head", "said"],
+  ae: ["man", "bag", "black", "apple", "family", "answer", "practice", "happen"],
+  ah: ["father", "job", "stop", "doctor", "problem", "watch", "possible", "honest"],
+  aw: ["call", "small", "talk", "always", "because", "thought", "bought", "law"],
+  "oʊ": ["no", "show", "slow", "phone", "open", "only", "road", "home"],
+  uh: ["look", "cook", "should", "woman", "push", "sugar", "would", "foot"],
+  u: ["two", "school", "student", "room", "music", "move", "true", "soon"],
+  cup: ["sun", "fun", "money", "brother", "enough", "other", "come", "does"],
+  schwa: ["again", "sofa", "lesson", "problem", "support", "today", "around", "banana"],
+  "er-stressed": ["girl", "word", "work", "world", "turn", "learn", "heard", "early"],
+  "er-unstressed": ["mother", "father", "summer", "doctor", "color", "dollar", "answer", "better"],
+  ai: ["I", "bike", "white", "bright", "high", "write", "night", "smile"],
+  au: ["out", "down", "town", "sound", "mouth", "around", "flower", "hour"],
+  oi: ["toy", "coin", "join", "point", "noise", "choice", "voice", "enjoy"],
+};
+
 function getWordSpeechText(word: SoundWord) {
   return `Listen and repeat. ${word.text}. ${word.text}.`;
 }
@@ -76,7 +130,7 @@ function getSentenceSpeechText(sentence: string) {
 }
 
 function getSoundSpeechText(sound: SoundLesson) {
-  const words = sound.words
+  const words = getExpandedWords(sound)
     .slice(0, 4)
     .map((word) => word.text)
     .join(". ");
@@ -86,6 +140,122 @@ function getSoundSpeechText(sound: SoundLesson) {
 
 function getModuleExampleSpeechText(text: string) {
   return `Listen and repeat. ${text}`;
+}
+
+function uniqueByText(words: SoundWord[]) {
+  const seen = new Set<string>();
+
+  return words.filter((word) => {
+    const key = word.text.toLowerCase();
+    if (seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    return true;
+  });
+}
+
+function getExpandedWords(sound: SoundLesson) {
+  const extraWords = extraPracticeWords[sound.id] ?? [];
+  const words = uniqueByText([
+    ...sound.words,
+    ...extraWords.map((word) => ({ text: word, ipa: "" })),
+  ]);
+
+  return words.slice(0, 10);
+}
+
+function getExpandedMinimalPairs(sound: SoundLesson) {
+  const reversedPairs = sound.minimalPairs.map((pair) => ({
+    left: pair.right,
+    leftIpa: pair.rightIpa,
+    right: pair.left,
+    rightIpa: pair.leftIpa,
+  }));
+
+  return [...sound.minimalPairs, ...reversedPairs].slice(0, 6);
+}
+
+function getPracticeSentences(sound: SoundLesson) {
+  const words = getExpandedWords(sound).map((word) => word.text);
+  const generated = [
+    `Say ${words[0]}, ${words[1]}, and ${words[2]} slowly.`,
+    `I can pronounce ${words[3]} and ${words[4]} clearly.`,
+    `Listen to ${words[5]}, then repeat ${words[6]}.`,
+    `Record ${words[7]} and ${words[8]} one more time.`,
+  ].filter((sentence) => !sentence.includes("undefined"));
+
+  return [...sound.sentences, ...generated].slice(0, 5);
+}
+
+function getRepeatDrill(sound: SoundLesson) {
+  const words = getExpandedWords(sound).slice(0, 5).map((word) => word.text);
+
+  return [
+    `${words[0]} - ${words[0]} - ${words[0]}`,
+    `${words[1]} - ${words[1]} - ${words[1]}`,
+    `${words[2]} - ${words[2]} - ${words[2]}`,
+    `${words[3]} - ${words[3]} - ${words[3]}`,
+    `${words[4]} - ${words[4]} - ${words[4]}`,
+  ].filter((line) => !line.includes("undefined"));
+}
+
+function getPracticeParagraph(sound: SoundLesson) {
+  const words = getExpandedWords(sound).map((word) => word.text);
+
+  return `Today I practice ${words[0]}, ${words[1]}, and ${words[2]}. I say ${words[3]} and ${words[4]} slowly. Then I read ${words[5]}, ${words[6]}, and ${words[7]} clearly. I record my voice and check the target sound.`;
+}
+
+function getSelfCheck(sound: SoundLesson) {
+  return [
+    `Can I say ${sound.example.text} clearly?`,
+    "Did I use the mouth position from the Learn section?",
+    "Did I compare the minimal pairs slowly?",
+    "Did I record the paragraph and listen again?",
+    "What is one mistake I can fix next?",
+  ];
+}
+
+function getSoundQuiz(sound: SoundLesson) {
+  const pair = sound.minimalPairs[0];
+  const options = [sound.example.text, pair?.right, "not sure"].filter(Boolean) as string[];
+
+  return [
+    {
+      question: `Which word practices the target sound in ${sound.title}?`,
+      options,
+      answer: sound.example.text,
+      explanation: `${sound.example.text} is the main example word for this lesson.`,
+    },
+    {
+      question: "What should you do after listening?",
+      options: ["Repeat slowly", "Skip the sound", "Read silently only"],
+      answer: "Repeat slowly",
+      explanation: "Pronunciation improves when you listen first, then repeat with focus.",
+    },
+    {
+      question: "What is the best final step?",
+      options: ["Record yourself", "Close the lesson", "Ignore mistakes"],
+      answer: "Record yourself",
+      explanation: "Recording helps you notice the difference between your sound and the model.",
+    },
+  ];
+}
+
+function getRoutineDownloadText() {
+  return [
+    "10-Minute Daily American English Pronunciation Routine",
+    "",
+    ...dailyPracticeRoutine.map((item, index) => `${index + 1}. ${item}`),
+    "",
+    "Small daily practice is better than long practice once a week.",
+    "",
+    "Audio upgrade plan:",
+    "1. Generate or record MP3 files.",
+    "2. Save them in /public/audio/phonetics/.",
+    "3. Add each file URL as audioSrc in the lesson data.",
+    "4. AudioButton will use MP3 before browser TTS.",
+  ].join("\n");
 }
 
 function courseUrl(locale: Locale) {
@@ -211,7 +381,9 @@ function WordList({ words }: { words: SoundWord[] }) {
         >
           <div>
             <p className="font-semibold text-primary">{word.text}</p>
-            <p className="text-sm text-secondary">{word.ipa}</p>
+            {word.ipa ? (
+              <p className="text-sm text-secondary">{word.ipa}</p>
+            ) : null}
           </div>
           <AudioButton
             compact
@@ -276,11 +448,19 @@ function LessonDetail({
 }
 
 function SoundLessonCard({ sound }: { sound: SoundLesson }) {
+  const lessonWords = getExpandedWords(sound);
+  const lessonPairs = getExpandedMinimalPairs(sound);
+  const lessonSentences = getPracticeSentences(sound);
+  const repeatDrill = getRepeatDrill(sound);
+  const practiceParagraph = getPracticeParagraph(sound);
+  const selfCheck = getSelfCheck(sound);
+  const quiz = getSoundQuiz(sound);
   const practiceText = [
     sound.title,
-    ...sound.words.map((word) => `${word.text} ${word.ipa}`),
-    ...sound.minimalPairs.map((pair) => `${pair.left} ${pair.leftIpa} - ${pair.right} ${pair.rightIpa}`),
-    ...sound.sentences,
+    ...lessonWords.map((word) => `${word.text}${word.ipa ? ` ${word.ipa}` : ""}`),
+    ...lessonPairs.map((pair) => `${pair.left} ${pair.leftIpa} - ${pair.right} ${pair.rightIpa}`),
+    ...lessonSentences,
+    practiceParagraph,
   ].join("\n");
 
   return (
@@ -345,17 +525,51 @@ function SoundLessonCard({ sound }: { sound: SoundLesson }) {
           </div>
         </LessonDetail>
 
-        <LessonDetail title="Words">
-          <WordList words={sound.words} />
+        <LessonDetail title="Listen and Repeat">
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_18rem]">
+            <div>
+              <p className="muted-copy text-base leading-7">
+                Listen first. Then repeat slowly. Do not rush. Keep the mouth position from the Learn section.
+              </p>
+              <div className="mt-4 grid gap-2">
+                {repeatDrill.map((line) => (
+                  <div className="flex items-center justify-between gap-3 rounded-sm border border-outline-variant/38 bg-white/75 p-3" key={line}>
+                    <p className="font-semibold text-primary">{line}</p>
+                    <AudioButton
+                      compact
+                      label={line}
+                      speechText={`Listen and repeat. ${line.replace(/-/g, ".")}`}
+                      text={line}
+                      type="word"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-md bg-accent-mist p-4">
+              <h4 className="font-display text-xl text-primary">Record Yourself</h4>
+              <ol className="mt-3 grid gap-2 text-sm leading-6 text-secondary">
+                <li>1. Open your phone recorder.</li>
+                <li>2. Read the word list.</li>
+                <li>3. Read the minimal pairs.</li>
+                <li>4. Read the practice paragraph.</li>
+                <li>5. Listen again and check the target sound.</li>
+              </ol>
+            </div>
+          </div>
+        </LessonDetail>
+
+        <LessonDetail title="Practice Words">
+          <WordList words={lessonWords} />
         </LessonDetail>
 
         <LessonDetail title="Minimal Pairs">
-          <MinimalPairs pairs={sound.minimalPairs} />
+          <MinimalPairs pairs={lessonPairs} />
         </LessonDetail>
 
-        <LessonDetail title="Sentences">
+        <LessonDetail title="Practice Sentences">
           <div className="grid gap-2">
-            {sound.sentences.map((sentence) => (
+            {lessonSentences.map((sentence) => (
               <div
                 className="flex items-center justify-between gap-3 rounded-sm border border-outline-variant/38 bg-white/75 p-3"
                 key={sentence}
@@ -372,7 +586,21 @@ function SoundLessonCard({ sound }: { sound: SoundLesson }) {
           </div>
         </LessonDetail>
 
-        <LessonDetail title="Mistakes">
+        <LessonDetail title="Practice Paragraph">
+          <div className="rounded-md bg-white/75 p-4">
+            <p className="text-base leading-7 text-primary">{practiceParagraph}</p>
+            <div className="mt-4">
+              <AudioButton
+                label={`${sound.example.text} practice paragraph`}
+                speechText={`Listen and repeat the paragraph. ${practiceParagraph}`}
+                text={practiceParagraph}
+                type="paragraph"
+              />
+            </div>
+          </div>
+        </LessonDetail>
+
+        <LessonDetail title="Common Mistake and Fix It">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="rounded-md bg-accent-pale-red/55 p-4">
               <p className="text-xs font-bold uppercase text-tertiary">
@@ -393,20 +621,26 @@ function SoundLessonCard({ sound }: { sound: SoundLesson }) {
           </div>
         </LessonDetail>
 
-        <LessonDetail title="Practice">
-          <div className="grid gap-4 md:grid-cols-2">
+        <LessonDetail title="Self-Check and Mini Quiz">
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
             <div>
-              <h4 className="font-display text-xl text-primary">Practice drill</h4>
-              <p className="muted-copy mt-2 text-base leading-7">
-                {sound.practiceDrill}
-              </p>
+              <h4 className="font-display text-xl text-primary">Self-check</h4>
+              <ul className="mt-3 grid gap-2 text-sm leading-6 text-secondary">
+                {selfCheck.map((item) => (
+                  <li className="flex gap-2" key={item}>
+                    <CheckCircle2 aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-on-tertiary-container" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-4 rounded-md bg-accent-pale-blue/60 p-4">
+                <h5 className="font-display text-lg text-primary">Practice drill</h5>
+                <p className="muted-copy mt-2 text-sm leading-6">{sound.practiceDrill}</p>
+                <h5 className="mt-4 font-display text-lg text-primary">Homework</h5>
+                <p className="muted-copy mt-2 text-sm leading-6">{sound.homework}</p>
+              </div>
             </div>
-            <div>
-              <h4 className="font-display text-xl text-primary">Homework</h4>
-              <p className="muted-copy mt-2 text-base leading-7">
-                {sound.homework}
-              </p>
-            </div>
+            <QuizReveal items={quiz} />
           </div>
         </LessonDetail>
       </div>
@@ -530,11 +764,130 @@ function ModuleSection({
   );
 }
 
+function ReviewSectionCard({ review }: { review: (typeof reviewSections)[number] }) {
+  const practiceText = [
+    review.title,
+    "Words:",
+    ...review.words,
+    "Minimal pairs:",
+    ...review.minimalPairs,
+    "Sentences:",
+    ...review.sentences,
+  ].join("\n");
+
+  return (
+    <section className="scroll-mt-28" id={review.id}>
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="eyebrow">Review checkpoint</p>
+          <h2 className="mt-3 text-4xl md:text-5xl">{review.title}</h2>
+          <p className="muted-copy mt-4 max-w-3xl text-base leading-7 md:text-lg">
+            {review.summary}
+          </p>
+        </div>
+        <CopyPracticeButton text={practiceText} />
+      </div>
+      <div className="grid gap-4">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div className="paper-panel rounded-md p-5">
+            <h3 className="text-2xl">10-word reading challenge</h3>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {review.words.map((word) => (
+                <span className="rounded-sm border border-outline-variant/44 bg-white/75 px-3 py-2 text-sm font-semibold text-primary" key={word}>
+                  {word}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="paper-panel rounded-md p-5">
+            <h3 className="text-2xl">5 comparison pairs</h3>
+            <ul className="mt-4 grid gap-2 text-sm leading-6 text-secondary">
+              {review.minimalPairs.map((pair) => (
+                <li key={pair}>{pair}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="paper-panel rounded-md p-5">
+          <h3 className="text-2xl">Read the sentences</h3>
+          <div className="mt-4 grid gap-2">
+            {review.sentences.map((sentence) => (
+              <div className="flex items-center justify-between gap-3 rounded-sm border border-outline-variant/38 bg-white/75 p-3" key={sentence}>
+                <p className="text-base leading-7 text-primary">{sentence}</p>
+                <AudioButton
+                  compact
+                  label={sentence}
+                  speechText={`Listen and repeat the sentence. ${sentence}`}
+                  text={sentence}
+                  type="sentence"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+          <QuizReveal
+            items={review.quiz.map((item) => ({
+              ...item,
+              explanation: "Try first, then reveal the answer key.",
+            }))}
+            title="Review quiz"
+          />
+          <div className="paper-panel rounded-md p-5">
+            <h3 className="text-2xl">Recording task</h3>
+            <p className="muted-copy mt-3 text-base leading-7">
+              {review.recordingTask}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PracticeTextCard({ item }: { item: (typeof practiceTextLibrary)[number] }) {
+  return (
+    <article className="paper-panel motion-card rounded-md p-5">
+      <p className="eyebrow">{item.target}</p>
+      <h3 className="mt-3 text-2xl">{item.title}</h3>
+      <p className="muted-copy mt-4 text-base leading-7">{item.paragraph}</p>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <AudioButton
+          compact
+          label={item.title}
+          speechText={`Listen and repeat the practice text. ${item.paragraph}`}
+          text={item.paragraph}
+          type="paragraph"
+        />
+        <CopyPracticeButton className="shadow-none" text={`${item.title}\n${item.paragraph}`} />
+      </div>
+      <div className="mt-5 rounded-md bg-accent-mist p-4">
+        <h4 className="font-display text-lg text-primary">Record Yourself</h4>
+        <p className="muted-copy mt-2 text-sm leading-6">{item.recordingTask}</p>
+        <h4 className="mt-4 font-display text-lg text-primary">Self-check focus</h4>
+        <ul className="mt-2 grid gap-2 text-sm leading-6 text-secondary">
+          {item.selfCheck.map((check) => (
+            <li className="flex gap-2" key={check}>
+              <CheckCircle2 aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-on-tertiary-container" />
+              <span>{check}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </article>
+  );
+}
+
 export function PhoneticsCoursePage({ locale }: { locale: Locale }) {
   const pageUrl = courseUrl(locale);
   const allPracticeWords = soundLessons
     .flatMap((sound) => sound.words.map((word) => `${word.text} ${word.ipa}`))
     .join("\n");
+  const consonantsReview = reviewSections.find((review) => review.id === "consonants-review");
+  const vowelsReview = reviewSections.find((review) => review.id === "vowels-review");
+  const remainingReviews = reviewSections.filter(
+    (review) => review.id !== "consonants-review" && review.id !== "vowels-review",
+  );
 
   return (
     <>
@@ -581,6 +934,10 @@ export function PhoneticsCoursePage({ locale }: { locale: Locale }) {
                 Explore Course Modules
               </a>
               <PrintCourseButton className="border-white/20 bg-white/12 text-surface-container-lowest hover:bg-white/18" />
+              <DownloadPracticeRoutineButton
+                className="border-white/20 bg-white/12 text-surface-container-lowest hover:bg-white/18"
+                text={getRoutineDownloadText()}
+              />
             </div>
           </div>
         </div>
@@ -678,6 +1035,107 @@ export function PhoneticsCoursePage({ locale }: { locale: Locale }) {
                   </div>
                 </div>
 
+                <NextModuleLink href="#daily-practice" label="Daily Practice" />
+              </section>
+
+              <section className="scroll-mt-28" id="daily-practice">
+                <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+                  <div>
+                    <p className="eyebrow">How to practice every day</p>
+                    <h2 className="mt-3 text-4xl md:text-5xl">
+                      10-minute daily pronunciation routine
+                    </h2>
+                    <p className="muted-copy mt-4 max-w-3xl text-base leading-7 md:text-lg">
+                      Small daily practice is better than long practice once a week. Choose one target, listen, repeat, record, and check one mistake.
+                    </p>
+                  </div>
+                  <DownloadPracticeRoutineButton text={getRoutineDownloadText()} />
+                </div>
+                <div className="paper-panel rounded-md p-6">
+                  <ol className="grid gap-3 md:grid-cols-2">
+                    {dailyPracticeRoutine.map((item, index) => (
+                      <li className="grid grid-cols-[2.35rem_minmax(0,1fr)] gap-3 text-base leading-7 text-secondary" key={item}>
+                        <span className="flex size-9 items-center justify-center rounded-sm bg-accent-pale-blue text-sm font-bold text-primary">
+                          {index + 1}
+                        </span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                <NextModuleLink href="#audio-guide" label="How to Use Audio" />
+              </section>
+
+              <section className="scroll-mt-28" id="audio-guide">
+                <div className="mb-6">
+                  <p className="eyebrow">How to use the audio buttons</p>
+                  <h2 className="mt-3 text-4xl md:text-5xl">
+                    Listen first, then repeat like a learner
+                  </h2>
+                  <p className="muted-copy mt-4 max-w-3xl text-base leading-7 md:text-lg">
+                    The page uses browser text-to-speech as a free fallback. IPA symbols are shown visually, but the audio uses normal English words because browsers do not pronounce IPA reliably.
+                  </p>
+                </div>
+                <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+                  <div className="paper-panel rounded-md p-6">
+                    <ol className="grid gap-3">
+                      {audioInstructions.map((item, index) => (
+                        <li className="grid grid-cols-[2.35rem_minmax(0,1fr)] gap-3 text-base leading-7 text-secondary" key={item}>
+                          <span className="flex size-9 items-center justify-center rounded-sm bg-accent-pale-red text-sm font-bold text-tertiary">
+                            {index + 1}
+                          </span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                  <div className="paper-panel rounded-md p-5">
+                    <h3 className="text-2xl">Audio quality note</h3>
+                    <p className="muted-copy mt-3 text-sm leading-6">
+                      The audio voice may sound slightly different depending on your browser or device. For best results, use Chrome, Edge, or Safari with an English US voice selected when available.
+                    </p>
+                    <div className="mt-4 rounded-md bg-accent-mist p-4">
+                      <p className="text-xs font-bold uppercase text-secondary">
+                        Future upgrade path
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-primary">
+                        Real MP3 files can be added later under /public/audio/phonetics and passed to each audio button as audioSrc.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <NextModuleLink href="#study-paths" label="Choose Your Study Path" />
+              </section>
+
+              <section className="scroll-mt-28" id="study-paths">
+                <div className="mb-6">
+                  <p className="eyebrow">Choose your study path</p>
+                  <h2 className="mt-3 text-4xl md:text-5xl">
+                    Start where your level needs you most
+                  </h2>
+                  <p className="muted-copy mt-4 max-w-3xl text-base leading-7 md:text-lg">
+                    You can study the course from top to bottom, or choose a path that matches your current pronunciation goal.
+                  </p>
+                </div>
+                <div className="grid gap-4 lg:grid-cols-3">
+                  {learnerPaths.map((path) => (
+                    <article className="paper-panel motion-card rounded-md p-5" key={path.title}>
+                      <p className="eyebrow">{path.level}</p>
+                      <h3 className="mt-3 text-2xl">{path.title}</h3>
+                      <ol className="mt-4 grid gap-2 text-sm leading-6 text-secondary">
+                        {path.steps.map((step, index) => (
+                          <li className="grid grid-cols-[1.75rem_minmax(0,1fr)] gap-2" key={step}>
+                            <span className="font-bold text-primary">{index + 1}</span>
+                            <span>{step}</span>
+                          </li>
+                        ))}
+                      </ol>
+                    </article>
+                  ))}
+                </div>
+
                 <NextModuleLink href="#ipa-sound-chart" label="IPA and Sound Chart" />
               </section>
 
@@ -713,6 +1171,11 @@ export function PhoneticsCoursePage({ locale }: { locale: Locale }) {
                     <SoundLessonCard key={sound.id} sound={sound} />
                   ))}
                 </div>
+                {consonantsReview ? (
+                  <div className="mt-12">
+                    <ReviewSectionCard review={consonantsReview} />
+                  </div>
+                ) : null}
                 <NextModuleLink href="#vowel-sounds" label="Vowel Sounds" />
               </section>
 
@@ -731,22 +1194,94 @@ export function PhoneticsCoursePage({ locale }: { locale: Locale }) {
                     <SoundLessonCard key={sound.id} sound={sound} />
                   ))}
                 </div>
+                {vowelsReview ? (
+                  <div className="mt-12">
+                    <ReviewSectionCard review={vowelsReview} />
+                  </div>
+                ) : null}
+                <div className="mt-12 rounded-lg bg-primary px-6 py-8 text-surface-container-lowest shadow-glow md:px-8">
+                  <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+                    <div>
+                      <p className="eyebrow text-tertiary-fixed">Need personal feedback?</p>
+                      <h2 className="mt-3 max-w-3xl font-display text-3xl text-surface-container-lowest md:text-4xl">
+                        Need Personal Feedback on Your Pronunciation?
+                      </h2>
+                      <p className="mt-3 max-w-2xl text-sm leading-6 text-surface-container-lowest/78 md:text-base">
+                        This free course helps you practice independently. If you want correction, feedback, and a personal pronunciation plan, you can study with Faris Rashad.
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-3">
+                      <ButtonLink href={getBookingHref(locale)}>
+                        Book a Pronunciation Session
+                      </ButtonLink>
+                      <ButtonLink className="border-white/20 bg-white/10 text-surface-container-lowest" href="/contact" variant="secondary">
+                        Contact Faris
+                      </ButtonLink>
+                      <ButtonLink className="text-surface-container-lowest" href="/programs" variant="tertiary">
+                        Explore English Courses
+                        <ArrowRight aria-hidden="true" className="size-4" />
+                      </ButtonLink>
+                    </div>
+                  </div>
+                </div>
                 <NextModuleLink href="#syllables" label="Syllables" />
               </section>
 
               {courseModules.map((module, index) => {
                 const nextModule = courseModules[index + 1];
                 const next =
-                  nextModule
+                  module.id === "practice-activities"
+                    ? { href: "#group-reviews", label: "Module Reviews" }
+                    : nextModule
                     ? { href: `#${nextModule.id}`, label: nextModule.title }
                     : undefined;
 
                 return (
-                  <ModuleSection
-                    key={module.id}
-                    module={module}
-                    next={next}
-                  />
+                  <div className="grid gap-16" key={module.id}>
+                    <ModuleSection
+                      module={module}
+                      next={next}
+                    />
+                    {module.id === "practice-activities" ? (
+                      <>
+                        <section className="scroll-mt-28" id="group-reviews">
+                          <div className="mb-6">
+                            <p className="eyebrow">Module reviews</p>
+                            <h2 className="mt-3 text-4xl md:text-5xl">
+                              Review before the final tests
+                            </h2>
+                            <p className="muted-copy mt-4 max-w-3xl text-base leading-7 md:text-lg">
+                              Use these review checkpoints to test syllables, stress, rhythm, connected speech, endings, and full-course clarity.
+                            </p>
+                          </div>
+                          <div className="grid gap-12">
+                            {remainingReviews.map((review) => (
+                              <ReviewSectionCard key={review.id} review={review} />
+                            ))}
+                          </div>
+                          <NextModuleLink href="#practice-text-library" label="Practice Text Library" />
+                        </section>
+
+                        <section className="scroll-mt-28" id="practice-text-library">
+                          <div className="mb-6">
+                            <p className="eyebrow">Practice text library</p>
+                            <h2 className="mt-3 text-4xl md:text-5xl">
+                              Extra reading texts for independent practice
+                            </h2>
+                            <p className="muted-copy mt-4 max-w-3xl text-base leading-7 md:text-lg">
+                              Read these short texts after studying the modules. Each text has audio support, a recording task, and a self-check focus.
+                            </p>
+                          </div>
+                          <div className="grid gap-5 lg:grid-cols-2">
+                            {practiceTextLibrary.map((item) => (
+                              <PracticeTextCard item={item} key={item.id} />
+                            ))}
+                          </div>
+                          <NextModuleLink href="#review-tests" label="Review Tests" />
+                        </section>
+                      </>
+                    ) : null}
+                  </div>
                 );
               })}
             </div>
@@ -802,10 +1337,10 @@ export function PhoneticsCoursePage({ locale }: { locale: Locale }) {
               <div>
                 <p className="eyebrow text-tertiary-fixed">Final step</p>
                 <h2 className="mt-4 max-w-3xl font-display text-4xl text-surface-container-lowest md:text-5xl">
-                  Start with one sound today, then build the full system.
+                  Keep Improving Your English with Faris Rashad
                 </h2>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-surface-container-lowest/78">
-                  The course stays free and open. For personal feedback, book a session or send Faris a message with your pronunciation goals.
+                  Use this free course anytime, then join a guided English program when you are ready for personal support.
                 </p>
               </div>
               <div className="flex flex-wrap gap-4">
@@ -823,9 +1358,30 @@ export function PhoneticsCoursePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
+      <nav
+        aria-label="Sticky study tools"
+        className="fixed bottom-4 left-1/2 z-40 flex w-[min(100%-1.5rem,42rem)] -translate-x-1/2 items-center justify-between gap-1 rounded-lg border border-accent-blue/18 bg-white/88 p-1.5 text-[0.72rem] font-semibold text-primary shadow-float backdrop-blur md:text-sm"
+      >
+        {[
+          ["Start", "#course-overview"],
+          ["Chart", "#ipa-sound-chart"],
+          ["Texts", "#practice-text-library"],
+          ["Reviews", "#group-reviews"],
+          ["Top", "#course-top"],
+        ].map(([label, href]) => (
+          <a
+            className="flex min-h-9 flex-1 items-center justify-center rounded-sm px-2 hover:bg-accent-pale-blue/70"
+            href={href}
+            key={href}
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+
       <a
         aria-label="Back to top"
-        className="fixed bottom-5 right-5 z-40 inline-flex size-11 items-center justify-center rounded-sm border border-accent-blue/24 bg-white/86 text-primary shadow-float backdrop-blur hover:-translate-y-1 hover:border-accent-blue/48"
+        className="fixed bottom-20 right-5 z-40 inline-flex size-11 items-center justify-center rounded-sm border border-accent-blue/24 bg-white/86 text-primary shadow-float backdrop-blur hover:-translate-y-1 hover:border-accent-blue/48"
         href="#course-top"
       >
         <ArrowUp aria-hidden="true" className="size-5" />

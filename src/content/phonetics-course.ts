@@ -51,13 +51,41 @@ export type CourseModule = {
   }>;
 };
 
+export type ReviewSection = {
+  id: string;
+  title: string;
+  summary: string;
+  words: string[];
+  minimalPairs: string[];
+  sentences: string[];
+  quiz: Array<{
+    question: string;
+    answer: string;
+  }>;
+  recordingTask: string;
+};
+
+export type PracticeText = {
+  id: string;
+  title: string;
+  target: string;
+  paragraph: string;
+  selfCheck: string[];
+  recordingTask: string;
+};
+
 export const coursePath = "/american-english-phonetics-course";
 
 export const phoneticsNavItems = [
   { id: "course-overview", label: "Course Overview" },
+  { id: "daily-practice", label: "Daily Practice" },
+  { id: "audio-guide", label: "How to Use Audio" },
+  { id: "study-paths", label: "Study Paths" },
   { id: "ipa-sound-chart", label: "IPA and Sound Chart" },
   { id: "consonant-sounds", label: "Consonant Sounds" },
+  { id: "consonants-review", label: "Consonants Review" },
   { id: "vowel-sounds", label: "Vowel Sounds" },
+  { id: "vowels-review", label: "Vowels Review" },
   { id: "syllables", label: "Syllables" },
   { id: "word-stress", label: "Word Stress" },
   { id: "sentence-stress", label: "Sentence Stress" },
@@ -71,6 +99,8 @@ export const phoneticsNavItems = [
   { id: "ed-endings", label: "-ed Endings" },
   { id: "common-mistakes", label: "Common Mistakes" },
   { id: "practice-activities", label: "Practice Activities" },
+  { id: "group-reviews", label: "Module Reviews" },
+  { id: "practice-text-library", label: "Practice Text Library" },
   { id: "review-tests", label: "Review Tests" },
   { id: "final-project", label: "Final Project" },
 ] as const;
@@ -102,6 +132,68 @@ export const practiceChecklistItems = [
   "I practiced the minimal pairs.",
   "I read the sentences.",
   "I recorded myself.",
+] as const;
+
+export const dailyPracticeRoutine = [
+  "Choose one sound or rule.",
+  "Listen to the sound 3 times.",
+  "Repeat the sound slowly 5 times.",
+  "Read 10 example words.",
+  "Practice 3 minimal pairs.",
+  "Read 5 sentences.",
+  "Record yourself reading the practice paragraph.",
+  "Listen again and check one mistake.",
+  "Repeat the paragraph one more time.",
+  "Come back tomorrow and review.",
+] as const;
+
+export const audioInstructions = [
+  "Click the audio button.",
+  "Listen first without speaking.",
+  "Click again and repeat after the voice.",
+  "Say the word slowly.",
+  "Say the full sentence.",
+  "Record yourself on your phone.",
+  "Compare your pronunciation with the model.",
+] as const;
+
+export const learnerPaths = [
+  {
+    title: "Beginner Path",
+    level: "Best for A1-A2 learners",
+    steps: [
+      "IPA Basics",
+      "Consonants",
+      "Vowels",
+      "Syllables",
+      "Final Sounds",
+      "-s and -ed Endings",
+    ],
+  },
+  {
+    title: "Intermediate Path",
+    level: "Best for A2-B1 learners",
+    steps: [
+      "Vowel Contrasts",
+      "Word Stress",
+      "Sentence Stress",
+      "Rhythm",
+      "Intonation",
+      "Connected Speech",
+    ],
+  },
+  {
+    title: "Advanced Clarity Path",
+    level: "Best for B1-B2 learners",
+    steps: [
+      "Weak Forms",
+      "Schwa",
+      "Flap T awareness",
+      "Connected Speech",
+      "Practice Text Library",
+      "Final Pronunciation Project",
+    ],
+  },
 ] as const;
 
 export const consonantLessons: SoundLesson[] = [
@@ -1652,6 +1744,246 @@ export const courseModules: CourseModule[] = [
       { question: "What should the final project include?", answer: "A recorded speech sample, marked pronunciation notes, and a reflection." },
       { question: "What should you do after recording?", answer: "Compare, identify patterns, and create a next-step practice plan." },
     ],
+  },
+];
+
+export const reviewSections: ReviewSection[] = [
+  {
+    id: "consonants-review",
+    title: "Consonants Review",
+    summary: "Review clear consonant endings, voicing, air release, and common contrasts such as /p/ vs /b/, /θ/ vs /s/, and /r/ vs /l/.",
+    words: ["pen", "book", "time", "day", "cat", "go", "think", "this", "chair", "red"],
+    minimalPairs: ["pat - bat", "thin - sin", "three - tree", "ship - sip", "right - light"],
+    sentences: [
+      "Please put the pen on the paper.",
+      "This teacher thinks carefully.",
+      "Rachel read the red report.",
+      "Charlie chose a cheap chair.",
+      "We will watch the warm water.",
+    ],
+    quiz: [
+      { question: "Which sound is voiceless: /p/ or /b/?", answer: "/p/ is voiceless." },
+      { question: "Which word has /θ/: think or sink?", answer: "think." },
+      { question: "Which word has /r/: light or right?", answer: "right." },
+      { question: "Which final sound is voiced: cap or cab?", answer: "cab ends with voiced /b/." },
+      { question: "Which sound starts chair?", answer: "/tʃ/." },
+    ],
+    recordingTask: "Record the word list, the minimal pairs, and all five sentences. Listen again for final sounds and voiced/voiceless contrasts.",
+  },
+  {
+    id: "vowels-review",
+    title: "Vowels Review",
+    summary: "Review tense and lax vowels, American diphthongs, schwa, and rhotic vowels.",
+    words: ["ship", "sheep", "cat", "cup", "pen", "pan", "full", "fool", "bird", "hot"],
+    minimalPairs: ["ship - sheep", "sit - seat", "pen - pan", "full - fool", "hot - hut"],
+    sentences: [
+      "The ship is big.",
+      "The sheep is white.",
+      "The cat has a cup.",
+      "The girl saw a bird.",
+      "Luke looked at the book.",
+    ],
+    quiz: [
+      { question: "Which word has /ɪ/: ship or sheep?", answer: "ship." },
+      { question: "Which word has /æ/: pen or pan?", answer: "pan." },
+      { question: "Which word has /ʊ/: full or fool?", answer: "full." },
+      { question: "Which word has /ɝ/: bird or bed?", answer: "bird." },
+      { question: "Which word has /ɑ/: hot or hut?", answer: "hot." },
+    ],
+    recordingTask: "Record the vowel word list twice: first slowly, then naturally. Check vowel length and mouth shape.",
+  },
+  {
+    id: "syllables-review",
+    title: "Syllables Review",
+    summary: "Review how words are divided into beats and how every syllable needs a vowel sound.",
+    words: ["cat", "teacher", "happy", "computer", "pronunciation", "recording", "student", "practice", "important", "communication"],
+    minimalPairs: ["one beat - two beats", "TEA-cher - tea-CHER", "HAP-py - hap-PY", "com-PU-ter - COM-pu-ter", "prac-TICE - PRAC-tice"],
+    sentences: [
+      "My teacher uses a computer.",
+      "We practice pronunciation every morning.",
+      "Important words need clear syllables.",
+      "I can divide long words slowly.",
+      "Clear syllables help people understand me.",
+    ],
+    quiz: [
+      { question: "How many syllables are in teacher?", answer: "Two." },
+      { question: "What does every syllable need?", answer: "A vowel sound." },
+      { question: "Which word is longer: cat or computer?", answer: "computer." },
+      { question: "Why do syllables matter?", answer: "They help you control long words and stress." },
+      { question: "Should every syllable be equally strong?", answer: "No. English uses strong and weak syllables." },
+    ],
+    recordingTask: "Clap the syllables, then record the five sentences with clear strong and weak beats.",
+  },
+  {
+    id: "stress-rhythm-review",
+    title: "Stress and Rhythm Review",
+    summary: "Review word stress, sentence stress, and the strong/weak rhythm of natural American English.",
+    words: ["teacher", "about", "present", "record", "important", "clearly", "practice", "computer", "pronunciation", "communication"],
+    minimalPairs: ["PRE-sent - pre-SENT", "RE-cord - re-CORD", "CON-duct - con-DUCT", "strong beat - weak beat", "content word - function word"],
+    sentences: [
+      "I want to speak more clearly.",
+      "My teacher uses a computer.",
+      "We practice difficult words slowly.",
+      "Clear stress helps people understand me.",
+      "I need a new notebook, not a new phone.",
+    ],
+    quiz: [
+      { question: "Which words usually receive sentence stress?", answer: "Content words." },
+      { question: "What happens to many function words?", answer: "They become weaker and shorter." },
+      { question: "Which syllable is stressed in about?", answer: "The second syllable." },
+      { question: "Can stress change meaning?", answer: "Yes, especially in noun-verb pairs." },
+      { question: "What helps English rhythm sound natural?", answer: "A clear pattern of strong and weak beats." },
+    ],
+    recordingTask: "Record the sentences twice. First over-stress the key words, then make the rhythm natural.",
+  },
+  {
+    id: "connected-speech-review",
+    title: "Connected Speech Review",
+    summary: "Review linking, reductions, and sound changes that help real American English flow.",
+    words: ["turn off", "pick it up", "look at it", "did you", "going to", "want to", "kind of", "out of", "a lot of", "next time"],
+    minimalPairs: ["turn off - turn it off", "pick up - pick it up", "did you - didja", "want to - wanna", "going to - gonna"],
+    sentences: [
+      "Pick it up and put it on the table.",
+      "Turn off the light and open the window.",
+      "Look at it again.",
+      "Did you want to go now?",
+      "I am going to call you later.",
+    ],
+    quiz: [
+      { question: "What links in turn off?", answer: "The final /n/ links to the next vowel." },
+      { question: "What can did you sound like in casual speech?", answer: "didja." },
+      { question: "Should every casual reduction be used in formal speech?", answer: "No. Use reductions thoughtfully." },
+      { question: "Why study connected speech?", answer: "It improves listening and natural flow." },
+      { question: "What should you do before speaking naturally?", answer: "Read slowly first, then connect the words." },
+    ],
+    recordingTask: "Record the sentences slowly, then record them again with natural linking.",
+  },
+  {
+    id: "endings-review",
+    title: "Endings Review",
+    summary: "Review final consonants, -s endings, and -ed endings.",
+    words: ["books", "dogs", "classes", "walked", "played", "wanted", "asked", "bags", "watched", "needed"],
+    minimalPairs: ["cap - cab", "books - bags", "walked - played", "wanted - watched", "asked - added"],
+    sentences: [
+      "Last week, I visited my friend.",
+      "We walked to the park and watched the birds.",
+      "She packed snacks, books, and drinks.",
+      "I helped her carry the bags.",
+      "We talked for a long time.",
+    ],
+    quiz: [
+      { question: "Does books end in /s/, /z/, or /ɪz/?", answer: "/s/." },
+      { question: "Does dogs end in /s/, /z/, or /ɪz/?", answer: "/z/." },
+      { question: "Does classes end in /s/, /z/, or /ɪz/?", answer: "/ɪz/." },
+      { question: "Does worked end in /t/, /d/, or /ɪd/?", answer: "/t/." },
+      { question: "Does wanted end in /t/, /d/, or /ɪd/?", answer: "/ɪd/." },
+    ],
+    recordingTask: "Record the sentences and check every final sound. Do not add extra vowels after final consonants.",
+  },
+  {
+    id: "final-course-review",
+    title: "Final Course Review",
+    summary: "Review sounds, stress, rhythm, connected speech, endings, and self-recording habits.",
+    words: ["think", "this", "ship", "sheep", "teacher", "bird", "wanted", "played", "turn off", "pronunciation"],
+    minimalPairs: ["think - sink", "ship - sheep", "cat - cut", "right - light", "worked - played"],
+    sentences: [
+      "My goal is to speak clearly and confidently.",
+      "I practice sounds, stress, and rhythm every day.",
+      "I listen first, then repeat slowly.",
+      "I record myself and check one mistake.",
+      "Clear pronunciation helps people understand me.",
+    ],
+    quiz: [
+      { question: "What should you do before repeating?", answer: "Listen first." },
+      { question: "What should you use for IPA symbols?", answer: "Use them visually; do not rely on browser TTS to pronounce them." },
+      { question: "What is the best practice habit?", answer: "Short daily practice." },
+      { question: "Should the page grade your speech automatically?", answer: "No. It gives self-study guidance, not automatic grading." },
+      { question: "What is the final project?", answer: "A recorded pronunciation sample with notes and reflection." },
+    ],
+    recordingTask: "Record a 60- to 90-second speech sample. Compare it with your first recording and choose three next targets.",
+  },
+];
+
+export const practiceTextLibrary: PracticeText[] = [
+  {
+    id: "consonants-practice-text",
+    title: "Consonants Practice Text",
+    target: "Clear consonant starts and endings",
+    paragraph: "Ben picks up a blue book. Tim takes the cup and puts it back. Karen goes to class and gives good answers. Read slowly and keep the final sounds clear.",
+    selfCheck: ["Did I release final /p/, /t/, and /k/?", "Did I keep /b/, /d/, and /g/ voiced?", "Did I avoid extra vowels after final consonants?"],
+    recordingTask: "Record the paragraph once slowly and once naturally.",
+  },
+  {
+    id: "vowels-practice-text",
+    title: "Vowels Practice Text",
+    target: "American English vowel contrast",
+    paragraph: "The sheep is on the ship. The cat has a cup. Luke looked at the book and saw a bird. Practice each vowel slowly before reading the full text.",
+    selfCheck: ["Did sheep and ship sound different?", "Did cat and cup sound different?", "Did fool and full sound different?"],
+    recordingTask: "Record the paragraph and circle the vowel pair that needs more practice.",
+  },
+  {
+    id: "theta-eth-practice-text",
+    title: "/theta/ and /th/ Practice Text",
+    target: "Voiceless and voiced th sounds",
+    paragraph: "Three students think carefully. They thank their teacher after the lesson. This helps them speak with more confidence. They practice the sound slowly.",
+    selfCheck: ["Was my tongue gently between my teeth?", "Did think and this sound different?", "Did I avoid saying sink for think?"],
+    recordingTask: "Record the paragraph in front of a mirror and watch your tongue position.",
+  },
+  {
+    id: "r-l-practice-text",
+    title: "/r/ and /l/ Practice Text",
+    target: "American /r/ and clear /l/",
+    paragraph: "Rachel likes reading long reports. Lily learns new words in every lesson. They practice right and light slowly. Clear tongue position helps both sounds.",
+    selfCheck: ["Did /r/ avoid touching the roof of my mouth?", "Did /l/ touch behind my top teeth?", "Did right and light sound different?"],
+    recordingTask: "Record the paragraph and then repeat only the /r/ and /l/ words.",
+  },
+  {
+    id: "i-ih-practice-text",
+    title: "/i/ and /ih/ Practice Text",
+    target: "Tense /i/ and relaxed /ɪ/",
+    paragraph: "She sees three green trees. Tim sits in the kitchen and drinks milk. The teacher speaks clearly. We need to keep practicing.",
+    selfCheck: ["Was /i/ longer than /ɪ/?", "Did sheep and ship sound different?", "Did seat and sit sound different?"],
+    recordingTask: "Record the paragraph and check vowel length.",
+  },
+  {
+    id: "ae-eh-cup-practice-text",
+    title: "/ae/, /eh/, and /uh/ Practice Text",
+    target: "cat, pen, and cup vowels",
+    paragraph: "Dan has a red pen and a black cup. He sat at the desk and read the lesson. His brother loves practicing short vowel sounds.",
+    selfCheck: ["Did cat sound different from cut?", "Did pen sound different from pan?", "Was /ʌ/ central and relaxed?"],
+    recordingTask: "Record the paragraph and compare cat, pen, and cup.",
+  },
+  {
+    id: "word-stress-practice-text",
+    title: "Word Stress Practice Text",
+    target: "Strong syllables in longer words",
+    paragraph: "My teacher uses a computer. We study pronunciation every morning. I practice difficult words slowly. Clear stress helps people understand me.",
+    selfCheck: ["Did I stress the strongest syllable?", "Did I reduce weak syllables?", "Did longer words sound organized?"],
+    recordingTask: "Mark stress before recording, then read the paragraph.",
+  },
+  {
+    id: "sentence-stress-practice-text",
+    title: "Sentence Stress Practice Text",
+    target: "Important words in sentences",
+    paragraph: "I want to speak more clearly. I need a new notebook, not a new phone. My teacher gives me helpful practice. I record my voice every day.",
+    selfCheck: ["Did I stress content words?", "Did I make function words weaker?", "Did the meaning sound clear?"],
+    recordingTask: "Record once with strong content words, then once naturally.",
+  },
+  {
+    id: "connected-speech-practice-text",
+    title: "Connected Speech Practice Text",
+    target: "Linking and natural flow",
+    paragraph: "Pick it up and put it on the table. Turn off the light and open the window. Look at it again. Say each sentence slowly, then say it naturally.",
+    selfCheck: ["Did I link final consonants to next vowels?", "Did I avoid speaking word by word?", "Could I still speak clearly?"],
+    recordingTask: "Record the text slowly, then record it with linking.",
+  },
+  {
+    id: "final-sounds-endings-practice-text",
+    title: "Final Sounds and Endings Practice Text",
+    target: "Final consonants, -s endings, and -ed endings",
+    paragraph: "Last week, I visited my friend. We walked to the park and watched the birds. She packed snacks, books, and drinks. I helped her carry the bags, and we talked for a long time.",
+    selfCheck: ["Did visited end with /ɪd/?", "Did walked and watched end with /t/?", "Did books end with /s/ and bags with /z/?"],
+    recordingTask: "Record the text and check each ending with the answer key.",
   },
 ];
 
